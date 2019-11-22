@@ -46,7 +46,7 @@ class RolePermissionTableSeeder extends Seeder
         ]);
 
         $accountant         = Role::where('name', 'Accountant')->first();
-        $accountant->syncPermissions(['view users']);
+        $accountant->syncPermissions(['view users', 'edit users']);
 
         $admin              = User::where('name', 'administrator')->first();
         $admin->assignRole('administrator');

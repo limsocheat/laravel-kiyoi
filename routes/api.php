@@ -18,5 +18,11 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         Route::post('login', 'LoginController@passport')->name('auth.login');
         Route::get('user', 'UserController@index');
         Route::get('me', 'AuthController@me');
+        Route::get('permissions', 'PermissionController')->name('permission');
+        Route::get('roles', 'RoleController')->name('roles');
     });
+
+    Route::apiResources([
+        'user'  => 'UserController'
+    ]);
 });
