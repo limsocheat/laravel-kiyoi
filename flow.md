@@ -1,0 +1,19 @@
+1. Create User
+2. Create Role
+3. Create Permission
+4. Create Company
+   4.1 Create Warehoue
+   4.2 Create Accounts
+5. Create Product Category
+6. Create Product
+7. Create Supplier
+8. Create Customer
+9. Create Purchase
+10. Create Stock
+11. Create Quotation
+12. Create Sale
+13. Create Expense
+14. Create Transfer
+15. Create Department
+16. Create Employee
+17. Create payroll
