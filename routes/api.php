@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
     });
 
     Route::apiResources([
-        'user'  => 'UserController'
+        'user'  => 'UserController',
+        'product'  => 'ProductController',
     ]);
 });

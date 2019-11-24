@@ -25,3 +25,19 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+
+
+$factory->define(\App\Product::class, function (Faker $faker) {
+    return [
+        'name' => $faker->randomElement(['Beer', 'CocaCola', 'Pizza', 'Apple', 'Keyboard']),
+        'code' => $faker->creditCardNumber,
+        'type' => $faker->randomElement(['Drink', 'Food', 'Fruit', 'Computer Hardware']),
+        'barcode' => $faker->randomElement(['ean13', 'ean8', 'isbn13', 'isbn10']),
+        'category' => $faker->randomElement(['Standard', 'Combo', 'Digital']),
+        'unit' => $faker->numberBetween($min=1,$max=100),
+        'cost' => $faker->numberBetween($min=10,$max=1000),
+        'price' => $faker->numberBetween($min=20,$max=10000),
+    ];	
+});
+
