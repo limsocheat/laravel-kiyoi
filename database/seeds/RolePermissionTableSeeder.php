@@ -15,7 +15,7 @@ class RolePermissionTableSeeder extends Seeder
     public function run()
     {
         $roles  = [
-            'administrator', 'accountant', 'saleManager', 'saleman'
+            'administrator', 'accountant', 'saleManager', 'saleman', 'stock count'
         ];
 
         foreach ($roles as $role) :
@@ -58,7 +58,7 @@ class RolePermissionTableSeeder extends Seeder
 
         // Product 
         $saleManager = Role::where('name', 'saleManager')->first();
-        $saleManager->syncPermissions(['view sales']);
+        $saleManager->syncPermissions(['view sales', 'stock count']);
 
         $saleman = Role::where('name', 'saleman')->first();
         $saleman->syncPermissions(['view sales', 'add sales']);
