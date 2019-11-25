@@ -15,7 +15,7 @@ class RolePermissionTableSeeder extends Seeder
     public function run()
     {
         $roles  = [
-            'administrator', 'accountant', 'saleManager', 'saleman', 'stock count'
+            'administrator', 'accountant', 'saleManager', 'saleman'
         ];
 
         foreach ($roles as $role) :
@@ -28,7 +28,8 @@ class RolePermissionTableSeeder extends Seeder
         endforeach;
 
         $permissions        = [
-            'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales'
+            'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales',
+            'edit sales', 'delete sales'
         ];
 
         foreach ($permissions as $permission) :
@@ -42,7 +43,7 @@ class RolePermissionTableSeeder extends Seeder
 
         $administrator      = Role::where('name', 'administrator')->first();
         $administrator->syncPermissions([
-            'view users', 'add users', 'edit users', 'delete users'
+            'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales', 'edit sales', 'delete sales'
         ]);
 
         $accountant         = Role::where('name', 'Accountant')->first();
@@ -58,10 +59,10 @@ class RolePermissionTableSeeder extends Seeder
 
         // Product 
         $saleManager = Role::where('name', 'saleManager')->first();
-        $saleManager->syncPermissions(['view sales', 'stock count']);
+        $saleManager->syncPermissions(['view sales']);
 
         $saleman = Role::where('name', 'saleman')->first();
-        $saleman->syncPermissions(['view sales', 'add sales']);
+        $saleman->syncPermissions(['view sales', 'add sales', 'edit sales', 'delete sales']);
 
         $sale_Manager = User::where('name', 'saleManager')->first();
         $sale_Manager->assignRole('saleManager');
