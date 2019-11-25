@@ -15,7 +15,7 @@ class RolePermissionTableSeeder extends Seeder
     public function run()
     {
         $roles  = [
-            'administrator', 'accountant', 'saleManager', 'saleman'
+            'administrator', 'accountant', 'saleManager', 'saleman', 'webAdmin'
         ];
 
         foreach ($roles as $role) :
@@ -29,7 +29,8 @@ class RolePermissionTableSeeder extends Seeder
 
         $permissions        = [
             'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales',
-            'edit sales', 'delete sales'
+            'edit sales', 'delete sales',
+            'view website', 'add website', 'edit website',
         ];
 
         foreach ($permissions as $permission) :
@@ -43,7 +44,7 @@ class RolePermissionTableSeeder extends Seeder
 
         $administrator      = Role::where('name', 'administrator')->first();
         $administrator->syncPermissions([
-            'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales', 'edit sales', 'delete sales'
+            'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales', 'edit sales', 'delete sales', 'view website', 'add website', 'edit website',
         ]);
 
         $accountant         = Role::where('name', 'Accountant')->first();
@@ -70,5 +71,11 @@ class RolePermissionTableSeeder extends Seeder
         $sale_man = User::where('name', 'saleman')->first();
         $sale_man->assignRole('saleman');
 
+        // WebController
+        $webAdmin = Role::where('name', 'webAdmin')->first();
+        $webAdmin->syncPermissions(['view website', 'add website', 'edit website']);
+
+        $web = User::where('name', 'webAdmin')->first();
+        $web->assignRole('webAdmin');
     }
 }
