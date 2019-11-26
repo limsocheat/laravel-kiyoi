@@ -49,6 +49,9 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
+            'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales',
+            'edit sales', 'delete sales',
+            'view website', 'add website', 'edit website',
         ];
 
         foreach ($permissions as $permission) :
@@ -83,6 +86,7 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
+            'view users', 'add users', 'edit users', 'delete users', 'view sales', 'add sales', 'edit sales', 'delete sales', 'view website', 'add website', 'edit website',
         ]);
 
         $accountant         = Role::where('name', 'Accountant')->first();
@@ -122,6 +126,7 @@ class RolePermissionTableSeeder extends Seeder
         $webAdmin->syncPermissions([
             'view website', 'add website', 'edit website', 'delete website',
         ]);
+        $webAdmin->syncPermissions(['view website', 'add website', 'edit website']);
 
         $web = User::where('name', 'webAdmin')->first();
         $web->assignRole('webAdmin');
