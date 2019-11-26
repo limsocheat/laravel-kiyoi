@@ -49,7 +49,6 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
-            'return sales', 'return purchases',
         ];
 
         foreach ($permissions as $permission) :
@@ -84,7 +83,6 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
-            'return sales', 'return purchases',
         ]);
 
         $accountant         = Role::where('name', 'Accountant')->first();
