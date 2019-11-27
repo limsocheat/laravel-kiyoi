@@ -49,6 +49,7 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
+            'return sales', 'return purchases'
         ];
 
         foreach ($permissions as $permission) :
@@ -104,11 +105,19 @@ class RolePermissionTableSeeder extends Seeder
         $saleManager->syncPermissions([
             'view sales', 'import sales', 'view product', 'payment log', 'add withdraw method',
             'view expense', 'return sales', 'return purchases',
+            'summary report', 'product report', 'daily sale report', 'monthly sale report',
+            'daily purchase report', 'monthly purchase report', 'sale report', 'payment report',
+            'purchase report', 'warehouse report', 'product qty alert', 'user report', 
+            'customer report', 'supplier report', 'due report',
         ]);
 
         $saleman = Role::where('name', 'saleman')->first();
         $saleman->syncPermissions([
-            'view sales', 'add sales', 'edit sales', 'delete sales', 'import sales'
+            'view sales', 'add sales', 'edit sales', 'delete sales', 'import sales',
+            'summary report', 'product report', 'daily sale report', 'monthly sale report',
+            'daily purchase report', 'sale report',
+            'purchase report', 'warehouse report', 'product qty alert',
+            'customer report', 'supplier report', 'due report',
         ]);
 
         $sale_Manager = User::where('name', 'saleManager')->first();
