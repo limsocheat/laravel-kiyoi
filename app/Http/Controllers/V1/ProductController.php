@@ -30,7 +30,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'code' => 'required',
+            'type' => 'required',
+            'barcode' => 'required',
+            'category' => 'required',
+            'unit' => 'required',
+            'cost' => 'required',
+            'price' => 'required',
+        ]);
+
+        $product = new Product();
+        $product->name = $request->name;
+        $product->code = $request->code;
+        $product->type = $request->type;
+        $product->barcode = $request->barcode;
+        $product->category = $request->category;
+        $product->unit = $request->unit;
+        $product->cost = $request->cost;
+        $product->price = $request->price;
+        $product->save();
+
+        return response()->json([
+            'created' => true,
+        ]);
     }
 
     /**
@@ -53,7 +77,31 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'code' => 'required',
+            'type' => 'required',
+            'barcode' => 'required',
+            'category' => 'required',
+            'unit' => 'required',
+            'cost' => 'required',
+            'price' => 'required',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->name = $request->name;
+        $product->code = $request->code;
+        $product->type = $request->type;
+        $product->barcode = $request->barcode;
+        $product->category = $request->category;
+        $product->unit = $request->unit;
+        $product->cost = $request->cost;
+        $product->price = $request->price;
+        $product->save();
+
+        return response()->json([
+            'updated' => true,
+        ]);
     }
 
     /**
@@ -64,6 +112,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return response()->json([
+            'deleted' => true,
+        ]);
     }
 }
