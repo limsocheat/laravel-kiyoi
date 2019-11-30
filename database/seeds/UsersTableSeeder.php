@@ -14,6 +14,13 @@ class UsersTableSeeder extends Seeder
     {
 
         $users      = [
+            // SuperAdmin
+            [
+                'name'      => "superAdmin",
+                "email"     => "superadmin@mail.com",
+                "password"  => 'secret',
+            ],
+            // Admin
             [
                 'name'      => "administrator",
                 "email"     => "administrator@mail.com",
@@ -39,6 +46,19 @@ class UsersTableSeeder extends Seeder
             [
                 'name'      => "webAdmin",
                 "email"     => "webAdmin@mail.com",
+                "password"  => 'secret',
+            ],
+
+            // SuperVisor
+            [
+                'name'      => "supervisor",
+                "email"     => "supervisor@mail.com",
+                "password"  => 'secret',
+            ],
+            // Member
+            [
+                'name'      => "member",
+                "email"     => "member@mail.com",
                 "password"  => 'secret',
             ],
         ];

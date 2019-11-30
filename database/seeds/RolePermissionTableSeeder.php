@@ -15,7 +15,8 @@ class RolePermissionTableSeeder extends Seeder
     public function run()
     {
         $roles  = [
-            'administrator', 'accountant', 'saleManager', 'saleman', 'webAdmin'
+            'superAdmin', 'administrator', 'accountant', 'saleManager', 'Supervisor', 'saleman', 'webAdmin',
+            'member',
         ];
 
         foreach ($roles as $role) :
@@ -28,6 +29,7 @@ class RolePermissionTableSeeder extends Seeder
         endforeach;
 
         $permissions        = [
+            'view admin', 'add admin', 'edit admin', 'delete admin', 
             'view users', 'add users', 'edit users', 'delete users', 
             'view sales', 'add sales', 'import sales', 'edit sales', 'delete sales',
             'view website', 'add website', 'edit website', 'delete website',
@@ -49,7 +51,7 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
-            'return sales', 'return purchases'
+            'return sales', 'return purchases', 'pos'
         ];
 
         foreach ($permissions as $permission) :
@@ -60,6 +62,37 @@ class RolePermissionTableSeeder extends Seeder
                 ]
             );
         endforeach;
+
+        // Super Admin
+        $superAdmin = Role::where('name', 'superAdmin')->first();
+        $superAdmin->syncPermissions([
+            'view admin', 'add admin', 'edit admin', 'delete admin', 
+            'view users', 'add users', 'edit users', 'delete users', 
+            'view sales', 'add sales', 'import sales', 'edit sales', 'delete sales',
+            'view website', 'add website', 'edit website', 'delete website',
+            'view product', 'add product', 'edit product', 'delete product', 'import product',
+            'view purchase', 'add purchase', 'edit purchase', 'delete purchase', 'import purchase',
+            'view expense', 'add expense', 'edit expense', 'import expense', 'delete expense',
+            'view quotation', 'add quotation', 'edit quotation',
+            'view transfer', 'add transfer', 'edit transfer',
+            'view employee', 'add employee', 'edit employee', 'delete employee',
+            'view account', 'add account', 'edit account', 'delete account', 'import account',
+            'view customer', 'add customer', 'edit customer', 'delete customer', 'import customer',
+            'view biller', 'add biller', 'edit biller', 'delete biller', 'import biller',
+            'view supplier', 'add supplier', 'edit supplier', 'delete supplier', 'import supplier',
+            'summary report', 'product report', 'daily sale report', 'monthly sale report',
+            'daily purchase report', 'monthly purchase report', 'sale report', 'payment report',
+            'purchase report', 'warehouse report', 'product qty alert', 'user report', 
+            'customer report', 'supplier report', 'due report',
+            'support', 'payment log',
+            'add withdraw method', 'view withdraw method', 'edit withdraw method', 
+            'delete withdraw method', 
+            'charge commission',
+            'return sales', 'return purchases', 'pos'
+        ]);
+
+        $SuperAdmin              = User::where('name', 'superAdmin')->first();
+        $SuperAdmin->assignRole('superAdmin');
 
         $administrator      = Role::where('name', 'administrator')->first();
         $administrator->syncPermissions([
@@ -83,7 +116,7 @@ class RolePermissionTableSeeder extends Seeder
             'support', 'payment log',
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
-            'charge commission',
+            'charge commission', 'pos', 'return sales', 'return purchases',
         ]);
 
         $accountant         = Role::where('name', 'Accountant')->first();
@@ -117,7 +150,7 @@ class RolePermissionTableSeeder extends Seeder
             'summary report', 'product report', 'daily sale report', 'monthly sale report',
             'daily purchase report', 'sale report',
             'purchase report', 'warehouse report', 'product qty alert',
-            'customer report', 'supplier report', 'due report',
+            'customer report', 'supplier report', 'due report', 'pos',
         ]);
 
         $sale_Manager = User::where('name', 'saleManager')->first();
