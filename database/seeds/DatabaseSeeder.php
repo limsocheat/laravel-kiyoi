@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             BranchSeeder::class,
             ExpenseSeeder::class,
+            PurchaseSeeder::class,
         ]);
     }
 }
