@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePayrollsTable extends Migration
+class CreateAttendancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,19 @@ class CreatePayrollsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payrolls', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('employee_id')->nullable();
-            $table->unsignedBigInteger('account_id')->nullable();
             $table->date('date');
             $table->string('employee_name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
-            $table->string('account');
-            $table->double('amount');
-            $table->string('method');
+            $table->time('checkin');
+            $table->time('checkout');
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees');
-            $table->foreign('account_id')->references('id')->on('accounts');
         });
     }
 
@@ -38,6 +36,6 @@ class CreatePayrollsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payrolls');
+        Schema::dropIfExists('attendances');
     }
 }
