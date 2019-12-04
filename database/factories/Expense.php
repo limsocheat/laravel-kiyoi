@@ -7,8 +7,9 @@ use Faker\Generator as Faker;
 
 $factory->define(Expense::class, function (Faker $faker) {
     return [
-        'category' => $faker->randomElement(['Electric Bill', 'Washing', 'Snack']),
-        'warehouse' => $faker->randomElement(['warehouse1', 'warehouse2']),
+        'name' => $faker->name,
+        'description' => $faker->text,
+        'active' => $faker->randomElement(['1', '0']),
         'amount' => $faker->numberBetween($min=100, $max=10000),
     ];
 });
