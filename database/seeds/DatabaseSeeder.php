@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             AccountSeeder::class,
             DepartmentSeeder::class,
+            HolidaySeeder::class,
         ]);
     }
 }
