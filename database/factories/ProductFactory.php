@@ -13,7 +13,6 @@ $factory->define(Product::class, function (Faker $faker) {
         'code' => $faker->randomNumber($nbDigits = NULL, $strict = false),
         'type' => $faker->randomElement(['New', 'Old', 'Second Hand']),
         'barcode' => $faker->creditCardNumber,
-        'category' => $faker->randomElement(['Fruits', 'Toys', 'Electrics', 'Foods']),
         'unit' => $faker->numberBetween($min=1, $max=1000),
         'price' => $faker->numberBetween($min=10, $max=10000),
     ];

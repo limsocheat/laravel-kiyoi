@@ -35,21 +35,18 @@ class ProductController extends Controller
             'code' => 'required',
             'type' => 'required',
             'barcode' => 'required',
-            'category' => 'required',
             'unit' => 'required',
-            'cost' => 'required',
             'price' => 'required',
         ]);
 
         $product = new Product();
         $product->name = $request->name;
+        $product->description = $request->description;
         $product->code = $request->code;
         $product->type = $request->type;
         $product->barcode = $request->barcode;
-        $product->category = $request->category;
-        $product->unit = $request->unit;
-        $product->cost = $request->cost;
         $product->price = $request->price;
+        $product->unit = $request->unit;
         $product->save();
 
         return response()->json([
@@ -82,20 +79,17 @@ class ProductController extends Controller
             'code' => 'required',
             'type' => 'required',
             'barcode' => 'required',
-            'category' => 'required',
             'unit' => 'required',
-            'cost' => 'required',
             'price' => 'required',
         ]);
 
         $product = Product::findOrFail($id);
         $product->name = $request->name;
+        $product->description = $request->description;
         $product->code = $request->code;
         $product->type = $request->type;
         $product->barcode = $request->barcode;
-        $product->category = $request->category;
         $product->unit = $request->unit;
-        $product->cost = $request->cost;
         $product->price = $request->price;
         $product->save();
 
