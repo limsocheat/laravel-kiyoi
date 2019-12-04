@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
-    //
+    public function user()
+    {
+    	return $this->belongsTo(\App\User::class);
+    }
+
+
+    public function payrolls()
+    {
+    	return $this->hasMany(\App\Payroll::class);
+    }
 }
