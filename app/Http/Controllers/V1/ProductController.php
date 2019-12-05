@@ -15,9 +15,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $product = Product::all();
+    public function index(Request $request)
+    {   
+
+        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
+        $product = Product::orderBy('id', 'desc')
+                        ->paginate($itemsPerPage);
 
         return $product;
     }
