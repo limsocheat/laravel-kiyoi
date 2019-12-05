@@ -26,5 +26,6 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'v1', 'namespace' => 'V1
         'user'  => 'UserController',
         'product'  => 'ProductController',
         'expense'  => 'ExpenseController',
+        'purchase'  => 'PurchaseController',
     ]);
 });
