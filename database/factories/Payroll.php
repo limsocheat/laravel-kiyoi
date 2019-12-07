@@ -7,6 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Payroll::class, function (Faker $faker) {
     return [
+    	'employee_id' => \App\Employee::all()->random()->id,
+    	'account_id' => \App\Account::all()->random()->id,
         'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'employee_name' =>  $faker->name,
         'description' =>  $faker->text,

@@ -14,11 +14,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             RolePermissionTableSeeder::class,
+            CustomerSeeder::class,
+            OrderSeeder::class,
             ProductSeeder::class,
             BranchSeeder::class,
             ExpenseSeeder::class,
             PurchaseSeeder::class,
-            CustomerSeeder::class,
             AccountSeeder::class,
             DepartmentSeeder::class,
             HolidaySeeder::class,

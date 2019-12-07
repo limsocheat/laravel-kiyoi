@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Attendance::class, function (Faker $faker) {
     return [
+    	'employee_id' => \App\Employee::all()->random()->id,
         'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'employee_name' => $faker->name,
         'description' => $faker->text,

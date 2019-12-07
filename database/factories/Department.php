@@ -15,6 +15,7 @@ $factory->define(Department::class, function (Faker $faker) {
 
 $factory->define(\App\Employee::class, function (Faker $faker) {
     return [
+        'department_id' => \App\Department::all()->random()->id,
         'name' => $faker->name,
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),

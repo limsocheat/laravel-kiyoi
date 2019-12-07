@@ -15,4 +15,9 @@ class Purchase extends Model
     {
     	return $this->belongsTo(\App\Product::class);
     }
+
+    public function order()
+    {
+    	return $this->belongsTo(\App\Order::class);
+    }
 }

@@ -19,4 +19,9 @@ class Product extends Model
     {
     	return $this->hasMany(\App\Purchase::class);
     }
+
+    public function order()
+    {
+    	return $this->belongsTo(\App\Order::class);
+    }
 }

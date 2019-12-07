@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Holiday::class, function (Faker $faker) {
     return [
+    	'employee_id' => \App\Employee::all()->random()->id,
         'employee_name' => $faker->name,
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),

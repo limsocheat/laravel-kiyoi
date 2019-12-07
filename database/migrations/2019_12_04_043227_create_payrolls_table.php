@@ -15,8 +15,8 @@ class CreatePayrollsTable extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('employee_id')->nullable();
-            $table->unsignedBigInteger('account_id')->nullable();
+            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('account_id');
             $table->date('date');
             $table->string('employee_name');
             $table->text('description')->nullable();

@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Customer::class, function (Faker $faker) {
     return [
+        'user_id' => \App\User::all()->random()->id,
         'name' => $faker->name,
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),
@@ -19,6 +20,8 @@ $factory->define(Customer::class, function (Faker $faker) {
 
 $factory->define(\App\Sale::class, function (Faker $faker) {
     return [
+        'user_id' => \App\User::all()->random()->id,
+        'customer_id' => \App\Customer::all()->random()->id,
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),
         'sale_status' => $faker->randomElement(['completed']),

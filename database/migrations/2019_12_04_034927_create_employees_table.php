@@ -15,7 +15,7 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedBigInteger('department_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);

@@ -14,10 +14,15 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $purchase = Purchase::orderBy('id', 'desc')
+        $purchase = Purchase::with(['product', 'order'])
+                        ->whereHas('product', function($q) use ($request){
+                            $q->where('name', 'like', '%' . $request->search . '%')
+                            ->orwhere('code', 'like', '%' . $request->search . '%');
+                        })
+                        ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
         return $purchase;   
