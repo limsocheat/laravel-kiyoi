@@ -11,6 +11,11 @@ class Order extends Model
 		'name', 'quantity', 'unit_cost', 'discount', 'tax', 'sub_total'
 	];
 
+    public function customer()
+    {
+        return $this->belongsTo(\App\Customer::class);
+    }
+
     public function purchases()
     {
     	return $this->hasMany(\App\Purchase::class);

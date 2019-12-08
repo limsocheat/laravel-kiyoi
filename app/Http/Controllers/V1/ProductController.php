@@ -22,7 +22,7 @@ class ProductController extends Controller
         $product = Product::orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
-        return $product;
+        return ProductResource::collection($product);
     }
 
     /**
