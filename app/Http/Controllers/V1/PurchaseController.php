@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Purchase;
 
+use App\Http\Resources\PurchaseResource;
+
 class PurchaseController extends Controller
 {
     /**
@@ -17,15 +19,11 @@ class PurchaseController extends Controller
     public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $purchase = Purchase::with(['product', 'order'])
-                        ->whereHas('product', function($q) use ($request){
-                            $q->where('name', 'like', '%' . $request->search . '%')
-                            ->orwhere('code', 'like', '%' . $request->search . '%');
-                        })
+        $purchase = Purchase::with(['product', 'order.order_items'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
-        return $purchase;   
+        return PurchaseResource::collection($purchase);   
     }
 
     /**

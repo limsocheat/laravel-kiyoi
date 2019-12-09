@@ -43,6 +43,8 @@ class ProductController extends Controller
         ]);
 
         $product = new Product();
+        $product->user_id = auth()->user()->id;
+        $product->order_id = auth()->user()->id;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->code = $request->code;

@@ -15,17 +15,19 @@ class PurchaseResource extends JsonResource
     public function toArray($request)
     {
         return [
-            // 'id' => $this->id,
-            // 'name' => $this->name,
-            // 'description' => $this->description,
-            // 'active' => $this->active,
-            // 'supplier' => $this->supplier,
-            // 'total' => $this->total,
-            // 'paid' => $this->paid,
-            // 'purchase_status' => $this->purchase_status,
-            // 'payment_status' => $this->payment_status,
-            // 'created_at' => $this->created_at,
-            // 'product' => $this->product,
+            'id' => $this->id,
+            'date' => $this->date,
+            'name' => $this->name,
+            'description' => $this->description,
+            'active' => $this->active,
+            'supplier' => $this->supplier,
+            'total' => $this->total,
+            'paid' => $this->paid,
+            'purchase_status' => $this->purchase_status,
+            'payment_status' => $this->payment_status,
+            'created_at' => $this->created_at,
+            'product' => $this->product,
+            'order' => $this->order,
         ];
     }
 }

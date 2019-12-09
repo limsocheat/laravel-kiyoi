@@ -21,8 +21,8 @@ class Order extends Model
     	return $this->hasMany(\App\Purchase::class);
     }
 
-    public function Product()
+    public function order_items()
     {
-    	return $this->hasMany(\App\Product::class);
+        return $this->hasMany(\App\OrderItem::class);
     }
 }

@@ -27,6 +27,7 @@ class ProductResource extends JsonResource
             'created_at' => $this->created_at,
             'order' => $this->order,
             'user' => $this->user,
+            'purchases' => $this->purchases,
         ];
     }
 }
