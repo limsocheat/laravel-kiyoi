@@ -17,6 +17,7 @@ class CreateSalesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('customer_id');
+            $table->date('date');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->string('sale_status');
