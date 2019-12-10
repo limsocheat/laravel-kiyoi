@@ -11,6 +11,6 @@ class PayrollSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Payroll::class,10)->create();
+        factory(\App\Payroll::class, 5)->create();
     }
 }

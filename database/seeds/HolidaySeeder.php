@@ -11,6 +11,6 @@ class HolidaySeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Holiday::class, 6)->create();
+        factory(\App\Holiday::class, 5)->create();
     }
 }

@@ -11,7 +11,7 @@ class CustomerSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Customer::class, 30)->create();
-        factory(\App\Sale::class, 30)->create();
+        factory(\App\Customer::class, 5)->create();
+        factory(\App\Sale::class, 5)->create();
     }
 }

@@ -20,4 +20,9 @@ class Purchase extends Model
     {
     	return $this->belongsTo(\App\Order::class);
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(\App\Supplier::class);
+    }
 }
