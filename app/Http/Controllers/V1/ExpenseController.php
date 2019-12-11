@@ -38,6 +38,7 @@ class ExpenseController extends Controller
         ]);
 
         $expense = new Expense();
+        $expense->user_id = auth()->user()->id;
         $expense->date = $request->date;
         $expense->description = $request->description;
         $expense->amount = $request->amount;
@@ -70,16 +71,19 @@ class ExpenseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'date' => 'required',
             'amount' => 'required',
         ]);
 
         $expense = Expense::findOrFail($id);
-         $expense->date = $request->date;
+        $expense->user_id = auth()->user()->id;
         $expense->description = $request->description;
         $expense->amount = $request->amount;
         $expense->expense_for = $request->expense_for;
         $expense->save();
+
+        $expense_category = \App\ExpenseCategory::findOrFail($id);
+        $expense_category->name = $request->name;
+        $expense->expense_category()->save($request->expense_category);
 
         return response()->json([
             'updated' => true,
