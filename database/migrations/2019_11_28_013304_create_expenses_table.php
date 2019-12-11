@@ -16,10 +16,11 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
+            $table->date('date');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->double('amount');
+            $table->string('expense_for')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
