@@ -4,10 +4,10 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Expense;
-use App\Http\Resources\ExpenseResource;
 
-class ExpenseController extends Controller
+use App\ExpenseCategory;
+
+class ExpenseCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,8 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-
-        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $expense = Expense::orderBy('id', 'desc')
-                ->paginate($itemsPerPage);
-
-        return ExpenseResource::collection($expense);
+        $expense = ExpenseCategory::orderBy('id', 'desc')->get();
+        return $expense;
     }
 
     /**
@@ -33,20 +29,16 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'date' => 'required',
-            'amount' => 'required',
+            'name' => 'required',
         ]);
 
-        $expense = new Expense();
-        $expense->date = $request->date;
-        $expense->description = $request->description;
-        $expense->amount = $request->amount;
-        $expense->expense_for = $request->expense_for;
+        $expense = new ExpenseCategory();
+        $expense->expense_id = auth()->user()->id;
+        $expense->code = $request->code;
+        $expense->name = $request->name;
         $expense->save();
 
-        return response()->json([
-            'created' => true,
-        ]);
+        return response()->json(['created' => true]);
     }
 
     /**
@@ -70,20 +62,15 @@ class ExpenseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'date' => 'required',
-            'amount' => 'required',
+            'name' => 'required',
         ]);
 
-        $expense = Expense::findOrFail($id);
-         $expense->date = $request->date;
-        $expense->description = $request->description;
-        $expense->amount = $request->amount;
-        $expense->expense_for = $request->expense_for;
+        $expense = ExpenseCategory::findOrFail($id);
+        $expense->code = $request->code;
+        $expense->name = $request->name;
         $expense->save();
 
-        return response()->json([
-            'updated' => true,
-        ]);
+        return response()->json(['updated' => true]);
     }
 
     /**
@@ -94,11 +81,9 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
-        $expense = Expense::findOrFail($id);
+        $expense = ExpenseCategory::findOrFail($id);
         $expense->delete();
 
-        return response()->json([
-            'deleted' => true,
-        ]);
+        return response()->json(['deleted' => true]);
     }
 }
