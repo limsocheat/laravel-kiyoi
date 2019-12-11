@@ -20,6 +20,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('code');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
+            $table->decimal('discount');
+            $table->double('unit_price');
             $table->double('tax');
             $table->double('sub_total');
             $table->timestamps();

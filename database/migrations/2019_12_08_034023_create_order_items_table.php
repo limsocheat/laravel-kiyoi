@@ -20,8 +20,6 @@ class CreateOrderItemsTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->decimal('quantity');
-            $table->decimal('discount');
-            $table->double('unit_price');
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders');
