@@ -29,5 +29,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'V1'], function () {
         'purchase'  => 'PurchaseController',
         'sale'  => 'SaleController',
         'expense-category'  => 'ExpenseCategoryController',
+        'hr-department'  => 'DepartmentController',
     ]);
 });
