@@ -11,10 +11,6 @@ class ExpenseSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Expense::class,5)->create()->each(function ($expense) {
-        	$expense_category = factory(\App\ExpenseCategory::class)->make();
-        	$expense->expense_category()->save($expense_category);
-
-        });
+        factory(\App\Expense::class,5)->create();
     }
 }

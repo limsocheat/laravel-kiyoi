@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             OrderSeeder::class,
             ProductSeeder::class,
             BranchSeeder::class,
+            ExpenseCategorySeeder::class,
             ExpenseSeeder::class,
             PurchaseSeeder::class,
             AccountSeeder::class,
@@ -27,7 +28,6 @@ class DatabaseSeeder extends Seeder
             AttendanceSeeder::class,
             OrderItemSeeder::class,
             SupplierSeeder::class,
-            ExpenseCategorySeeder::class,
         ]);
     }
 }

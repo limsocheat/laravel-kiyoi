@@ -15,13 +15,10 @@ class CreateExpenseCategoriesTable extends Migration
     {
         Schema::create('expense_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('expense_id');
             $table->integer('code')->nullable();
             $table->text('description')->nullable();
             $table->string('name');
             $table->timestamps();
-
-            $table->foreign('expense_id')->references('id')->on('expenses');
         });
     }
 

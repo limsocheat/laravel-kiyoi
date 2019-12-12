@@ -33,17 +33,21 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'date' => 'required',
             'amount' => 'required',
         ]);
 
         $expense = new Expense();
         $expense->user_id = auth()->user()->id;
-        $expense->date = $request->date;
+        $expense->expense_category_id = auth()->user()->id;
+        $expense->category = $request->category;
         $expense->description = $request->description;
         $expense->amount = $request->amount;
         $expense->expense_for = $request->expense_for;
         $expense->save();
+
+        $expense_category = new \App\ExpenseCategory();
+        $expense_category->name = $request->name;
+        $expense->expense_category()->associate($expense_category);
 
         return response()->json([
             'created' => true,
@@ -76,14 +80,15 @@ class ExpenseController extends Controller
 
         $expense = Expense::findOrFail($id);
         $expense->user_id = auth()->user()->id;
+        $expense->category = $request->category;
         $expense->description = $request->description;
         $expense->amount = $request->amount;
         $expense->expense_for = $request->expense_for;
         $expense->save();
 
-        $expense_category = \App\ExpenseCategory::findOrFail($id);
+        $expense_category = new \App\ExpenseCategory();
         $expense_category->name = $request->name;
-        $expense->expense_category()->save($request->expense_category);
+        $expense->expense_category()->associate($expense_category);
 
         return response()->json([
             'updated' => true,

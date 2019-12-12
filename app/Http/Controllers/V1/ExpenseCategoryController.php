@@ -33,7 +33,7 @@ class ExpenseCategoryController extends Controller
         ]);
 
         $expense = new ExpenseCategory();
-        $expense->expense_id = auth()->user()->id;
+        // $expense->expense_id = auth()->user()->id;
         $expense->code = $request->code;
         $expense->name = $request->name;
         $expense->save();
