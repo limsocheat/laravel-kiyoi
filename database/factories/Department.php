@@ -17,15 +17,13 @@ $factory->define(\App\Employee::class, function (Faker $faker) {
     return [
         'department_id' => \App\Department::all()->random()->id,
         'name' => $faker->name,
+        'department' => $faker->randomElement(['Sale', 'Account', 'Admin']),
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),
         'gender' => $faker->randomElement(['Female', 'Male']),
         'phone' => $faker->phoneNumber,
         'address' => $faker->address,
         'city' => $faker->city,
-        'username' => $faker->randomElement(['sey','pheara','da']),
-        'email' => $faker->randomElement(['sey@email.com','pheara@email.com','da@email.com']),
-        'password' => $faker->randomElement(['secret']),
-        'role' => $faker->randomElement(['Sale', 'Account']),
+        'country' => $faker->country,
     ];
 });

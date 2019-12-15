@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    protected $fillable = [
+      'name', 'description', 'gender', 'phone', 'email', 'username', 'password', 'role'
+    ];
+
     public function attendances()
     {
     	return $this->hasMany(\App\Attendance::class);

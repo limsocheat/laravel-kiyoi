@@ -17,16 +17,14 @@ class CreateEmployeesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('department_id');
             $table->string('name');
+            $table->string('department');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->string('gender');
             $table->string('phone');
             $table->string('address');
             $table->string('city');
-            $table->string('username');
-            $table->string('email');
-            $table->string('password');
-            $table->string('role');
+            $table->string('country');
             $table->timestamps();
 
 
