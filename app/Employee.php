@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     protected $fillable = [
-      'name', 'description', 'gender', 'phone', 'email', 'username', 'password', 'role'
+      'name', 'description', 'gender', 'phone',
     ];
 
-    public function attendances()
+    public function attendance()
     {
-    	return $this->hasMany(\App\Attendance::class);
+    	return $this->hasOne(\App\Attendance::class);
     }
 
     public function holidays()

@@ -14,6 +14,6 @@ $factory->define(Attendance::class, function (Faker $faker) {
         'active' => $faker->randomElement(['1', '0']),
         'checkin' => $faker->time($format = 'H:i:s', $max = 'now'),
         'checkout' => $faker->time($format = 'H:i:s', $max = 'now'),
-        'status' => $faker->randomElement(['present', 'absent', 'late']),
+        'status' => $faker->randomElement(['Present', 'Absent', 'Late']),
     ];
 });

@@ -31,5 +31,6 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'expense-category'  => 'ExpenseCategoryController',
         'hr-department'  => 'DepartmentController',
         'employee'  => 'EmployeeController',
+        'attendance'  => 'AttendanceController',
     ]);
 });
