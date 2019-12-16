@@ -17,6 +17,7 @@ class CreateAccountsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('code');
+            $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->double('debit');

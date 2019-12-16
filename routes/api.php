@@ -32,5 +32,6 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'hr-department'  => 'DepartmentController',
         'employee'  => 'EmployeeController',
         'attendance'  => 'AttendanceController',
+        'account'  => 'AccountController',
     ]);
 });
