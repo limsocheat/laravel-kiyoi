@@ -15,5 +15,6 @@ class ProductSeeder extends Seeder
         	$order_item = factory(\App\OrderItem::class)->create();
         	$product->order_item()->save($order_item);
         });
+        // factory(\App\Product::class, 5)->create();
     }
 }
