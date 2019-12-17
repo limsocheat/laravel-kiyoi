@@ -17,11 +17,10 @@ class CreatePayrollsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('account_id');
-            $table->date('date');
             $table->string('employee_name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
-            $table->string('account');
+            $table->string('account_name');
             $table->double('amount');
             $table->string('method');
             $table->timestamps();
