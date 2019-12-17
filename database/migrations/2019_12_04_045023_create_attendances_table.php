@@ -25,7 +25,9 @@ class CreateAttendancesTable extends Migration
             $table->string('status');
             $table->timestamps();
 
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('employee_id')->references('id')->on('employees')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
         });
     }
 

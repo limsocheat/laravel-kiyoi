@@ -17,7 +17,7 @@ class CreateEmployeesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('department_id');
             $table->string('name');
-            $table->string('department');
+            $table->string('department_name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->string('gender');
@@ -28,7 +28,7 @@ class CreateEmployeesTable extends Migration
             $table->timestamps();
 
 
-            $table->foreign('department_id')->references('id')->on('departments');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
         });
     }
 

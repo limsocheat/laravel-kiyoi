@@ -18,10 +18,11 @@ class EmployeeController extends Controller
     public function index()
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $employee = Employee::orderBy('id', 'desc')
+        $employee = Employee::with(['department.user'])->orderBy('id', 'desc')
                     ->paginate($itemsPerPage);
 
-        return EmployeeResource::collection($employee);
+        return response()->json(['employee' => $employee]);
+        // return EmployeeResource::collection($employee);
     }
 
     /**
@@ -37,12 +38,12 @@ class EmployeeController extends Controller
             'city' => 'required',
             'phone' => 'required',
             'gender' => 'required',
-            'department' => 'required',
+            'department_name' => 'required',
         ]);
 
         $employee = new Employee();
         $employee->department_id = auth()->user()->id;
-        $employee->department = $request->department;
+        $employee->department_name = $request->department_name;
         $employee->description = $request->description;
         $employee->name = $request->name;
         $employee->city = $request->city;
@@ -84,12 +85,12 @@ class EmployeeController extends Controller
             'city' => 'required',
             'phone' => 'required',
             'gender' => 'required',
-            'department' => 'required',
+            'department_name' => 'required',
         ]);
 
         $employee = Employee::findOrFail($id);
         $employee->department_id = auth()->user()->id;
-        $employee->department = $request->department;
+        $employee->department_name = $request->department_name;
         $employee->description = $request->description;
         $employee->name = $request->name;
         $employee->city = $request->city;
@@ -114,6 +115,9 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        $employee->delete();
+
+        return response()->json(['deleted' => true]);
     }
 }

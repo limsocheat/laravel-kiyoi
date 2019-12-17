@@ -25,8 +25,12 @@ class CreatePayrollsTable extends Migration
             $table->string('method');
             $table->timestamps();
 
-            $table->foreign('employee_id')->references('id')->on('employees');
-            $table->foreign('account_id')->references('id')->on('accounts');
+            $table->foreign('employee_id')->references('id')->on('employees')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');;
+            $table->foreign('account_id')->references('id')->on('accounts')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');;
         });
     }
 
