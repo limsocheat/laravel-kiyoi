@@ -16,7 +16,6 @@ class CreateHolidaysTable extends Migration
         Schema::create('holidays', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('employee_id');
-            $table->string('employee_name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->date('from_date');
