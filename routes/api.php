@@ -33,5 +33,6 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'employee'  => 'EmployeeController',
         'attendance'  => 'AttendanceController',
         'account'  => 'AccountController',
+        'payroll'  => 'PayrollController',
     ]);
 });
