@@ -15,6 +15,10 @@ class Account extends Model
     	return $this->belongsTo(\App\Customer::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(\App\Transaction::class);
+    }
 
     public function payrolls()
     {
