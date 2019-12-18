@@ -10,9 +10,9 @@ class Account extends Model
 		'active', 'name', 'code' , 'description', 'debit', 'balance'
 	];
 
-    public function user()
+    public function customer()
     {
-    	return $this->belongsTo(\App\User::class);
+    	return $this->belongsTo(\App\Customer::class);
     }
 
 
