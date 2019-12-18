@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Account::class, function (Faker $faker) {
     return [
-    	'user_id' => \App\User::all()->random()->id,
+    	'customer_id' => \App\Customer::all()->random()->id,
         'code' => $faker->postcode,
         'name' => $faker->name,
         'description' => $faker->text,
