@@ -26,7 +26,9 @@ class CreateOrdersTable extends Migration
             $table->double('sub_total');
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('customer_id')->references('id')->on('customers')
+                                                            ->onDelete('cascade')
+                                                            ->onUpdate('cascade');
         });
     }
 

@@ -9,8 +9,10 @@ $factory->define(Customer::class, function (Faker $faker) {
     return [
         'user_id' => \App\User::all()->random()->id,
         'name' => $faker->name,
+        'company_name' => $faker->name,
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),
+        'balance' => $faker->randomFloat(2, 100, 800000),
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
         'address' => $faker->address,

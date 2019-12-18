@@ -22,8 +22,12 @@ class CreateOrderItemsTable extends Migration
             $table->decimal('quantity');
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('order_id')->references('id')->on('orders')
+                                                        ->onDelete('cascade')
+                                                        ->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('products')
+                                                        ->onDelete('cascade')
+                                                        ->onUpdate('cascade');
         });
     }
 

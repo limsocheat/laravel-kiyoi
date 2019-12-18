@@ -25,7 +25,9 @@ class CreateSuppliersTable extends Migration
             $table->text('address');
             $table->timestamps();
 
-            $table->foreign('purchase_id')->references('id')->on('purchases');
+            $table->foreign('purchase_id')->references('id')->on('purchases')
+                                            ->onDelete('cascade')
+                                            ->onUpdate('cascade');
         });
     }
 
