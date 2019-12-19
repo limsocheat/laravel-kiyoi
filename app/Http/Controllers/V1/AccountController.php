@@ -16,7 +16,9 @@ class AccountController extends Controller
     public function index()
     {   
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $account = Account::with('payrolls')->orderBy('id', 'desc')->get();
+        $account = Account::with(['payrolls', 'transaction'])
+                        ->orderBy('id', 'desc')
+                        ->get();
         // return $account;
         return response()->json(['account' => $account]);
     }
@@ -28,19 +30,22 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validateData = $request->validate([
             'name' => 'required',
             'code' => 'required',
-            'balance' => 'required',
         ]);
         $account = new Account();
         $account->user_id = auth()->user()->id;
         $account->code = $request->code;
         $account->name = $request->name;
-        // $account->debit = $request->debit;
         $account->description = $request->description;
         $account->balance = $request->balance;
         $account->save();
+
+        $transaction = new \App\Transaction();
+        $transaction->credit = $request->balance;
+        $account->transaction()->save($transaction);
+
         return response()->json(['created' => true]);
     }
     /**
@@ -65,7 +70,6 @@ class AccountController extends Controller
         $request->validate([
             'name' => 'required',
             'code' => 'required',
-            'balance' => 'required',
         ]);
         $account = Account::findOrFail($id);
         $account->user_id = auth()->user()->id;
@@ -74,6 +78,11 @@ class AccountController extends Controller
         $account->description = $request->description;
         $account->balance = $request->balance;
         $account->save();
+
+        $transaction =  \App\Transaction::findOrFail($id);
+        $transaction->credit = $request->balance;
+        $account->transaction()->save($transaction);
+
         return response()->json(['updated' => true]);
     }
     /**

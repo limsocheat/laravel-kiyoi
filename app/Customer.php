@@ -16,8 +16,5 @@ class Customer extends Model
    		return $this->hasMany(\App\Sale::class);
    	}
 
-   	public function accounts()
-   	{
-   		return $this->hasMany(\App\Account::class);
-   	}
+   	
 }

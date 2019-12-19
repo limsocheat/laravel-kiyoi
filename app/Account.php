@@ -10,14 +10,14 @@ class Account extends Model
 		'active', 'name', 'code' , 'description', 'debit', 'balance'
 	];
 
-    public function customer()
+    public function user()
     {
-    	return $this->belongsTo(\App\Customer::class);
+    	return $this->belongsTo(\App\User::class);
     }
 
-    public function transactions()
+    public function transaction()
     {
-        return $this->hasMany(\App\Transaction::class);
+        return $this->hasOne(\App\Transaction::class);
     }
 
     public function payrolls()

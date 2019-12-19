@@ -69,12 +69,11 @@ class User extends Authenticatable
 
     public function accounts()
     {
-        return $this->hasMany(\App\Account::class);
+        return $this->hasOne(\App\Account::class);
     }
 
     public function department()
     {
         return $this->hasOne(\App\Department::class);
     }
-
 }
