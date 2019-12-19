@@ -17,9 +17,6 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::with(['account'])->get();
-        // $transactions = Transaction::with(['account' => function ($q) {
-        //     $q->where('customer_id');
-        // }])->get();
 
         return response()->json(['transactions' => $transactions]);
     }
