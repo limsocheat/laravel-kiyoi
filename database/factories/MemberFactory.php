@@ -2,20 +2,19 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Customer;
+use App\Member;
 use Faker\Generator as Faker;
 
-$factory->define(Customer::class, function (Faker $faker) {
+$factory->define(Member::class, function (Faker $faker) {
     return [
-        'user_id' => \App\User::all()->random()->id,
+    	'user_id' => \App\User::all()->random()->id,
         'name' => $faker->name,
         'company_name' => $faker->name,
-        'description' => $faker->text,
+        // 'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),
-        'balance' => $faker->randomFloat(2, 100, 800000),
         'email' => $faker->email,
         'phone' => $faker->phoneNumber,
-        'address' => $faker->address,
+        // 'address' => $faker->address,
         'city' => $faker->city,
     ];
 });
@@ -23,7 +22,7 @@ $factory->define(Customer::class, function (Faker $faker) {
 $factory->define(\App\Sale::class, function (Faker $faker) {
     return [
         'user_id' => \App\User::all()->random()->id,
-        'customer_id' => \App\Customer::all()->random()->id,
+        'member_id' => \App\Member::all()->random()->id,
         'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),

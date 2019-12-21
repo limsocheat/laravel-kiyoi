@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Order::class, function (Faker $faker) {
     return [
-        'customer_id' => \App\Customer::all()->random()->id,
+        'member_id' => \App\Member::all()->random()->id,
         'name' => $faker->name,
         'code' => $faker->randomNumber($nbDigits = NULL),
         'description' => $faker->text,

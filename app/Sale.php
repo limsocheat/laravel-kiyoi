@@ -15,8 +15,8 @@ class Sale extends Model
     	return $this->belongsTo(\App\User::class);
     }
 
-    public function customer()
+    public function member()
     {
-    	return $this->belongsTo(\App\Customer::class);
+    	return $this->belongsTo(\App\member::class);
     }
 }

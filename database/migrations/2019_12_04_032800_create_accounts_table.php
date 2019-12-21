@@ -15,7 +15,7 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('member_id');
             $table->string('code');
             $table->string('name');
             $table->text('description')->nullable();
@@ -23,7 +23,9 @@ class CreateAccountsTable extends Migration
             $table->double('balance')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('member_id')->references('id')->on('members')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
         });
     }
 

@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('member_id');
             $table->string('name');
             $table->unsignedBigInteger('code');
             $table->text('description')->nullable();
@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->double('sub_total');
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers')
+            $table->foreign('member_id')->references('id')->on('members')
                                                             ->onDelete('cascade')
                                                             ->onUpdate('cascade');
         });

@@ -11,9 +11,9 @@ class Order extends Model
 		'name', 'quantity', 'unit_cost', 'discount', 'tax', 'sub_total'
 	];
 
-    public function customer()
+    public function member()
     {
-        return $this->belongsTo(\App\Customer::class);
+        return $this->belongsTo(\App\Member::class);
     }
 
     public function purchases()

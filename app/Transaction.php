@@ -12,4 +12,9 @@ class Transaction extends Model
     {
     	return $this->belongsTo(\App\Account::class);
     }
+
+    public function deposit()
+    {
+    	return $this->belongsTo(\App\DepositAccount::class);
+    }
 }

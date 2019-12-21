@@ -5,7 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Customer;
+use App\Member;
 
 class MemberController extends Controller
 {
@@ -14,10 +14,13 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $members = Customer::with(['user'])->paginate($itemsPerPage);
+
+        $members = Member::with(['deposits', 'user'])
+                    ->orderBy('id', 'desc')
+                    ->paginate($itemsPerPage);
 
         return response()->json(['members' => $members]);
     }
@@ -35,19 +38,20 @@ class MemberController extends Controller
             'email' => 'required|email',
             'phone' => 'required',
             'address' => 'required',
+            'balance' => 'nullable',
         ]);
 
-        $members = new Customer();
+        $members = new Member();
         $members->user_id = auth()->user()->id;
         $members->name = $request->name;
         $members->company_name = $request->company_name;
         $members->description = $request->description;
         $members->email = $request->email;
         $members->phone = $request->phone;
-        $members->balance = $request->balance;
         $members->post_code = $request->post_code;
         $members->tax = $request->tax;
         $members->address = $request->address;
+        $members->balance = $request->balance;
         $members->city = $request->city;
         $members->country = $request->country;
         $members->save();
@@ -63,7 +67,9 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-   
+        $members = Member::with(['user', 'deposits'])->findOrFail($id);
+
+        return response()->json(['members' => $members]);
     }
 
     /**
@@ -82,7 +88,8 @@ class MemberController extends Controller
             'address' => 'required',
         ]);
 
-        $members = Customer::findOrFail($id);
+        $members = Member::findOrFail($id);
+        $members->user_id = auth()->user()->id;
         $members->name = $request->name;
         $members->company_name = $request->company_name;
         $members->description = $request->description;
@@ -107,7 +114,7 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-        $member = Customer::findOrFail($id);
+        $member = Member::findOrFail($id);
         $member->delete();
 
         return response()->json(['deleted' => true]);

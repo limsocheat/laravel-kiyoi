@@ -25,7 +25,9 @@ class CreateExpensesTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('expense_category_id')->references('id')->on('expense_categories');
+            $table->foreign('expense_category_id')->references('id')->on('expense_categories')
+                                                    ->onDelete('cascade')
+                                                    ->onUpdate('cascade');
         });
     }
 

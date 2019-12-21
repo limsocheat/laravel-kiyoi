@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 
 
 
-Route::group(['prefix' => 'v1', 'namespace' => 'V1'], function () {
+Route::group(['middleware' =>'auth:api', 'prefix' => 'v1', 'namespace' => 'V1'], function () {
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
         Route::post('login', 'LoginController@passport')->name('auth.login');
         Route::get('user', 'UserController@index');
@@ -26,10 +26,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'V1'], function () {
         'account'  => 'AccountController',
         'payroll'  => 'PayrollController',
         'holiday'  => 'HolidayController',
-        'member'  => 'MemberController',
         'transaction'  => 'TransactionController',
+        'deposit-account'  => 'DepositController',
+        'member' => 'MemberController'
     ]);
-
 });
 
 Route::get('transaction/export/', 'ExportController@export');

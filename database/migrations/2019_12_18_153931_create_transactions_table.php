@@ -16,13 +16,18 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('account_id');
+            $table->unsignedBigInteger('deposit_account_id');
             $table->double('credit')->nullable();
             $table->double('debit')->nullable();
             $table->timestamps();
 
             $table->foreign('account_id')->references('id')->on('accounts')
-                                        ->onDelete('cascade')
-                                        ->onUpdate('cascade');
+                                                ->onDelete('cascade')
+                                                ->onUpdate('cascade');
+
+            $table->foreign('deposit_account_id')->references('id')->on('deposit_accounts')
+                                                ->onDelete('cascade')
+                                                ->onUpdate('cascade');
         });
     }
 
