@@ -64,7 +64,9 @@ class BillerController extends Controller
      */
     public function show($id)
     {
-        //
+        $biller = Biller::findOrFail($id);
+
+        return response()->json(['biller' => $biller]);
     }
 
     /**
@@ -76,7 +78,29 @@ class BillerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'company_name' => 'required|min:3',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'address' => 'required',
+            'city' => 'nullable',
+        ]);
+
+        $biller = Biller::findOrFail($id);
+        $biller->name = $request->input('name');
+        $biller->company_name = $request->input('company_name');
+        $biller->email = $request->input('email');
+        $biller->description = $request->input('description');
+        $biller->phone = $request->input('phone');
+        $biller->address = $request->input('address');
+        $biller->vat_number = $request->input('vat_number');
+        $biller->address = $request->input('address');
+        $biller->city = $request->input('city');
+        $biller->country = $request->input('country');
+        $biller->save();
+
+        return response()->json(['updated' => true]);
     }
 
     /**
@@ -87,6 +111,9 @@ class BillerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $biller = Biller::findOrFail($id);
+        $biller->delete();
+
+        return response()->json(['deleted' => true]);
     }
 }
