@@ -28,7 +28,8 @@ Route::group(['middleware' =>'auth:api', 'prefix' => 'v1', 'namespace' => 'V1'],
         'holiday'  => 'HolidayController',
         'transaction'  => 'TransactionController',
         'deposit-account'  => 'DepositController',
-        'member' => 'MemberController'
+        'member' => 'MemberController',
+        'biller' => 'BillerController',
     ]);
 });
 
