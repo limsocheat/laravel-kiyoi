@@ -14,11 +14,24 @@ class BillerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
 
-        $billers = Biller::orderBy('id', 'desc')->paginate($itemsPerPage);
+        $query = Biller::orderBy('id', 'desc');
+
+        // Implement Search funtionality
+        if($request->search) {
+            $query->where(function($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('company_name', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%')
+                ->orWhere('phone', 'like', '%' . $request->search . '%')
+                ->orWhere('city', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $billers = $query->paginate($itemsPerPage);
 
         return response()->json(['billers' => $billers]);
     }
