@@ -18,9 +18,14 @@ class MemberController extends Controller
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
 
-        $members = Member::with(['deposits', 'user'])
-                    ->orderBy('id', 'desc')
-                    ->paginate($itemsPerPage);
+        $query = Member::with(['deposits', 'user'])
+                    ->orderBy('id', 'desc');
+        if($request->search) {
+            $query->where(function($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+        $members  = $query->paginate($itemsPerPage);
 
         return response()->json(['members' => $members]);
     }
@@ -67,7 +72,7 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        $members = Member::with(['user', 'deposits'])->findOrFail($id);
+        $members = Member::findOrFail($id);
 
         return response()->json(['members' => $members]);
     }
@@ -85,7 +90,7 @@ class MemberController extends Controller
             'name' => 'required|min:3',
             'email' => 'required|email',
             'phone' => 'required',
-            'address' => 'required',
+            'address' => 'nullable',
         ]);
 
         $members = Member::findOrFail($id);
