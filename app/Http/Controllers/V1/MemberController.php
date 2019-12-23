@@ -72,7 +72,7 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        $members = Member::findOrFail($id);
+        $members = Member::with(['deposits'])->findOrFail($id);
 
         return response()->json(['members' => $members]);
     }
