@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'member' => 'MemberController',
         'biller' => 'BillerController',
         'supplier' => 'SupplierController',
+        'transfer' => 'TransferController',
     ]);
 });
 

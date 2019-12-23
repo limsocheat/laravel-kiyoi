@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             DepositAccountSeeder::class,
             TransactionSeeder::class,
             BillerSeeder::class,
+            TransferSeeder::class,
         ]);
     }
 }
