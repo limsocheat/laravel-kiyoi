@@ -23,6 +23,10 @@ class CreateSuppliersTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->text('address');
+            $table->text('city')->nullable();
+            $table->text('country')->nullable();
+            $table->text('vat_number')->nullable();
+            $table->text('post_code')->nullable();
             $table->timestamps();
 
             $table->foreign('purchase_id')->references('id')->on('purchases')

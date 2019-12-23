@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
 {
-    public function purchases()
+	protected $fillable = ['name', 'description', 'company_name', 'email', 'phone', 'address', 'vat_number', 'post_code', 'city', 'purchase_id', 'country'];
+
+    public function purchase()
     {
-    	return $this->hasMany(\App\Purchase::class);
+    	return $this->belongsTo(\App\Purchase::class);
     }
 }
