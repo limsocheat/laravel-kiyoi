@@ -11,7 +11,7 @@ $factory->define(Branch::class, function (Faker $faker) {
         'name' => $faker->name,
         'description' => $faker->sentence,
         'active' => $faker->randomElement(['1','0']),
-        'street' => $faker->streetAddress,
+        'address' => $faker->streetAddress,
         'city' => $faker->city,
         'country' => $faker->country,
     ];

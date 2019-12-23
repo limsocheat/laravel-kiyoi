@@ -25,4 +25,9 @@ class Purchase extends Model
     {
         return $this->belongsTo(\App\Supplier::class);
     }
+
+    public function branch()
+    {
+        return $this->belongsTo(\App\Branch::class);
+    }
 }

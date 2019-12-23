@@ -31,6 +31,7 @@ class CreateSalesTable extends Migration
             $table->foreign('member_id')->references('id')->on('members')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
+
         });
     }
 

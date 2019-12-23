@@ -19,9 +19,9 @@ class CreateBranchesTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
-            $table->string('street');
-            $table->string('city');
-            $table->string('country');
+            $table->string('address');
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
