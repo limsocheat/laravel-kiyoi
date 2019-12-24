@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
 
+    protected $fillable = ['name', 'description', 'address', 'city', 'country'];
+
     public function user()
     {
     	return $this->belongsTo(\App\User::class);
