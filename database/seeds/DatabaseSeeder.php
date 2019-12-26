@@ -1,5 +1,6 @@
 <?php
 
+use App\Quotation;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
             TransactionSeeder::class,
             BillerSeeder::class,
             TransferSeeder::class,
+            QuotationTableSeeder::class,
         ]);
     }
 }
