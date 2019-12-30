@@ -19,6 +19,7 @@ class SaleResource extends JsonResource
             'date' => $this->date,
             'description' => $this->description,
             'active' => $this->active,
+            'reference_no' => $this->reference_no,
             'sale_status' => $this->sale_status,
             'payment_status' => $this->payment_status,
             'total' => $this->total,
@@ -26,7 +27,8 @@ class SaleResource extends JsonResource
             'due' => $this->due,
             'created_at' => $this->created_at->toDateTimeString(),
             'user' => $this->user,
-            'customer' => $this->customer,
+            'member' => $this->member,
+            'products' => $this->products,
         ];
     }
 }

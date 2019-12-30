@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
             RolePermissionTableSeeder::class,
             MemberSeeder::class,
             OrderSeeder::class,
-            ProductSeeder::class,
             BranchSeeder::class,
+            TransferSeeder::class,
+            ProductSeeder::class,
             ExpenseCategorySeeder::class,
             ExpenseSeeder::class,
             PurchaseSeeder::class,
@@ -26,12 +27,10 @@ class DatabaseSeeder extends Seeder
             HolidaySeeder::class,
             PayrollSeeder::class,
             AttendanceSeeder::class,
-            OrderItemSeeder::class,
             SupplierSeeder::class,
             DepositAccountSeeder::class,
             TransactionSeeder::class,
             BillerSeeder::class,
-            TransferSeeder::class,
         ]);
     }
 }

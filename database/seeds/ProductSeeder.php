@@ -23,6 +23,7 @@ class ProductSeeder extends Seeder
             Product::create([
                 'user_id' => \App\User::all()->random()->id,
                 'order_id' => \App\Order::all()->random()->id,
+                'sale_id' => \App\Sale::all()->random()->id,
                 'name' => $faker->name,
                 'description' => $faker->text,
                 'active' => $faker->randomElement(['1', '0']),
