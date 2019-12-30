@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'supplier' => 'SupplierController',
         'transfer' => 'TransferController',
         'location' => 'LocationController',
+        'brand' => 'BrandController',
     ]);
 });
 

@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('sale_id');
+            $table->unsignedBigInteger('brand_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1)->nullable();
@@ -35,6 +36,8 @@ class CreateProductsTable extends Migration
             $table->foreign('sale_id')->references('id')->on('sales')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');  
+
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         });
     }
 

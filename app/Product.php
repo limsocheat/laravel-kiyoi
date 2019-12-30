@@ -34,4 +34,9 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Sale::class);
     }
+
+    public function brand()
+    {
+        return $this->belongsTo(\App\Brand::class, 'brand_id');
+    }
 }

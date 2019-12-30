@@ -44,7 +44,7 @@ class TransferController extends Controller
             'description' => 'nullable',
             'shipping_charge' => 'nullable',
         ]);
-        // dd($request->all());
+        dd($request->all());
         $transfer = new Transfer();
         $transfer->branch_id = auth()->user()->id;
         // $transfer->reference_no = $id;

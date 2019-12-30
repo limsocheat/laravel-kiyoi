@@ -19,7 +19,8 @@ class ProductController extends Controller
     {   
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $product = Product::orderBy('id', 'desc')
+        $product = Product::with(['brand'])
+                        ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
         return ProductResource::collection($product);
