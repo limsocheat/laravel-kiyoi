@@ -9,7 +9,7 @@ use App\Transfer;
 
 use App\Product;
 
-
+use Carbon\Carbon;
 
 class TransferController extends Controller
 {
@@ -44,10 +44,14 @@ class TransferController extends Controller
             'description' => 'nullable',
             'shipping_charge' => 'nullable',
         ]);
-        dd($request->all());
+
+        // dd($request->all());
+
+        $count = Transfer::whereDay('created_at', date('d'))->count();
+
         $transfer = new Transfer();
         $transfer->branch_id = auth()->user()->id;
-        // $transfer->reference_no = $id;
+        $transfer->reference_no = 'ST' . Carbon::now()->format('Y') . '/' . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
         $transfer->from_location = $request->input('from_location');
         $transfer->to_location = $request->input('to_location');
         $transfer->status = $request->input('status');
