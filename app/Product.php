@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
 
-	protected $fillable = ['name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price'];
+	protected $fillable = ['name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price', 'user_id', 'order_id', 'sale_id'];
 
     public function user()
     {
@@ -22,11 +22,21 @@ class Product extends Model
 
     public function order()
     {
-    	return $this->belongsTo(\App\Order::class);
+    	return $this->belongsToMany(\App\Order::class);
     }
 
-    public function order_item()
+    public function transfers()
     {
-        return $this->hasOne(\App\OrderItem::class);
+        return $this->belongsToMany(\App\Transfer::class);
+    }
+
+    public function sale()
+    {
+        return $this->belongsTo(\App\Sale::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(\App\Brand::class, 'brand_id');
     }
 }

@@ -33,13 +33,18 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required',
+            'amount' => 'required|numeric',
         ]);
+
+       // dd($request->all());
+
+        $count = Expense::whereDay('created_at', date('d'))->count();
 
         $expense = new Expense();
         $expense->user_id = auth()->user()->id;
         $expense->expense_category_id = auth()->user()->id;
         $expense->category = $request->category;
+        $expense->reference_no = 'EP' . now()->year . '/' . str_pad($count + 1 , 4, '0', STR_PAD_LEFT);
         $expense->description = $request->description;
         $expense->amount = $request->amount;
         $expense->expense_for = $request->expense_for;
@@ -48,6 +53,8 @@ class ExpenseController extends Controller
         $expense_category = new \App\ExpenseCategory();
         $expense_category->name = $request->name;
         $expense->expense_category()->associate($expense_category);
+
+        dd($expense);
 
         return response()->json([
             'created' => true,

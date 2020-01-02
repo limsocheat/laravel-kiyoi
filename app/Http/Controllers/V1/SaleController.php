@@ -17,10 +17,12 @@ class SaleController extends Controller
     public function index()
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $sales = Sale::orderBy('id', 'desc')
+        $sales = Sale::with(['member', 'products.order'])
+                        ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
-        return SaleResource::collection($sales);
+        // return SaleResource::collection($sales);
+        return response()->json(['sales' => $sales]);
     }
 
     /**
@@ -37,12 +39,17 @@ class SaleController extends Controller
             'total' => 'required',
             'paid' => 'required',
             'due' => 'required',
+            'reference_no' => 'nullable|max:100',
         ]);
+
+        $id = IdGenerator::generate(['table' => 'invoices', 'length' => 10, 'prefix' => 'SL/' . date('Y')]);
+
 
         $sales = new Sale();
         $sales->user_id = auth()->user()->id;
         $sales->customer_id = auth()->user()->id;
         $sales->sale_status = $request->sale_status;
+        $sales->reference_no = $id;
         $sales->payment_status = $request->payment_status;
         $sales->total = $request->total;
         $sales->paid = $request->paid;
@@ -60,8 +67,8 @@ class SaleController extends Controller
      */
     public function show($id)
     {
-        $sales = Sale::findOrFail($id);
-        return new SaleResource($sales);    
+        $sales = Sale::with(['products.order', 'member'])->findOrFail($id);
+        return response()->json(['sales' => $sales]);   
     }
 
     /**

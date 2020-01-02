@@ -18,6 +18,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('expense_category_id');
             $table->string('category');
+            $table->string('reference_no')->nullable();
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->double('amount');

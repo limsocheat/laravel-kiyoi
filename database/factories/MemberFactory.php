@@ -24,7 +24,7 @@ $factory->define(\App\Sale::class, function (Faker $faker) {
         'user_id' => \App\User::all()->random()->id,
         // 'branch_id' => \App\Branch::all()->random()->id,
         'member_id' => \App\Member::all()->random()->id,
-        'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
+        // 'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'description' => $faker->text,
         'active' => $faker->randomElement(['1', '0']),
         'sale_status' => $faker->randomElement(['completed']),

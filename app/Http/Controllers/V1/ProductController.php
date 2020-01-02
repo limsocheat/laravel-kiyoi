@@ -19,7 +19,8 @@ class ProductController extends Controller
     {   
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $product = Product::orderBy('id', 'desc')
+        $product = Product::with(['brand'])
+                        ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
         return ProductResource::collection($product);
@@ -42,9 +43,12 @@ class ProductController extends Controller
             'price' => 'required',
         ]);
 
+        // dd($request->all());
+
         $product = new Product();
         $product->user_id = auth()->user()->id;
         $product->order_id = auth()->user()->id;
+        $product->sale_id = auth()->user()->id;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->code = $request->code;
