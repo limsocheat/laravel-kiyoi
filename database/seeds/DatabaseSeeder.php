@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             BillerSeeder::class,
             TransferSeeder::class,
             QuotationTableSeeder::class,
+            ReturnSaleTableSeeder::class,
         ]);
     }
 }
