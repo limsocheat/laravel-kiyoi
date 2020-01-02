@@ -28,7 +28,8 @@ class CreateProductsTable extends Migration
             $table->string('category')->nullable();
             $table->integer('unit')->default(1);
             $table->double('cost')->nullable();
-            $table->double('price', 8, 2);
+            $table->string('image')->nullable();
+            $table->double('price');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
