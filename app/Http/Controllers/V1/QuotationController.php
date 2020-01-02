@@ -30,7 +30,22 @@ class QuotationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            // 'date'              => 'required',
+            'members'            => 'required',
+            'suppliers'          => 'required',
+        ]);
+        
+        $quotation = new Quotation();
+        // $quotation ->date​ = $request->date;
+        $quotation ->members = $request->members;
+        $quotation ->suppliers = $request->suppliers;
+        $quotation->save();
+
+
+        return response()->json([
+            'updated' => true,
+        ]);
     }
 
     /**
@@ -41,7 +56,9 @@ class QuotationController extends Controller
      */
     public function show($id)
     {
-        //
+        $quotations = Quotation::findOrFail($id);
+
+        return response()->json(['quotations' => $quotations]);
     }
 
     /**
@@ -53,7 +70,23 @@ class QuotationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request -> validate([
+            // 'date'              => 'required',
+            'members'           => 'required',
+            'suppliers'         => 'required',
+            
+        ]);
+        
+        $quotation = Quotation::findOrFail($id);
+        // $quotation ->date->$request->date;
+        $quotation ->members = $request->members;
+        $quotation ->suppliers = $request->suppliers;
+        $quotation->save();
+
+
+        return response()->json([
+            'updated' => true,
+        ]);
     }
 
     /**
