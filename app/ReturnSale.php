@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class ReturnSale extends Model
 {
     protected $fillable = [
-        'members_id',
-        'member_name',
+        'member_id',
+        'branch_id',
+        'product_id',
         'id',
         'date',
         'biller_id',
-        'biller_name',
-        'branch_id',
-        'branch_address',
         'total',
+        'member_name',
+        'biller_name',
+        'branch_name'
     ];
 
-    public function member_name(){
+    public function member(){
         return $this->belongsTo(\App\Member::class);
     }
     public function biller(){
@@ -26,5 +27,8 @@ class ReturnSale extends Model
     }
     public function branch(){
         return $this->belongsTo(\App\Branch::class);
+    }
+    public function products(){
+        return $this->belongsTo(\App\Product::class);
     }
 }

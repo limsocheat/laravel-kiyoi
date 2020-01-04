@@ -19,7 +19,7 @@ class PurchaseController extends Controller
     public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $purchase = Purchase::with(['product', 'order.order_items'])
+        $purchase = Purchase::with(['product'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 

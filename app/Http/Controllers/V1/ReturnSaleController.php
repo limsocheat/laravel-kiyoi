@@ -40,21 +40,27 @@ class ReturnSaleController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'members'            => 'required',
-        //     'billers'           => 'required',
+        $request->validate([
+            'member_name' => 'require',
+            // 'branch_name' => 'require',
+            // 'biller_name' => 'require',
+            // 'date'        => 'require',
+            // 'total'       => 'require',
+        ]);
 
-        // ]);
+        
 
-
-        // $returnsale = new ReturnSale();
-        // $returnsale->members = $request->members;
-        // $returnsale->billers = auth()->user()->id;
-        // $returnsale->save();
-
-        // return response()->json([
-        //     'updated' => true,
-        // ]);
+        $returnsale = new ReturnSale();
+        $returnsale->member_name = $request->member_name;
+    
+        // $returnsale->members_id = auth()->user()->id;
+        // $returnsale->biller_id  = auth()->user()->id;
+        // $returnsale->product_id = auth()->user()->id;
+        // $returnsale->branch_id  = auth()->user()->id;
+        
+        return response()->json([
+            'create' => true,
+        ]);
         
     }
 
@@ -66,9 +72,9 @@ class ReturnSaleController extends Controller
      */
     public function show($id)
     {
-        // $returnsale = ReturnSale::findOrFail($id);
+        $returnsale = ReturnSale::findOrFail($id);
 
-        // return response()->json(['returnsale' => $returnsale]);
+        return response()->json(['returnsale' => $returnsale]);
     }
 
     /**
@@ -91,21 +97,26 @@ class ReturnSaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $request -> validate([
-        //     'members'           => 'required',
-        //     'billers'           => 'required',
-        // ]);
-        
-        // $returnsale = ReturnSale::findOrFail($id);
-        // $returnsale ->members = $request->members;
-        // $returnsale->billers = auth()->id;
+        $request->validate([
+            'member_name' => 'require',
+        ]);
 
+        
+        $returnsale = ReturnSale::findOrFail($id);
+        $returnsale->member_name = $request->member_name;
+        $returnsale->save();
+
+        // $returnsale = ReturnSale::findOrFail($id);
+        // $returnsale->billers = auth()->id;
+        // $returnsale->members = auth()->id;
+        // $returnsale->products= auth()->id;
+        // $returnsale->branches= auth()->id;
         // $returnsale->save();
 
 
-        // return response()->json([
-        //     'updated' => true,
-        // ]);
+        return response()->json([
+            'updated' => true,
+        ]);
     }
 
     /**
@@ -116,9 +127,9 @@ class ReturnSaleController extends Controller
      */
     public function destroy($id)
     {
-        // $returnsale = ReturnSale::findOrFail($id);
-        // $returnsale->delete();
+        $returnsale = ReturnSale::findOrFail($id);
+        $returnsale->delete();
 
-        // return response()->json(['delete' => true]);
+        return response()->json(['delete' => true]);
     }
 }

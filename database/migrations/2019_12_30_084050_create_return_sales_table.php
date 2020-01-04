@@ -15,32 +15,29 @@ class CreateReturnSalesTable extends Migration
     {
         Schema::create('return_sales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('members_id');
-            $table->unsignedBigInteger('biller_id')->nullable();
-            $table->unsignedBigInteger('branch_id')->nullable();
-            // $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('member_id');
+            $table->unsignedBigInteger('biller_id');
+            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('product_id');
             $table->date('date');
-            $table->string('biller_name')->nullable();
-            $table->string('member_name')->nullable();
-            $table->string('branch_address')->nullable();
+            $table->string('biller_name');
+            $table->string('member_name');
+            $table->string('branch_name');
             $table->double('total');
             $table->timestamps();
 
-            $table->foreign('members_id')->references('id')->on('members')
+            $table->foreign('member_id')->references('id')->on('members')
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');
-
             $table->foreign('biller_id')->references('id')->on('billers')
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');
-           
             $table->foreign('branch_id')->references('id')->on('branches')
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');
-
-            // $table->foreign('product_id')->references('id')->on('products')
-            //                             ->onDelete('cascade')
-            //                             ->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('products')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');        
         });
         
     }
