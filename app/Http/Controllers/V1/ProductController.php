@@ -19,11 +19,11 @@ class ProductController extends Controller
     {   
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $product = Product::with(['brand'])
+        $products = Product::with(['brand'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
-        return ProductResource::collection($product);
+        return response()->json(['products' => $products]);
     }
 
     /**
@@ -34,29 +34,54 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required',
             'code' => 'required',
             'type' => 'required',
             'barcode' => 'required',
             'unit' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
+            'description' => 'nullable',
         ]);
 
         // dd($request->all());
 
-        $product = new Product();
-        $product->user_id = auth()->user()->id;
-        $product->order_id = auth()->user()->id;
-        $product->sale_id = auth()->user()->id;
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->code = $request->code;
-        $product->type = $request->type;
-        $product->barcode = $request->barcode;
-        $product->price = $request->price;
-        $product->unit = $request->unit;
-        $product->save();
+        if($request->get('image')) {
+            $exploded = explode(',', $request->image);
+            $decode = base64_decode($exploded[1]);
+
+            if(str_contains($exploded[0], 'jpeg')) {
+                $extension = 'jpeg';
+            }
+            else {
+                $extension = 'png';
+            }
+
+            $fileName = str_random() . '.' . $extension;
+            $path = public_path() . '/' . $fileName;
+
+            file_put_contents($path, $decode);
+
+            $product = Product::create($data + [
+                'image' => $fileName,
+                'user_id' => auth()->user()->id,
+                'order_id' => auth()->user()->id,
+                'sale_id' => auth()->user()->id,
+                'brand_id' => auth()->user()->id,
+            ]);
+
+        }
+        else {
+
+            $product = Product::create($data + [
+                'user_id' => auth()->user()->id,
+                'order_id' => auth()->user()->id,
+                'sale_id' => auth()->user()->id,
+                'brand_id' => auth()->user()->id,
+            ]);
+            
+        }
+
 
         return response()->json([
             'created' => true,
