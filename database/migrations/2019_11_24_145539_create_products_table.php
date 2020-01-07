@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('sale_id');
             $table->unsignedBigInteger('brand_id');
+            $table->unsignedBigInteger('supplier_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1)->nullable();
@@ -39,6 +40,7 @@ class CreateProductsTable extends Migration
                                             ->onUpdate('cascade');  
 
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
     }
 

@@ -8,7 +8,7 @@ class Product extends Model
 {
 
 	protected $fillable = [
-        'name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price', 'user_id', 'order_id', 'sale_id', 'brand_id', 'image'
+        'name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price', 'user_id', 'order_id', 'sale_id', 'brand_id', 'image', 'supplier_id'
     ];
 
     public function user()
@@ -41,4 +41,10 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Brand::class, 'brand_id');
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(\App\Supplier::class);
+    }
+
 }

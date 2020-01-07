@@ -19,7 +19,7 @@ class ProductController extends Controller
     {   
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $products = Product::with(['brand'])
+        $products = Product::with(['brand', 'supplier'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
@@ -96,7 +96,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::with(['brand'])
+                            ->findOrFail($id);
+
+        return response()->json(['product' => $product]);
     }
 
     /**

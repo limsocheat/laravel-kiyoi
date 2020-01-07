@@ -18,12 +18,11 @@ class CreatePurchasesTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('order_id');
-            $table->date('date');
+            $table->string('reference_no')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
-            $table->string('supplier');
-            $table->double('total');
+            // $table->string('supplier');
             $table->double('paid');
             $table->string('purchase_status');
             $table->string('payment_status');

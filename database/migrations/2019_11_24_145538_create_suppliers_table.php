@@ -15,7 +15,6 @@ class CreateSuppliersTable extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('purchase_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
@@ -28,10 +27,6 @@ class CreateSuppliersTable extends Migration
             $table->text('vat_number')->nullable();
             $table->text('post_code')->nullable();
             $table->timestamps();
-
-            $table->foreign('purchase_id')->references('id')->on('purchases')
-                                            ->onDelete('cascade')
-                                            ->onUpdate('cascade');
         });
     }
 
