@@ -15,11 +15,12 @@ class ReturnSaleController extends Controller
      */
     public function index(Request $request)
     {
-        $page = $request->input('page') ? $request->input('page'):1;
-        $itemsPerPage = $request->input('itemsPerPage') ? $request->input('itemsPerPage'): 5 ;
+        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
+        $returnsale = ReturnSale::with(['biller', 'member','branch'])
+                        ->orderBy('id', 'desc')
+                        ->paginate($itemsPerPage);
 
-        $items  = ReturnSale::select('*')->paginate($itemsPerPage);
-        return $items;
+        return response()->json(['returnsale' => $returnsale]);
     }
 
     /**
@@ -40,24 +41,25 @@ class ReturnSaleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'member_name' => 'require',
-            // 'branch_name' => 'require',
-            // 'biller_name' => 'require',
-            // 'date'        => 'require',
-            // 'total'       => 'require',
+        $data = $request->validate([
+            'member'      => 'require',
+            'branch'      => 'require',
+            'biller'      => 'require',
+            'supplier'    => 'require',
+            'date'        => 'require',
+            'total'       => 'require',
         ]);
 
-        
+        // dd($request->all());
 
         $returnsale = new ReturnSale();
-        $returnsale->member_name = $request->member_name;
-    
-        // $returnsale->members_id = auth()->user()->id;
-        // $returnsale->biller_id  = auth()->user()->id;
-        // $returnsale->product_id = auth()->user()->id;
-        // $returnsale->branch_id  = auth()->user()->id;
-        
+       
+        $returnsale->member_id = auth()->user()->id;
+        $returnsale->biller_id  = auth()->user()->id;
+        $returnsale->product_id = auth()->user()->id;
+        $returnsale->branch_id  = auth()->user()->id;
+        $returnsale->supplier_id = auh()->user()->id;
+
         return response()->json([
             'create' => true,
         ]);
@@ -97,14 +99,14 @@ class ReturnSaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'member_name' => 'require',
-        ]);
+        // $request->validate([
+        //     'member'      => 'require',
+        //     'branch'      => 'require',
+        //     'biller'      => 'require',
+        //     'date'        => 'require',
+        //     'total'       => 'require',
+        // ]);
 
-        
-        $returnsale = ReturnSale::findOrFail($id);
-        $returnsale->member_name = $request->member_name;
-        $returnsale->save();
 
         // $returnsale = ReturnSale::findOrFail($id);
         // $returnsale->billers = auth()->id;
@@ -114,9 +116,9 @@ class ReturnSaleController extends Controller
         // $returnsale->save();
 
 
-        return response()->json([
-            'updated' => true,
-        ]);
+        // return response()->json([
+        //     'updated' => true,
+        // ]);
     }
 
     /**

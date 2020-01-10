@@ -10,25 +10,31 @@ class ReturnSale extends Model
         'member_id',
         'branch_id',
         'product_id',
+        'biller_id',
+        'supplier_id',
         'id',
         'date',
-        'biller_id',
         'total',
-        'member_name',
-        'biller_name',
-        'branch_name'
     ];
 
-    public function member(){
-        return $this->belongsTo(\App\Member::class);
+    public function branch()
+    {
+        return $this->belongsTo(\App\Branch::class, 'branch_id');
     }
-    public function biller(){
-        return $this->belongsTo(\App\Biller::class);
+    public function member()
+    {
+        return $this->belongsTo(\App\Member::class, 'member_id');
     }
-    public function branch(){
-        return $this->belongsTo(\App\Branch::class);
+    public function biller()
+    {
+        return $this->belongsTo(\App\Biller::class, 'biller_id');
     }
-    public function products(){
-        return $this->belongsTo(\App\Product::class);
+    public function products()
+    {
+        return $this->hasMany(\App\Product::class, 'product_id');
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(\App\Supplier::class, 'supplier_id');
     }
 }

@@ -31,4 +31,9 @@ class Member extends Model
 	{
 		return $this->deposits()->sum('amount');
 	}
+	public function return_sales()
+	{
+		return $this->hasMany(\App\ReturnSale::class);
+	}
+	
 }

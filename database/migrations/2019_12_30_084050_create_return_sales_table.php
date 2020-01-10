@@ -19,10 +19,8 @@ class CreateReturnSalesTable extends Migration
             $table->unsignedBigInteger('biller_id');
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('supplier_id');
             $table->date('date');
-            $table->string('biller_name');
-            $table->string('member_name');
-            $table->string('branch_name');
             $table->double('total');
             $table->timestamps();
 
@@ -37,7 +35,10 @@ class CreateReturnSalesTable extends Migration
                                         ->onUpdate('cascade');
             $table->foreign('product_id')->references('id')->on('products')
                                         ->onDelete('cascade')
-                                        ->onUpdate('cascade');        
+                                        ->onUpdate('cascade');    
+            $table->foreign('supplier_id')->references('id')->on('suppliers')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');    
         });
         
     }

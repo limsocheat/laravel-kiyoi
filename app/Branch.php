@@ -23,4 +23,9 @@ class Branch extends Model
     {
     	return $this->hasMany(\App\Transfer::class);
     }
+
+    public function return_sales()
+    {
+        return $this->hasMany(\App\ReturnSale::class);
+    }
 }
