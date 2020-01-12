@@ -26,8 +26,9 @@ class PurchaseResource extends JsonResource
             'payment_status' => $this->payment_status,
             'created_at' => $this->created_at->toDateString(),
             'supplier' => $this->supplier,
-            'product' => $this->product,
-            'order' => $this->order,
+            'products' => $this->products,
+            'supplier' => $this->supplier,
+            'branch' => $this->branch,
         ];
     }
 }

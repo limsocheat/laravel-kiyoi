@@ -8,21 +8,22 @@ class Purchase extends Model
 {
 
 	protected $fillable = [
-		'name', 'date', 'description', 'active', 'supplier', 'total', 'paid', 'purchase_status', 'payment_status',
+		'name', 'description', 'active',  'shipping_cost', 'branch_id', 'supplier_id', 'purchase_status', 'payment_status', 'unit_price', 'quantity', 'discount'
 	];
 
-    public function product()
+
+    public function products()
     {
-    	return $this->belongsTo(\App\Product::class);
+    	return $this->belongsToMany(\App\Product::class)->withPivot('quantity', 'unit_price', 'discount');
     }
 
-    public function order()
+    public function supplier()
     {
-    	return $this->belongsTo(\App\Order::class);
+        return $this->belongsTo(\App\Supplier::class);
     }
 
     public function branch()
-    {
+    {   
         return $this->belongsTo(\App\Branch::class);
     }
 }

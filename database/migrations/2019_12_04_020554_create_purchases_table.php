@@ -15,30 +15,19 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('supplier_id');
             $table->string('reference_no')->nullable();
-            $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
-            // $table->string('supplier');
-            $table->double('paid');
+            // $table->double('paid');
+            $table->double('shipping_cost')->default(0);
             $table->string('purchase_status');
             $table->string('payment_status');
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products')
-                                                ->onDelete('cascade')
-                                                ->onUpdate('cascade');
-
-            $table->foreign('branch_id')->references('id')->on('branches')
-                                                ->onDelete('cascade')
-                                                ->onUpdate('cascade');
-
-            $table->foreign('order_id')->references('id')->on('orders')
-                                                ->onDelete('cascade')
-                                                ->onUpdate('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
         });
     }
 

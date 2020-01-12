@@ -17,8 +17,9 @@ class CreateProductPurchaseTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('purchase_id');
-            $table->integer('quantity');
+            $table->integer('quantity')->default(1);
             $table->double('unit_price');
+            $table->double('discount')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

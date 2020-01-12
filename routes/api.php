@@ -37,6 +37,9 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'quotation'     => 'QuotationController',
         'return-sale'    => 'ReturnSaleController',
     ]);
+    
 });
 
-Route::get('transaction/export/', 'ExportController@export');
+Route::get('purchase/export', 'V1\PurchaseController@export');
+
+

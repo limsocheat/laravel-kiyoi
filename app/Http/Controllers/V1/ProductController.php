@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Product;
+
+use App\Order;
+
 use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
@@ -19,7 +22,7 @@ class ProductController extends Controller
     {   
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $products = Product::with(['brand', 'supplier'])
+        $products = Product::with(['brand', 'orders'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
@@ -39,8 +42,6 @@ class ProductController extends Controller
             'code' => 'required',
             'type' => 'required',
             'barcode' => 'required',
-            'unit' => 'required',
-            'price' => 'required|numeric',
             'description' => 'nullable',
         ]);
 
@@ -79,9 +80,18 @@ class ProductController extends Controller
                 'sale_id' => auth()->user()->id,
                 'brand_id' => auth()->user()->id,
             ]);
-            
         }
 
+        // dd($product->orders());
+
+        $order = new Order();
+        $order->discount = $request->discount; 
+        $order->save();
+
+        $product->orders()->attach($order, [
+            'unit_price' => $request->get('unit_price', 0),
+            'quantity' => $request->get('quantity', 0),
+        ]);   
 
         return response()->json([
             'created' => true,
@@ -93,7 +103,7 @@ class ProductController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function show($id)
     {
         $product = Product::with(['brand'])

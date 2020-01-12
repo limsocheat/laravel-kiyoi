@@ -8,17 +8,12 @@ class Order extends Model
 {
 
 	protected $fillable = [
-		'name', 'quantity', 'unit_cost', 'discount', 'tax', 'sub_total'
+		'name', 'unit_cost', 'discount', 'member_id',
 	];
 
     public function member()
     {
         return $this->belongsTo(\App\Member::class);
-    }
-
-    public function purchases()
-    {
-    	return $this->hasMany(\App\Purchase::class);
     }
 
     public function products()

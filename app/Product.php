@@ -8,7 +8,7 @@ class Product extends Model
 {
 
 	protected $fillable = [
-        'name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price', 'user_id', 'order_id', 'sale_id', 'brand_id', 'image', 'supplier_id'
+        'name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price', 'user_id', 'order_id', 'sale_id', 'brand_id', 'image'
     ];
 
     public function user()
@@ -19,12 +19,12 @@ class Product extends Model
 
     public function purchases()
     {
-    	return $this->hasMany(\App\Purchase::class);
+    	return $this->belongsToMany(\App\Purchase::class)->withPivot('quantity', 'unit_price');
     }
 
-    public function order()
+    public function orders()
     {
-    	return $this->belongsToMany(\App\Order::class);
+    	return $this->belongsToMany(\App\Order::class)->withPivot('quantity', 'unit_price');
     }
 
     public function transfers()
@@ -40,11 +40,6 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(\App\Brand::class, 'brand_id');
-    }
-
-    public function supplier()
-    {
-        return $this->belongsTo(\App\Supplier::class);
     }
 
 }

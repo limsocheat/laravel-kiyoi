@@ -15,20 +15,15 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('member_id');
-            $table->string('name');
-            $table->unsignedBigInteger('code');
+            $table->unsignedBigInteger('member_id')->nullable();
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
-            $table->decimal('discount');
-            $table->double('unit_price');
-            $table->double('tax');
-            $table->double('sub_total');
+            $table->decimal('discount')->default(0)->nullable();
+            // $table->double('tax');
+            // $table->double('sub_total');
             $table->timestamps();
 
-            $table->foreign('member_id')->references('id')->on('members')
-                                                            ->onDelete('cascade')
-                                                            ->onUpdate('cascade');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('set null');
         });
     }
 

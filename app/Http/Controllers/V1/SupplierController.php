@@ -17,7 +17,7 @@ class SupplierController extends Controller
     public function index()
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $suppliers = Supplier::with(['purchase'])
+        $suppliers = Supplier::with(['purchases'])
                             ->orderBy('id', 'desc')
                             ->paginate(5);
 

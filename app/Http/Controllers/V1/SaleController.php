@@ -17,7 +17,7 @@ class SaleController extends Controller
     public function index()
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $sales = Sale::with(['member', 'products.order'])
+        $sales = Sale::with(['member'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
@@ -42,14 +42,13 @@ class SaleController extends Controller
             'reference_no' => 'nullable|max:100',
         ]);
 
-        $id = IdGenerator::generate(['table' => 'invoices', 'length' => 10, 'prefix' => 'SL/' . date('Y')]);
-
+        $count = Sale::whereDay('created_at', date('d'))->count();
 
         $sales = new Sale();
         $sales->user_id = auth()->user()->id;
         $sales->customer_id = auth()->user()->id;
         $sales->sale_status = $request->sale_status;
-        $sales->reference_no = $id;
+        $sales->reference_no = 'AS/' . now()->year() . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
         $sales->payment_status = $request->payment_status;
         $sales->total = $request->total;
         $sales->paid = $request->paid;

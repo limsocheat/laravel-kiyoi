@@ -19,7 +19,7 @@ class BrandSeeder extends Seeder
 
         foreach (range(1, 5) as $i) {
         	Brand::create([
-        		'name' => $faker->name,
+                'name' => $faker->name,
         		'description' => $faker->sentence,
         	]);
         }
