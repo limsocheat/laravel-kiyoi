@@ -1,6 +1,8 @@
 <?php
 
+use App\ReturnSale;
 use Illuminate\Database\Seeder;
+use Faker\Factory;
 
 class ReturnSaleTableSeeder extends Seeder
 {
@@ -11,6 +13,6 @@ class ReturnSaleTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\ReturnSale::class , 5)->create();
+        factory(\App\ReturnSale::class , 10)->create();
     }
 }
