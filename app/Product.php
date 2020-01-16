@@ -44,6 +44,6 @@ class Product extends Model
 
     public function return_sales()
     {
-        return $this->belongTo(\App\ReturnSale::class);
+        return $this->belongsToMany(\App\ReturnSale::class)->withPivot('quantity', 'unit_price');
     }
 }

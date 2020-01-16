@@ -7,16 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class ReturnSale extends Model
 {
     protected $fillable = [
+        'id',
         'member_id',
         'branch_id',
-        'product_id',
         'biller_id',
         'supplier_id',
-        'id',
-        'date',
-        'total',
+        'account_id',
+        'active',
+        'return_des',
+        'staff_des',
+        'unit_price', 
+        'quantity', 
+        'discount',
+        'product_id',
     ];
-
+    
     public function branch()
     {
         return $this->belongsTo(\App\Branch::class, 'branch_id');
@@ -29,12 +34,17 @@ class ReturnSale extends Model
     {
         return $this->belongsTo(\App\Biller::class, 'biller_id');
     }
-    public function products()
-    {
-        return $this->hasMany(\App\Product::class, 'product_id');
-    }
+    
     public function supplier()
     {
         return $this->belongsTo(\App\Supplier::class, 'supplier_id');
+    }
+    public function account()
+    {
+        return $this->belongsTo(\App\Account::class, 'account_id');
+    }
+    public function products()
+    {
+    	return $this->belongsToMany(\App\Product::class)->withPivot('quantity', 'unit_price', 'discount');
     }
 }
