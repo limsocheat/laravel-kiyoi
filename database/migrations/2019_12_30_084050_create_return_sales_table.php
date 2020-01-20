@@ -18,10 +18,15 @@ class CreateReturnSalesTable extends Migration
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('biller_id');
             $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('supplier_id');
-            $table->date('date');
-            $table->double('total');
+            $table->unsignedBigInteger('account_id');
+            $table->unsignedBigInteger('product_id');
+            $table->boolean('active')->default(1);
+            $table->string('reference_no')->nullable();
+            // $table->string('file')->nullable();
+            $table->text('return_des')->nullable();
+            $table->text('staff_des')->nullable();
+            // $table->double('total');
             $table->timestamps();
 
             $table->foreign('member_id')->references('id')->on('members')
@@ -33,12 +38,14 @@ class CreateReturnSalesTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');
-            $table->foreign('product_id')->references('id')->on('products')
-                                        ->onDelete('cascade')
-                                        ->onUpdate('cascade');    
             $table->foreign('supplier_id')->references('id')->on('suppliers')
                                         ->onDelete('cascade')
-                                        ->onUpdate('cascade');    
+                                        ->onUpdate('cascade');
+            $table->foreign('account_id')->references('id')->on('accounts')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');  
+            
+            $table->foreign('product_id')->references('id')->on('products');  
         });
         
     }

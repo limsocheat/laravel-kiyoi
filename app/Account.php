@@ -24,4 +24,8 @@ class Account extends Model
     {
     	return $this->hasMany(\App\Payroll::class);
     }
+    public function return_sales()
+    {
+        return $this->hasMany(\App\ReturnSale::class);
+    }
 }
