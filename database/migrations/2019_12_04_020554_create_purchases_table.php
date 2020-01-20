@@ -21,7 +21,7 @@ class CreatePurchasesTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             // $table->double('paid');
-            $table->double('shipping_cost')->default(0);
+            $table->double('shipping_cost')->nullable();
             $table->string('purchase_status');
             $table->string('payment_status');
             $table->timestamps();

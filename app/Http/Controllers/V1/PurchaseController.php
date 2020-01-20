@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Purchase;
 use App\Product;
 use App\Supplier;
+use App\Branch;
 
 use App\Http\Resources\PurchaseResource;
 
@@ -57,6 +58,7 @@ class PurchaseController extends Controller
         $purchase->supplier_id = auth()->id();
         $purchase->reference_no =  'pr' . date('Ymd-') . date('His') . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
         $purchase->purchase_status = $request->purchase_status;
+        $purchase->shipping_cost = $request->shipping_cost;
         $purchase->description = $request->description;
         $purchase->payment_status = $request->payment_status;
         $purchase->save();
@@ -68,7 +70,7 @@ class PurchaseController extends Controller
         $new_purchase = $purchase->branch()->associate($request->location['id']);
         $new_purchase->save();
 
-        dd($purchase->supplier);
+        // dd($purchase->supplier);
 
         if(isset($request->items)) {
             foreach($request->items as $item) {
@@ -93,7 +95,7 @@ class PurchaseController extends Controller
      */
     public function show($id)
     {
-        $purchase = Purchase::with(['supplier'])
+        $purchase = Purchase::with(['supplier', 'branch', 'products'])
                             ->findOrFail($id);
 
         return response()->json(['purchase', $purchase]);
@@ -108,26 +110,48 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'date' => 'required',
-            'name' => 'required',
-            'supplier' => 'required',
-            'total' => 'required',
-            'paid' => 'required',
+        $request->validate([    
             'purchase_status' => 'required',
             'payment_status' => 'required',
+            'description' => 'nullable',
         ]);
 
+        // dd($request->products);
+ 
         $purchase = Purchase::findOrFail($id);
-        $purchase->date = $request->date;
-        $purchase->name = $request->name;
-        $purchase->description = $request->description;
-        $purchase->supplier = $request->supplier;
-        $purchase->total = $request->total;
-        $purchase->paid = $request->paid;
+        $purchase->branch_id = auth()->id();
+        $purchase->supplier_id = auth()->id();
+        $purchase->reference_no =  $purchase->reference_no;
         $purchase->purchase_status = $request->purchase_status;
+        $purchase->shipping_cost = $request->shipping_cost;
+        $purchase->description = $request->description;
         $purchase->payment_status = $request->payment_status;
         $purchase->save();
+
+        // Save Associate Branch(location) Relationship
+        $purchase->branch()->associate($request->branch['id'])->save();
+
+        // Save Associate Supplier Relationship
+        $purchase->supplier()->associate($request->supplier['id'])->save();
+            
+        $deletePivot = $purchase->products()
+                                    ->where($request->product['id'], $id)
+                                    ->detach();
+            
+
+        
+        foreach($request->products as $product) {
+
+            $purchase->products()->attach($product['id'], [
+                'unit_price' => $product['unit_price'],
+                'quantity' => $product['quantity'],
+                'discount' => $product['discount'],
+            ]);
+            
+            // dd($product);
+        }
+        
+        dd($purchase->products);
 
         return response()->json([
             'updated' => true,

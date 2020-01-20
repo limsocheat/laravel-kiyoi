@@ -17,18 +17,19 @@ class CreateSalesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('member_id');
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->string('reference_no')->nullable();
             $table->string('payment_status');
-            $table->string('sale_status');
-            $table->double('total');
+            $table->string('payment_method');
+            $table->string('shipping_cost')->nullable();
             $table->double('paid');
-            $table->double('due');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('member_id')->references('id')->on('members');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('set null');
         });
     }
 
