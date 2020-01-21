@@ -46,4 +46,8 @@ class Product extends Model
     {
         return $this->belongsToMany(\App\ReturnSale::class)->withPivot('quantity', 'unit_price');
     }
+    public function return_purchases()
+    {
+        return $this->belongsToMany(\App\ReturnPurchase::class)->withPivot('quantity', 'unit_price');
+    }
 }

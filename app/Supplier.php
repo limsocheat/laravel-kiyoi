@@ -17,4 +17,8 @@ class Supplier extends Model
     {
         return $this->hasMany(\App\ReturnSale::class);
     }
+    public function return_purchases()
+    {
+        return $this->hasMany(\App\ReturnPurchase::class);
+    }
 }

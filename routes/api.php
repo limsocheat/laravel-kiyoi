@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'brand' => 'BrandController',
         'quotation'     => 'QuotationController',
         'return-sale'    => 'ReturnSaleController',
+        'return-purchase'=> 'ReturnPurchaseController',
     ]);
     
 });
