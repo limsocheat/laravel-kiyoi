@@ -26,7 +26,6 @@ class CreateReturnSalesTable extends Migration
             // $table->string('file')->nullable();
             $table->text('return_des')->nullable();
             $table->text('staff_des')->nullable();
-            // $table->double('total');
             $table->timestamps();
 
             $table->foreign('member_id')->references('id')->on('members')

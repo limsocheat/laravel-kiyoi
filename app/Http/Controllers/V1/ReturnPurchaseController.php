@@ -3,30 +3,28 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\ReturnSale;
+use Illuminate\Http\Request;
+use App\ReturnPurchase;
 use App\Branch;
-use App\Member;
 use App\Account;
-use App\Biller;
 use App\Product;
 use App\Supplier;
-use Illuminate\Http\Request;
 
-class ReturnSaleController extends Controller
+class ReturnPurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $returnsale = ReturnSale::with(['biller', 'member','branch'])
+        $returnpurchase = ReturnPurchase::with(['branch', 'supplier','account'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
-        return response()->json(['returnsale' => $returnsale]);
+        return response()->json(['returnpurchase' => $returnpurchase]);
     }
 
     /**
@@ -54,28 +52,26 @@ class ReturnSaleController extends Controller
             'items.*.unit_price' => 'required|numeric',
         ]);
 
-        $count = ReturnSale::whereDay('created_at', date('d'))->count();
+        $count = ReturnPurchase::whereDay('created_at', date('d'))->count();
         
-        $returnsale = new ReturnSale();
+        $returnpurchase = new ReturnPurchase();
        
-        $returnsale->member_id = auth()->user()->id;
-        $returnsale->biller_id = auth()->user()->id;
-        $returnsale->product_id = auth()->user()->id;
-        $returnsale->branch_id = auth()->user()->id;
-        $returnsale->supplier_id = auth()->user()->id;
-        $returnsale->account_id = auth()->user()->id;
-        $returnsale->return_des = $request->return_des;
-        $returnsale->staff_des  = $request->staff_des;
-        $returnsale->reference_no =  'pr' . date('Ymd-') . date('His') . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $returnpurchase->product_id = auth()->user()->id;
+        $returnpurchase->branch_id = auth()->user()->id;
+        $returnpurchase->supplier_id = auth()->user()->id;
+        $returnpurchase->account_id = auth()->user()->id;
+        $returnpurchase->return_des = $request->return_des;
+        $returnpurchase->staff_des  = $request->staff_des;
+        $returnpurchase->reference_no =  'pr' . date('Ymd-') . date('His') . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
 
-        $new_returnsale = $returnsale->supplier()->associate($request->supplier['id']);
-        $new_returnsale = $returnsale->account()->associate($request->account['id']);
-        $new_returnsale = $returnsale->branch()->associate($request->location['id']);
-        $new_returnsale->save();
+        $new_returnpurchase = $returnpurchase->supplier()->associate($request->supplier['id']);
+        $new_returnpurchase = $returnpurchase->account()->associate($request->account['id']);
+        $new_returnpurchase = $returnpurchase->branch()->associate($request->location['id']);
+        $new_returnpurchase->save();
 
         if(isset($request->items)) {
             foreach($request->items as $item) {
-                $returnsale->products()->attach($item['id'], [
+                $returnpurchase->products()->attach($item['id'], [
                     'unit_price'    => $item['unit_price'],
                     'quantity'      => $item['quantity'],
                     'discount'      => $item['discount'],
@@ -86,7 +82,6 @@ class ReturnSaleController extends Controller
         return response()->json([
             'create' => true,
         ]);
-        
     }
 
     /**
@@ -97,9 +92,10 @@ class ReturnSaleController extends Controller
      */
     public function show($id)
     {
-        $returnsale = ReturnSale::findOrFail($id);
+        //
+        $returnpurchase = ReturnPurchase::findOrFail($id);
 
-        return response()->json(['returnsale' => $returnsale]);
+        return response()->json(['returnpurchase' => $returnpurchase]);
     }
 
     /**
@@ -122,25 +118,23 @@ class ReturnSaleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
         $request->validate([
             'date'      => 'required',
             'total'     => 'required',
             'supplier'  => 'required',
             'branch'    => 'required',
             'account'   => 'required',
-            'member'    => 'required',
-            'biller'    => 'required'    
+            'return_purchase'=>'required', 
         ]);
 
 
-        $returnsale = ReturnSale::findOrFail($id);
-        $returnsale->date = $request->date;
-        $returnsale->biller = $request->biller;
-        $returnsale->account = $request->account;
-        $returnsale->branch = $request->branch;
-        $returnsale->member = $request->member;
-        $returnsale->supplier = $request->supplier;
-        $returnsale->save();
+        $returnpurchase = ReturnPurchase::findOrFail($id);
+        $returnpurchase->date = $request->date;
+        $returnpurchase->account = $request->account;
+        $returnpurchase->branch = $request->branch;
+        $returnpurchase->supplier = $request->supplier;
+        $returnpurchase->save();
 
 
         return response()->json([
@@ -156,8 +150,9 @@ class ReturnSaleController extends Controller
      */
     public function destroy($id)
     {
-        $returnsale = ReturnSale::findOrFail($id);
-        $returnsale->delete();
+        //
+        $returnpurchase = ReturnPurchase::findOrFail($id);
+        $returnpurchase->delete();
 
         return response()->json(['delete' => true]);
     }
