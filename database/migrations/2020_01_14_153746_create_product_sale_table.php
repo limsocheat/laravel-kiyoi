@@ -19,7 +19,7 @@ class CreateProductSaleTable extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->integer('quantity')->default(1);
             $table->double('unit_price');
-            $table->decimal('discount')->nullable()->default(0);
+            $table->integer('discount')->nullable()->default(0);
             $table->timestamps();
 
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('set null');

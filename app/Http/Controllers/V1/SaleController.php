@@ -114,8 +114,9 @@ class SaleController extends Controller
             'paid' => 'required|numeric',
         ]);
 
-        dd($request->all());
-
+        
+        // dd($request->product['id']);
+        
         $count = Sale::whereDay('created_at', date('d'))->count();
 
         $sale = Sale::findOrFail($id);
@@ -127,10 +128,25 @@ class SaleController extends Controller
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
         $sale->shipping_cost = $request->shipping_cost;
         $sale->description = $request->description;
-        $sale->due = $request->due;
+        $sale->paid = $request->paid;
         $sale->save();
 
-        // $sale->member()->update()
+        $sale->branch()->associate($request->branch['id'])->save();
+        $sale->member()->associate($request->member['id'])->save();
+        
+        
+        $removePivot = $sale->products()->detach();
+
+
+        foreach($request->products as $product) {
+            $sale->products()->attach($product['id'], [
+                'unit_price' => $product['unit_price'],
+                'quantity' => $product['quantity'],
+                'discount' => $product['discount'],
+            ]);
+        }
+
+        // dd($sale->products);
 
         return response()->json(['updated' => true]);
     }
