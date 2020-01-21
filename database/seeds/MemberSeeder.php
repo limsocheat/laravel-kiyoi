@@ -24,15 +24,14 @@ class MemberSeeder extends Seeder
                 'user_id' => \App\User::all()->random()->id,
                 // 'branch_id' => \App\Branch::all()->random()->id,
                 'member_id' => \App\Member::all()->random()->id,
+                'branch_id' => \App\Branch::all()->random()->id,
                 // 'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
                 'description' => $faker->text,
                 'active' => $faker->randomElement(['1', '0']),
                 'reference_no' => 'AS/' . date('Y') . $i,
-                'sale_status' => $faker->randomElement(['completed']),
-                'payment_status' => $faker->randomElement(['Paid', 'Pending']),
-                'total' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = NULL),
-                'paid' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = NULL),
-                'due' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = NULL),
+                'payment_status' => $faker->randomElement(['Paid', 'Due']),
+                'payment_method' => $faker->randomElement(['Cash', 'Cheque']),
+                'paid' => $faker->randomfloat(2, 100, 10000),
             ]);
         }
     }

@@ -14,10 +14,24 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $items      = User::select('*')->get();
+    {   
+        $items      = User::OrderBy('id', 'desc');
+        
+        if($request->name) {
+            $items->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%');
+            });
+        }
 
-        return $items;
+        if($request->email) {
+            $items->where(function($q) use ($request) {
+                $q->where('email', 'like', '%' . $request->email . '%');
+            });
+        }
+
+        $users = $items->paginate(20);
+
+        return response()->json(['users' => $users]);
     }
 
     /**

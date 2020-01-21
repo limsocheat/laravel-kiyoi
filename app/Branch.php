@@ -28,8 +28,14 @@ class Branch extends Model
     {
         return $this->hasMany(\App\ReturnSale::class);
     }
+
     public function return_purchases()
     {
         return $this->hasMany(\App\ReturnPurchase::class);
+
+    }
+    public function sales()
+    {
+        return $this->hasMany(\App\Sale::class);
     }
 }

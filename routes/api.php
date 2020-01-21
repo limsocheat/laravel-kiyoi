@@ -38,8 +38,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'return-sale'    => 'ReturnSaleController',
         'return-purchase'=> 'ReturnPurchaseController',
     ]);
-    
 });
+
 
 Route::get('purchase/export', 'V1\PurchaseController@export');
 

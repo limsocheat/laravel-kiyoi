@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Sale;
+use App\Branch;
 use App\Http\Resources\SaleResource;
 
 class SaleController extends Controller
@@ -34,39 +35,65 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'sale_status' => 'required',
             'payment_status' => 'required',
-            'total' => 'required',
-            'paid' => 'required',
-            'due' => 'required',
+            'payment_method' => 'required',
+            'shipping_cost' => 'nullable|numeric',
             'reference_no' => 'nullable|max:100',
+            'paid' => 'required|numeric',
+            'items.*.unit_price' => 'required|numeric'
         ]);
+
+
+        // dd($request->member['id']);
 
         $count = Sale::whereDay('created_at', date('d'))->count();
 
-        $sales = new Sale();
-        $sales->user_id = auth()->user()->id;
-        $sales->customer_id = auth()->user()->id;
-        $sales->sale_status = $request->sale_status;
-        $sales->reference_no = 'AS/' . now()->year() . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
-        $sales->payment_status = $request->payment_status;
-        $sales->total = $request->total;
-        $sales->paid = $request->paid;
-        $sales->due = $request->due;
-        $sales->save();
+        $sale = new Sale();
+        $sale->user_id = auth()->id();
+        $sale->member_id = auth()->id();
+        $sale->branch_id = auth()->id();
+        $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $sale->payment_status = $request->payment_status;
+        $sale->payment_method = $request->payment_method;
+        $sale->description = $request->description;
+        $sale->shipping_cost = $request->shipping_cost;
+        $sale->paid = $request->paid;
+        $sale->save();
+
+        // For Branch
+
+        $location = $request->location['id'];
+        $sale->branch()->associate($location)->save();
+
+        // For Customer(Member)
+
+        $member = $request->member['id'];
+        $sale->member()->associate($member)->save();
+
+        if(isset($request->items)) {
+            foreach($request->items as $item) {
+                $sale->products()->attach($item['id'], [
+                    'unit_price' => $item['unit_price'],
+                    'quantity' => $item['quantity'],
+                    'discount' => $item['discount'],
+                ]);
+            }
+        }
+
+        dd($sale->products);
 
         return response()->json(['created' => true]);
     }
 
     /**
      * Display the specified resource.
-     *
+     *  
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $sales = Sale::with(['products.order', 'member'])->findOrFail($id);
+        $sales = Sale::with(['products', 'member', 'branch'])->findOrFail($id);
         return response()->json(['sales' => $sales]);   
     }
 
@@ -80,22 +107,30 @@ class SaleController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'sale_status' => 'required',
             'payment_status' => 'required',
-            'total' => 'required',
-            'paid' => 'required',
-            'due' => 'required',
+            'payment_method' => 'required',
+            'shipping_cost' => 'nullable|numeric',
+            'reference_no' => 'nullable|max:100',
+            'paid' => 'required|numeric',
         ]);
 
-        $sales = Sale::findOrFail($id);
-        $sales->user_id = auth()->user()->id;
-        $sales->customer_id = auth()->user()->id;
-        $sales->sale_status = $request->sale_status;
-        $sales->payment_status = $request->payment_status;
-        $sales->total = $request->total;
-        $sales->paid = $request->paid;
-        $sales->due = $request->due;
-        $sales->save();
+        dd($request->all());
+
+        $count = Sale::whereDay('created_at', date('d'))->count();
+
+        $sale = Sale::findOrFail($id);
+        $sale->user_id = auth()->id();
+        $sale->member_id = auth()->id();
+        $sale->branch_id = auth()->id();
+        $sale->payment_method = $request->payment_method;
+        $sale->payment_status = $request->payment_status;
+        $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $sale->shipping_cost = $request->shipping_cost;
+        $sale->description = $request->description;
+        $sale->due = $request->due;
+        $sale->save();
+
+        // $sale->member()->update()
 
         return response()->json(['updated' => true]);
     }
@@ -108,8 +143,8 @@ class SaleController extends Controller
      */
     public function destroy($id)
     {
-        $sales = Sale::findOrFail($id);
-        $sales->delete();
+        $sale = Sale::findOrFail($id);
+        $sale->delete();
 
         return response()->json(['deleted' => true]);
     }

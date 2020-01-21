@@ -20,7 +20,6 @@ class PurchaseResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'active' => $this->active,
-            'total' => $this->total,
             'paid' => $this->paid,
             'purchase_status' => $this->purchase_status,
             'payment_status' => $this->payment_status,
@@ -30,5 +29,6 @@ class PurchaseResource extends JsonResource
             'supplier' => $this->supplier,
             'branch' => $this->branch,
         ];
+
     }
 }
