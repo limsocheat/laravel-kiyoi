@@ -40,13 +40,13 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'code' => 'required',
-            'type' => 'required',
             'barcode' => 'required',
             'description' => 'nullable',
+            'unit' => 'required|numeric',
+            'price' => 'required|numeric',
         ]);
 
-        // dd($request->all());
-
+        // Save Image
         if($request->get('image')) {
             $exploded = explode(',', $request->image);
             $decode = base64_decode($exploded[1]);
@@ -63,25 +63,37 @@ class ProductController extends Controller
 
             file_put_contents($path, $decode);
 
-            $product = Product::create($data + [
-                'image' => $fileName,
-                'user_id' => auth()->user()->id,
-                'order_id' => auth()->user()->id,
-                'sale_id' => auth()->user()->id,
-                'brand_id' => auth()->user()->id,
-            ]);
+            $product = new Product();
+            $product->image = $fileName;
+            $product->user_id = auth()->user()->id;
+            $product->brand_id = auth()->user()->id;
+            $product->name = $request->name;
+            $product->code = $request->code;
+            $product->barcode = $request->barcode;
+            $product->description = $request->description;
+            $product->unit = $request->unit;
+            $product->price = $request->price;
+            $product->save();
+
+            $product->brand()->associate($request->brand['id'])->save();
 
         }
         else {
 
-            $product = Product::create($data + [
-                'user_id' => auth()->user()->id,
-                'order_id' => auth()->user()->id,
-                'sale_id' => auth()->user()->id,
-                'brand_id' => auth()->user()->id,
-            ]);
-        }
+            $product = new Product();
+            $product->user_id = auth()->user()->id;
+            $product->brand_id = auth()->user()->id;
+            $product->name = $request->name;
+            $product->code = $request->code;
+            $product->barcode = $request->barcode;
+            $product->description = $request->description;
+            $product->unit = $request->unit;
+            $product->price = $request->price;
+            $product->save();
 
+            $product->brand()->associate($request->brand['id'])->save();
+        }
+        
         // dd($product->orders());
 
         $order = new Order();
@@ -90,7 +102,7 @@ class ProductController extends Controller
 
         $product->orders()->attach($order, [
             'unit_price' => $request->get('unit_price', 0),
-            'quantity' => $request->get('quantity', 0),
+            'quantity' => $request->get('quantity', 1),
         ]);   
 
         return response()->json([

@@ -16,24 +16,18 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('brand_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(1)->nullable();
-            $table->double('code')->nullable();
-            $table->string('type')->nullable();
-            $table->string('barcode')->nullable();
-            $table->string('category')->nullable();
+            $table->double('code');
+            $table->string('barcode');
             $table->integer('unit')->default(1);
-            $table->double('cost')->nullable();
             $table->string('image')->nullable();
-            $table->double('price')->nullable();
+            $table->double('price');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('order_id')->references('id')->on('orders');  
-
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         });
     }
