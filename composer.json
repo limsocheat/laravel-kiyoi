@@ -12,6 +12,7 @@
         "dompdf/dompdf": "^0.8.3",
         "fideloper/proxy": "^4.0",
         "haruncpi/laravel-id-generator": "^1.0",
+        "intervention/image": "^2.5",
         "laravel/framework": "^6.2",
         "laravel/helpers": "^1.1",
         "laravel/passport": "^8.0",
