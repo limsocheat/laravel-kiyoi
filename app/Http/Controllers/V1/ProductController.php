@@ -59,9 +59,16 @@ class ProductController extends Controller
             }
 
             $fileName = str_random() . '.' . $extension;
-            $path = public_path() . '/' . $fileName;
-
+            $path = public_path() . '/image/' . $fileName;
+            
             file_put_contents($path, $decode);
+
+            $img = \Image::make($path)->resize(50, 50, function($constraint) {
+                $constraint->aspectRatio();
+            });
+
+            $img->save(public_path('/image/' . $fileName));
+
 
             $product = new Product();
             $product->image = $fileName;
@@ -94,7 +101,6 @@ class ProductController extends Controller
             $product->brand()->associate($request->brand['id'])->save();
         }
         
-        // dd($product->orders());
 
         $order = new Order();
         $order->discount = $request->discount; 
