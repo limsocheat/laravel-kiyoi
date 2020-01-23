@@ -4,11 +4,15 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\ReturnPurchase;
 use App\Branch;
 use App\Account;
 use App\Product;
 use App\Supplier;
+
+use App\Exports\ReturnPurchaseExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnPurchaseController extends Controller
 {
@@ -17,12 +21,20 @@ class ReturnPurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+    public function export()
+    {
+        return Excel::download(new ReturnPurchaseExport, 'purchase.xlsx');
+    }
+
     public function index()
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $returnpurchase = ReturnPurchase::with(['branch', 'supplier','account'])
+        $returnpurchase = ReturnPurchase::with(['branch', 'supplier','account', 'products'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
+
 
         return response()->json(['returnpurchase' => $returnpurchase]);
     }
@@ -93,7 +105,8 @@ class ReturnPurchaseController extends Controller
     public function show($id)
     {
         //
-        $returnpurchase = ReturnPurchase::findOrFail($id);
+        $returnpurchase = ReturnPurchase::with(['supplier', 'branch', 'products', 'account'])
+                                        ->findOrFail($id);
 
         return response()->json(['returnpurchase' => $returnpurchase]);
     }
@@ -120,21 +133,43 @@ class ReturnPurchaseController extends Controller
     {
         //
         $request->validate([
-            'date'      => 'required',
-            'total'     => 'required',
-            'supplier'  => 'required',
-            'branch'    => 'required',
-            'account'   => 'required',
-            'return_purchase'=>'required', 
+            'return_purchase'=>'required',
+            'return_des' => 'nullable',
+            'staff_des' => 'nullable' 
         ]);
 
 
         $returnpurchase = ReturnPurchase::findOrFail($id);
         $returnpurchase->date = $request->date;
-        $returnpurchase->account = $request->account;
-        $returnpurchase->branch = $request->branch;
-        $returnpurchase->supplier = $request->supplier;
+        $returnpurchase->account = auth()->id();
+        $returnpurchase->branch = auth()->id();
+        $returnpurchase->supplier = auth()->id();
+        $returnpurchase->reference_no =  $returnpurchase->reference_no;
+        $returnpurchase->return_des = $request->return_des;
+        $returnpurchase->staff_des = $request->staff_des;
         $returnpurchase->save();
+
+         // Save Associate Relationship
+        $returnpurchase->branch()->associate($request->branch['id'])->save();
+        $returnpurchase->supplier()->associate($request->supplier['id'])->save();
+        $returnpurchase->account()->associate($request->account['id'])->save();
+
+        $deletePivot = $purchase->products()
+                                     ->where($request->product['id'], $id)
+                                     ->detach();
+             
+ 
+         
+         foreach($request->products as $product) {
+ 
+             $purchase->products()->attach($product['id'], [
+                 'unit_price' => $product['unit_price'],
+                 'quantity' => $product['quantity'],
+                 'discount' => $product['discount'],
+             ]);
+             
+             // dd($product);
+         }
 
 
         return response()->json([
