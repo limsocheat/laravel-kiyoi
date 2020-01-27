@@ -45,7 +45,7 @@ class TransferController extends Controller
             'shipping_charge' => 'nullable',
         ]);
 
-        // dd($request->all());
+        // dd($request->products);
 
         $count = Transfer::whereDay('created_at', date('d'))->count();
 
@@ -58,13 +58,14 @@ class TransferController extends Controller
         $transfer->shipping_charge = $request->input('shipping_charge');
         $transfer->save();
 
-        $product_id = $request->name['id'];
-        
-        $transfer->products()->attach($product_id, [
-            'unit_price' => $request->name['price'],
-            'quantity' => $request->name['unit'],
-        ]);
-   
+        if($request->products) {
+            foreach($request->products as $product) {
+                $transfer->products()->attach($product['id'], [
+                    'unit_price' => $product['price'],
+                    'quantity' => $product['quantity'],
+                ]);
+            }
+        }
 
         dd($transfer->products);
 
