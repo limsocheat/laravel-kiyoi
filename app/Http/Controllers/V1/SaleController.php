@@ -15,12 +15,17 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $sales = Sale::with(['member'])
+        $query = Sale::with(['member'])
                         ->orderBy('id', 'desc')
-                        ->paginate($itemsPerPage);
+                        ->where('reference_no', 'like', '%' . $request->search . '%')
+                        ->orWhereHas('member', function($q) use ($request) {
+                            $q->where('name', 'like', '%' . $request->search . '%');
+                        });
+                        
+        $sales = $query->paginate($itemsPerPage);
 
         // return SaleResource::collection($sales);
         return response()->json(['sales' => $sales]);
