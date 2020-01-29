@@ -29,7 +29,7 @@ class MemberSeeder extends Seeder
                 'description' => $faker->text,
                 'active' => $faker->randomElement(['1', '0']),
                 'reference_no' => 'AS/' . date('Y') . $i,
-                'payment_status' => $faker->randomElement(['Paid', 'Due']),
+                // 'payment_status' => $faker->randomElement(['Paid', 'Due']),
                 'payment_method' => $faker->randomElement(['Cash', 'Cheque']),
                 'paid' => $faker->randomfloat(2, 100, 10000),
             ]);

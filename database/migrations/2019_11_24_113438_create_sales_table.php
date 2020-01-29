@@ -21,7 +21,7 @@ class CreateSalesTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->string('reference_no')->nullable();
-            $table->string('payment_status');
+            $table->enum('payment_status', ['paid', 'due']);
             $table->string('payment_method');
             $table->string('shipping_cost')->nullable();
             $table->double('paid');

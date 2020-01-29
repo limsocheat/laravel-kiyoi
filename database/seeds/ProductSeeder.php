@@ -24,7 +24,7 @@ class ProductSeeder extends Seeder
                 'user_id' => \App\User::all()->random()->id,
                 'brand_id' => \App\Brand::all()->random()->id,
                 'name' => $faker->randomElement(['Apple', 'PC', 'LapTop', 'Monitor']),
-                // 'image' => $faker->imageUrl($width = 400, $height = 200),
+                'image' => $faker->image('public/image', 50, 50, null, false),
                 'active' => $faker->randomElement(['1', '0']),
                 'code' => $faker->randomNumber($nbDigits = NULL, $strict = false),
                 'barcode' => $faker->creditCardNumber,
