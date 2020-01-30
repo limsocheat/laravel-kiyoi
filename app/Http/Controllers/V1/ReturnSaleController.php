@@ -7,22 +7,28 @@ use App\ReturnSale;
 use App\Branch;
 use App\Member;
 use App\Account;
-use App\Biller;
 use App\Product;
-use App\Supplier;
 use Illuminate\Http\Request;
 
+use App\Exports\ReturnSaleExport;
+use Maatwebsite\Excel\Facades\Excel;
 class ReturnSaleController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+
+    public function export()
+    {
+        return Excel::download(new ReturnSaleExport, 'purchase.xlsx');
+    }
+
     public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $returnsale = ReturnSale::with(['biller', 'member','branch'])
+        $returnsale = ReturnSale::with([ 'account','branch','products', 'member'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
@@ -52,26 +58,26 @@ class ReturnSaleController extends Controller
             'return_des' => 'nullable',
             'staff_des' => 'nullable',
             'items.*.unit_price' => 'required|numeric',
+            'reference_no' => 'nullable|max:100',
         ]);
 
         $count = ReturnSale::whereDay('created_at', date('d'))->count();
         
         $returnsale = new ReturnSale();
        
-        $returnsale->member_id = auth()->user()->id;
-        $returnsale->biller_id = auth()->user()->id;
         $returnsale->product_id = auth()->user()->id;
         $returnsale->branch_id = auth()->user()->id;
-        $returnsale->supplier_id = auth()->user()->id;
+        $returnsale->member_id = auth()->user()->id;
         $returnsale->account_id = auth()->user()->id;
         $returnsale->return_des = $request->return_des;
         $returnsale->staff_des  = $request->staff_des;
-        $returnsale->reference_no =  'pr' . date('Ymd-') . date('His') . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $returnsale->reference_no = 'pr-'.date('Ymd').date('His');
 
-        $new_returnsale = $returnsale->supplier()->associate($request->supplier['id']);
-        $new_returnsale = $returnsale->account()->associate($request->account['id']);
-        $new_returnsale = $returnsale->branch()->associate($request->location['id']);
-        $new_returnsale->save();
+
+        $returnsale->member()->associate($request->member['id'])->save();
+        $returnsale->account()->associate($request->account['id'])->save();
+        $returnsale->branch()->associate($request->location['id'])->save();
+        
 
         if(isset($request->items)) {
             foreach($request->items as $item) {
@@ -83,9 +89,7 @@ class ReturnSaleController extends Controller
             }
         }
 
-        return response()->json([
-            'create' => true,
-        ]);
+        return response()->json(['created' => true]);
         
     }
 
@@ -97,7 +101,7 @@ class ReturnSaleController extends Controller
      */
     public function show($id)
     {
-        $returnsale = ReturnSale::findOrFail($id);
+    $returnsale = ReturnSale::with(['branch' ,'account', 'member', 'products'])->findOrFail($id);
 
         return response()->json(['returnsale' => $returnsale]);
     }
@@ -123,29 +127,44 @@ class ReturnSaleController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'date'      => 'required',
-            'total'     => 'required',
-            'supplier'  => 'required',
-            'branch'    => 'required',
-            'account'   => 'required',
-            'member'    => 'required',
-            'biller'    => 'required'    
+            'return_des'   => 'nullable',
+            'staff_des'    => 'nullable',
+            // 'returnsale'  => 'nullable', 
         ]);
+
+        // dd($request->branch);
+        
+        $count = ReturnSale::whereDay('created_at', date('d'))->count();
 
 
         $returnsale = ReturnSale::findOrFail($id);
-        $returnsale->date = $request->date;
-        $returnsale->biller = $request->biller;
-        $returnsale->account = $request->account;
-        $returnsale->branch = $request->branch;
-        $returnsale->member = $request->member;
-        $returnsale->supplier = $request->supplier;
+
+        $returnsale->branch_id = auth()->user()->id;
+        $returnsale->account_id = auth()->user()->id;
+        $returnsale->member_id = auth()->user()->id;
+        $returnsale->reference_no = 'pr-'.date('Ymd').date('His');
+        $returnsale->return_des = $request->return_des;
+        $returnsale->staff_des = $request->staff_des;
         $returnsale->save();
 
+        $returnsale->branch()->associate($request->branch['id'])->save();
+        $returnsale->member()->associate($request->member['id'])->save();
+        $returnsale->account()->associate($request->account['id'])->save();
+        
+        
+        $removePivot = $returnsale->products()->detach();
+        
+        foreach($request->products as $product) {
+            $returnsale->products()->attach($product['id'], [
+                'unit_price' => $product['unit_price'],
+                'quantity' => $product['quantity'],
+                'discount' => $product['discount'],
+            ]);
+        }
 
-        return response()->json([
-            'updated' => true,
-        ]);
+        dd($returnsale->branch);
+
+        return response()->json(['updated' => true]);
     }
 
     /**
