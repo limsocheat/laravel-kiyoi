@@ -18,7 +18,7 @@ class CreateReturnSalesTable extends Migration
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->boolean('active')->default(1);
             $table->string('reference_no')->nullable();
             $table->text('return_des')->nullable();
@@ -35,7 +35,7 @@ class CreateReturnSalesTable extends Migration
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');  
             
-            $table->foreign('product_id')->references('id')->on('products');  
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');  
         });
         
     }

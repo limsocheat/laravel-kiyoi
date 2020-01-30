@@ -18,7 +18,7 @@ class CreateReturnPurchasesTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->boolean('active')->default(1);
             $table->string('reference_no')->nullable();
             $table->string('file')->nullable();
@@ -29,7 +29,7 @@ class CreateReturnPurchasesTable extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
         });
     }
 
