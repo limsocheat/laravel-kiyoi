@@ -150,7 +150,7 @@ class RolePermissionTableSeeder extends Seeder
             'summary report', 'product report', 'daily sale report', 'monthly sale report',
             'daily purchase report', 'sale report',
             'purchase report', 'warehouse report', 'product qty alert',
-            'customer report', 'supplier report', 'due report', 'pos',
+            'customer report', 'supplier report', 'due report', 'pos', 'return sales' 
         ]);
 
         $sale_Manager = User::where('name', 'saleManager')->first();

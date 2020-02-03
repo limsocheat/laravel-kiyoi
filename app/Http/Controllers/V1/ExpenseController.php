@@ -14,12 +14,23 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $expense = Expense::orderBy('id', 'desc')
-                ->paginate($itemsPerPage);
+        $query = Expense::with(['user'])
+                        ->orderBy('id', 'desc')
+                        ->where('amount', 'like', '%' . $request->search . '%')
+                        ->orWhere('reference_no', 'like', '%' . $request->search . '%')
+                        ->orWhereHas('expense_category', function($q) use ($request) {
+                            $q->where('name', 'like', '%'. $request->search . '%');
+                        })
+                        ->orWhereHas('user', function($q) use ($request) {
+                            $q->where('name', 'like', '%'. $request->search . '%');
+                        })
+                        ->orWhere('reference_no', 'like', '%' . $request->search . '%');
+
+        $expense = $query->paginate($itemsPerPage);
 
         return ExpenseResource::collection($expense);
     }
@@ -42,19 +53,14 @@ class ExpenseController extends Controller
 
         $expense = new Expense();
         $expense->user_id = auth()->user()->id;
-        $expense->expense_category_id = auth()->user()->id;
-        $expense->category = $request->category;
+        $expense->expense_category_id = $request->expense_category['id'];
         $expense->reference_no = 'EP' . now()->year . '/' . str_pad($count + 1 , 4, '0', STR_PAD_LEFT);
         $expense->description = $request->description;
         $expense->amount = $request->amount;
-        $expense->expense_for = $request->expense_for;
         $expense->save();
 
-        $expense_category = new \App\ExpenseCategory();
-        $expense_category->name = $request->name;
-        $expense->expense_category()->associate($expense_category);
-
-        dd($expense);
+        $expense->expense_category()->associate($request->expense_category['id'])->save();
+        $expense->user()->associate($request->expense_for['id'])->save();
 
         return response()->json([
             'created' => true,
@@ -85,17 +91,20 @@ class ExpenseController extends Controller
             'amount' => 'required',
         ]);
 
+        // dd($request->all());
+
+        $count = Expense::whereDay('created_at', date('d'))->count();
+
         $expense = Expense::findOrFail($id);
         $expense->user_id = auth()->user()->id;
-        $expense->category = $request->category;
+        $expense->expense_category_id = $request->expense_category['id'];
+        $expense->reference_no = 'EP' . now()->year . '/' . str_pad($count + 1 , 4, '0', STR_PAD_LEFT);
         $expense->description = $request->description;
         $expense->amount = $request->amount;
-        $expense->expense_for = $request->expense_for;
         $expense->save();
 
-        $expense_category = new \App\ExpenseCategory();
-        $expense_category->name = $request->name;
-        $expense->expense_category()->associate($expense_category);
+        $expense->expense_category()->associate($request->expense_category['id'])->save();
+        $expense->user()->associate($request->expense_for['id'])->save();
 
         return response()->json([
             'updated' => true,
