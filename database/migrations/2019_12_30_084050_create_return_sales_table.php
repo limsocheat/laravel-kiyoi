@@ -16,14 +16,11 @@ class CreateReturnSalesTable extends Migration
         Schema::create('return_sales', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('member_id');
-            $table->unsignedBigInteger('biller_id');
             $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->boolean('active')->default(1);
             $table->string('reference_no')->nullable();
-            // $table->string('file')->nullable();
             $table->text('return_des')->nullable();
             $table->text('staff_des')->nullable();
             $table->timestamps();
@@ -31,13 +28,7 @@ class CreateReturnSalesTable extends Migration
             $table->foreign('member_id')->references('id')->on('members')
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');
-            $table->foreign('biller_id')->references('id')->on('billers')
-                                        ->onDelete('cascade')
-                                        ->onUpdate('cascade');
             $table->foreign('branch_id')->references('id')->on('branches')
-                                        ->onDelete('cascade')
-                                        ->onUpdate('cascade');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');
             $table->foreign('account_id')->references('id')->on('accounts')
