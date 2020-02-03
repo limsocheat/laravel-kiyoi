@@ -14,9 +14,13 @@ class ExpenseCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expense = ExpenseCategory::orderBy('id', 'desc')->get();
+        $expense = ExpenseCategory::orderBy('id', 'desc')
+                    ->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('code', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%')
+                    ->get();
         return $expense;
     }
 
