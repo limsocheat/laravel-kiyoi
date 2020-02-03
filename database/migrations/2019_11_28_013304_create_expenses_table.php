@@ -17,18 +17,14 @@ class CreateExpensesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('expense_category_id');
-            $table->string('category');
             $table->string('reference_no')->nullable();
             $table->text('description')->nullable();
             $table->boolean('active')->default(1);
             $table->double('amount');
-            $table->string('expense_for')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('expense_category_id')->references('id')->on('expense_categories')
-                                                    ->onDelete('cascade')
-                                                    ->onUpdate('cascade');
+            $table->foreign('expense_category_id')->references('id')->on('expense_categories')->onDelete('cascade');
         });
     }
 

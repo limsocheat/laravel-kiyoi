@@ -23,7 +23,6 @@ class ExpenseSeeder extends Seeder
     		Expense::create([
     			'user_id' => \App\User::all()->random()->id,
 		    	'expense_category_id' => \App\ExpenseCategory::all()->random()->id,
-		        'category' => $faker->randomElement(['Electric Bill', 'Cleaning']),
 		        'reference_no' => 'ER' . date('Y') . '/000' . $i,
 		        // 'description' => $faker->text,
 		        'active' => $faker->randomElement(['1', '0']),
