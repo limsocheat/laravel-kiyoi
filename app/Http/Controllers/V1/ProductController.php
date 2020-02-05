@@ -63,7 +63,7 @@ class ProductController extends Controller
             
             file_put_contents($path, $decode);
 
-            $img = \Image::make($path)->resize(50, 50, function($constraint) {
+            $img = \Image::make($path)->resize(null, 90, function($constraint) {
                 $constraint->aspectRatio();
             });
 
@@ -177,7 +177,7 @@ class ProductController extends Controller
             
             file_put_contents($path, $decode);
 
-            $img = \Image::make($path)->resize(50, 50, function($constraint) {
+            $img = \Image::make($path)->resize(null, 90, function($constraint) {
                 $constraint->aspectRatio();
             });
 
