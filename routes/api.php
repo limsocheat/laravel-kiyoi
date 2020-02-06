@@ -52,6 +52,6 @@ Route::group(['middleware' => ['auth:api', 'role:accountant|administrator'], 'pr
     Route::apiResource('expense-category', 'ExpenseCategoryController',);
 });
 
-Route::get('purchase/export', 'V1\PurchaseController@export');
+// Route::get('purchase/export', 'V1\PurchaseController@export');
 
 
