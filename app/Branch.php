@@ -38,4 +38,8 @@ class Branch extends Model
     {
         return $this->hasMany(\App\Sale::class);
     }
+    public function quotations()
+    {
+        return $this->hasMany(\App\Quotation::class);
+    }
 }

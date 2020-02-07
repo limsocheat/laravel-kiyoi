@@ -21,4 +21,8 @@ class Supplier extends Model
     {
         return $this->hasMany(\App\ReturnPurchase::class);
     }
+    public function quotations()
+    {
+        return $this->hasMany(\App\Quotation::class);
+    }
 }
