@@ -40,7 +40,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'payment_status' => 'required',
+            // 'payment_status' => 'required',
             'payment_method' => 'required',
             'shipping_cost' => 'nullable|numeric',
             'reference_no' => 'nullable|max:100',
@@ -49,7 +49,7 @@ class SaleController extends Controller
         ]);
 
 
-        // dd($request->member['id']);
+        // dd($request->all());
 
         $count = Sale::whereDay('created_at', date('d'))->count();
 
@@ -58,7 +58,7 @@ class SaleController extends Controller
         $sale->member_id = auth()->id();
         $sale->branch_id = auth()->id();
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
-        $sale->payment_status = $request->payment_status;
+        // $sale->payment_status = $request->payment_status;
         $sale->payment_method = $request->payment_method;
         $sale->description = $request->description;
         $sale->shipping_cost = $request->shipping_cost;
@@ -66,21 +66,23 @@ class SaleController extends Controller
         $sale->save();
 
         // For Branch
-
-        $location = $request->location['id'];
-        $sale->branch()->associate($location)->save();
+        if($request->location) {
+            $location = $request->location['id'];
+            $sale->branch()->associate($location)->save();
+        }
 
         // For Customer(Member)
-
-        $member = $request->member['id'];
-        $sale->member()->associate($member)->save();
+        if($request->member) {
+            $member = $request->member['id'];
+            $sale->member()->associate($member)->save();
+        }
 
         if(isset($request->items)) {
             foreach($request->items as $item) {
                 $sale->products()->attach($item['id'], [
-                    'unit_price' => $item['unit_price'],
+                    'unit_price' => $item['price'],
                     'quantity' => $item['quantity'],
-                    'discount' => $item['discount'],
+                    // 'discount' => $item['discount'],
                 ]);
             }
         }
@@ -112,7 +114,7 @@ class SaleController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'payment_status' => 'required',
+            // 'payment_status' => 'required',
             'payment_method' => 'required',
             'shipping_cost' => 'nullable|numeric',
             'reference_no' => 'nullable|max:100',
@@ -129,7 +131,7 @@ class SaleController extends Controller
         $sale->member_id = auth()->id();
         $sale->branch_id = auth()->id();
         $sale->payment_method = $request->payment_method;
-        $sale->payment_status = $request->payment_status;
+        // $sale->payment_status = $request->payment_status;
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
         $sale->shipping_cost = $request->shipping_cost;
         $sale->description = $request->description;

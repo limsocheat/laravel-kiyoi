@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Sale extends Model
 {
     protected $fillable = [
-		'description', 'active', 'payment_status', 'total', 'paid', 'due', 'member_id', 'user_id', 'branch_id'
+		'description', 'active', 'payment_status', 'total', 'paid', 'due', 'member_id', 'user_id', 'branch_id',
 	];
 
-    protected $appends = ['grand_total', 'due_amount', 'total_quantity', 'total_price', 'total_discount', 'sub_total'];
+    protected $appends = ['grand_total', 'due_amount', 'total_quantity', 'total_price', 'total_discount', 'sub_total', 'payment_status'];
 
     public function user()
     {
@@ -94,5 +94,27 @@ class Sale extends Model
         }
 
         return array_sum($s);
+    }
+
+
+    // For Payment Method
+
+    public function getPaymentStatusAttribute()
+    {
+        $s = array();
+
+        foreach($this->products as $product) {
+            $s[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
+        }
+
+        $price = array_sum($s);
+
+        if($price > $this->paid) {
+            return 'Due';
+        }
+
+        else {
+            return 'Paid';
+        }
     }
 }

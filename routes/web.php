@@ -15,3 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('purchase/export', 'V1\PurchaseController@export');
