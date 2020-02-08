@@ -18,11 +18,11 @@ class Quotation extends Model
         'description',
         'file',
         'shipping_cost',
-        'unit_price',
-        'discount',
-        'quantity',
+
     ];
 
+    // protected $appends = ['grand_total', 'due_amount', 'total_quantity', 'total_price', 'total_discount', 'sub_total', 'payment_status'];
+    
     protected $appends = ['grand_total', 'total_quantity', 'total_price', 'total_discount', 'sub_total'];
 
 
@@ -95,19 +95,21 @@ class Quotation extends Model
         return array_sum($sum);
     }
     
-
-    // For Calculate Total of each Row Principle
-    // (product.unit_price - (product.unit_price * product.discount) / 100) * product.quantity
     public function getGrandTotalAttribute()
     {   
 
-        $sum = array();
+        $s = array();
 
         foreach($this->products as $product) {
-            $sum[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
+            $s[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
         }
 
-        return array_sum($sum);
+        return array_sum($s);
     }
+
+
+    // For Payment Method
+
+   
 
 }

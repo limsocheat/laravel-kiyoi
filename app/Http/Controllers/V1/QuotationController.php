@@ -95,7 +95,7 @@ class QuotationController extends Controller
         if(isset($request->items)) {
             foreach($request->items as $item) {
                 $quotation->products()->attach($item['id'], [
-                    'unit_price'    => $item['unit_price'],
+                    'unit_price'    => $item['price'],
                     'quantity'      => $item['quantity'],
                     'discount'      => $item['discount'],
                 ]);
@@ -150,7 +150,7 @@ class QuotationController extends Controller
         $quotation->reference_no = $quotation->reference_no;
         $quotation->description = $request->description;
         $quotation->shipping_cost = $quotation->shipping_cost;
-        $quotation->file = $request->file;
+        $quotation->file = $quotation->file;
         $quotation->status = $request->status;
         $quotation->save();
 
