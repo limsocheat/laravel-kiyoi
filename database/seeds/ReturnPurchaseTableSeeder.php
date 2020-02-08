@@ -25,7 +25,6 @@ class ReturnPurchaseTableSeeder extends Seeder
                 'active'        => $faker->randomElement(['1', '0']),
                 'return_des'    => $faker->text,
                 'staff_des'     => $faker->text,
-                // 'reference_no'  => 'pr-'.date('Ymd').date('Hi'),
                 'product_id' => \App\Product::all()->random()->id,
                 'reference_no'  => 'PR'.date('Y') .'000'. $i,
                

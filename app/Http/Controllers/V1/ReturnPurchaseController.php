@@ -81,7 +81,7 @@ class ReturnPurchaseController extends Controller
         $returnpurchase->account_id = auth()->user()->id;
         $returnpurchase->return_des = $request->return_des;
         $returnpurchase->staff_des  = $request->staff_des;
-        $returnpurchase->reference_no ='PR'.date('Y'). str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $returnpurchase->reference_no = $request->reference_no;
 
         $returnpurchase->supplier()->associate($request->supplier['id'])->save();
         $returnpurchase->account()->associate($request->account['id'])->save();
@@ -149,7 +149,7 @@ class ReturnPurchaseController extends Controller
         $returnpurchase->account_id = auth()->user()->id;
         $returnpurchase->branch_id = auth()->user()->id;
         $returnpurchase->supplier_id = auth()->user()->id;
-        $returnpurchase->reference_no = $returnpurchase->reference_no;
+        $returnpurchase->reference_no = $request->reference_no;
         $returnpurchase->return_des = $request->return_des;
         $returnpurchase->staff_des = $request->staff_des;
         $returnpurchase->save();
@@ -163,7 +163,7 @@ class ReturnPurchaseController extends Controller
 
         foreach($request->products as $product) {
             $returnpurchase->products()->attach($product['id'], [
-                'unit_price' => $product['unit_price'],
+                'unit_price' => $product['price'],
                 'quantity' => $product['quantity'],
                 'discount' => $product['discount'],
             ]);
