@@ -86,18 +86,15 @@ class ReturnPurchase extends Model
         return array_sum($sum);
     }
     
-
-    // For Calculate Total of each Row Principle
-    // (product.unit_price - (product.unit_price * product.discount) / 100) * product.quantity
     public function getGrandTotalAttribute()
     {   
 
-        $sum = array();
+        $s = array();
 
         foreach($this->products as $product) {
-            $sum[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
+            $s[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
         }
 
-        return array_sum($sum);
+        return array_sum($s);
     }
 }

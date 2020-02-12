@@ -14,9 +14,6 @@ class ReturnSale extends Model
         'active',
         'return_des',
         'staff_des',
-        'unit_price', 
-        'quantity', 
-        'discount',
         'product_id',
     ];
 

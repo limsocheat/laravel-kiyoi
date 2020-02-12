@@ -28,9 +28,19 @@ class ReturnSaleController extends Controller
     public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $returnsale = ReturnSale::with([ 'account','branch','products', 'member'])
+        $search = ReturnSale::with([ 'account','branch','products', 'member'])
                         ->orderBy('id', 'desc')
-                        ->paginate($itemsPerPage);
+                        ->where('reference_no', 'like', "%".$request->search."%")
+                        ->orWhereHas('branch', function ($query) use ($request){
+                            $query->where('branches.address', 'like',"%".$request->search."%");
+                        })
+                        ->orWhereHas('member', function ($query) use ($request) {
+                            $query->where('members.name', 'like', "%".$request->search."%");
+                        })
+                        ->orWhereHas('account', function($query) use ($request){
+                            $query->where('accounts.name', 'like', "%".$request->search."%");
+                        });
+        $returnsale =  $search->paginate($itemsPerPage);
 
         return response()->json(['returnsale' => $returnsale]);
     }
@@ -71,7 +81,7 @@ class ReturnSaleController extends Controller
         $returnsale->account_id = auth()->user()->id;
         $returnsale->return_des = $request->return_des;
         $returnsale->staff_des  = $request->staff_des;
-        $returnsale->reference_no = 'pr-'.date('Ymd').date('His');
+        $returnsale->reference_no = $request->reference_no;
 
 
         $returnsale->member()->associate($request->member['id'])->save();
@@ -82,7 +92,7 @@ class ReturnSaleController extends Controller
         if(isset($request->items)) {
             foreach($request->items as $item) {
                 $returnsale->products()->attach($item['id'], [
-                    'unit_price'    => $item['unit_price'],
+                    'unit_price'    => $item['price'],
                     'quantity'      => $item['quantity'],
                     'discount'      => $item['discount'],
                 ]);
@@ -142,7 +152,7 @@ class ReturnSaleController extends Controller
         $returnsale->branch_id = auth()->user()->id;
         $returnsale->account_id = auth()->user()->id;
         $returnsale->member_id = auth()->user()->id;
-        $returnsale->reference_no = 'pr-'.date('Ymd').date('His');
+        $returnsale->reference_no = $request->reference_no;
         $returnsale->return_des = $request->return_des;
         $returnsale->staff_des = $request->staff_des;
         $returnsale->save();
@@ -156,7 +166,7 @@ class ReturnSaleController extends Controller
         
         foreach($request->products as $product) {
             $returnsale->products()->attach($product['id'], [
-                'unit_price' => $product['unit_price'],
+                'unit_price' => $product['price'],
                 'quantity' => $product['quantity'],
                 'discount' => $product['discount'],
             ]);

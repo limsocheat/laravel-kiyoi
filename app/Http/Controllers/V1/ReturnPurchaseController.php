@@ -26,13 +26,22 @@ class ReturnPurchaseController extends Controller
         return Excel::download(new ReturnPurchaseExport, 'purchase.xlsx');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $returnpurchase = ReturnPurchase::with(['branch', 'supplier','account', 'products'])
+        $search = ReturnPurchase::with(['branch', 'supplier','account', 'products'])
                         ->orderBy('id', 'desc')
-                        ->paginate($itemsPerPage);
-
+                        ->where('reference_no', 'like', "%".$request->search."%")
+                        ->orWhereHas('branch', function ($query) use ($request){
+                            $query->where('branches.address', 'like',"%".$request->search."%");
+                        })
+                        ->orWhereHas('supplier', function ($query) use ($request) {
+                            $query->where('suppliers.name', 'like', "%".$request->search."%");
+                        })
+                        ->orWhereHas('account', function($query) use ($request){
+                            $query->where('accounts.name', 'like', "%".$request->search."%");
+                        });
+        $returnpurchase =  $search->paginate($itemsPerPage);
 
         return response()->json(['returnpurchase' => $returnpurchase]);
     }
@@ -72,7 +81,7 @@ class ReturnPurchaseController extends Controller
         $returnpurchase->account_id = auth()->user()->id;
         $returnpurchase->return_des = $request->return_des;
         $returnpurchase->staff_des  = $request->staff_des;
-        $returnpurchase->reference_no ='pr-'.date('Ymd').date('His');
+        $returnpurchase->reference_no = $request->reference_no;
 
         $returnpurchase->supplier()->associate($request->supplier['id'])->save();
         $returnpurchase->account()->associate($request->account['id'])->save();
@@ -81,7 +90,7 @@ class ReturnPurchaseController extends Controller
         if(isset($request->items)) {
             foreach($request->items as $item) {
                 $returnpurchase->products()->attach($item['id'], [
-                    'unit_price'    => $item['unit_price'],
+                    'unit_price'    => $item['price'],
                     'quantity'      => $item['quantity'],
                     'discount'      => $item['discount'],
                 ]);
@@ -140,7 +149,7 @@ class ReturnPurchaseController extends Controller
         $returnpurchase->account_id = auth()->user()->id;
         $returnpurchase->branch_id = auth()->user()->id;
         $returnpurchase->supplier_id = auth()->user()->id;
-        $returnpurchase->reference_no = 'pr-'.date('Ymd').date('His');
+        $returnpurchase->reference_no = $request->reference_no;
         $returnpurchase->return_des = $request->return_des;
         $returnpurchase->staff_des = $request->staff_des;
         $returnpurchase->save();
@@ -154,7 +163,7 @@ class ReturnPurchaseController extends Controller
 
         foreach($request->products as $product) {
             $returnpurchase->products()->attach($product['id'], [
-                'unit_price' => $product['unit_price'],
+                'unit_price' => $product['price'],
                 'quantity' => $product['quantity'],
                 'discount' => $product['discount'],
             ]);

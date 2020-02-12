@@ -35,5 +35,8 @@ class Member extends Model
 	{
 		return $this->hasMany(\App\ReturnSale::class);
 	}
-	
+	public function quotations()
+	{
+		return $this->hasMany(\App\Quotation::class);
+	}
 }
