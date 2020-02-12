@@ -34,7 +34,7 @@ class Product extends Model
 
     public function sales()
     {
-        return $this->belongsToMany(\App\Sale::class)->withPivot('quantity', 'unit_price', 'discount');
+        return $this->belongsToMany(\App\Sale::class)->withPivot('quantity', 'unit_price');
     }
 
     public function brand()

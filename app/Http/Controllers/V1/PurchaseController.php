@@ -14,12 +14,21 @@ use App\Http\Resources\PurchaseResource;
 
 use App\Exports\PurchaseExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class PurchaseController extends Controller
 {
     public function export()
     {
         return Excel::download(new PurchaseExport, 'purchase.xlsx');
+    }
+
+
+    public function export_pdf()
+    {
+        return Excel::download(new PurchaseExport, 'purchase.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function index(Request $request)

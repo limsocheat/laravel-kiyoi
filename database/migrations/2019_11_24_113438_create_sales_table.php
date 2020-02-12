@@ -23,7 +23,8 @@ class CreateSalesTable extends Migration
             $table->string('reference_no')->nullable();
             // $table->enum('payment_status', ['paid', 'due'])->nullable();
             $table->string('payment_method');
-            $table->string('shipping_cost')->nullable();
+            $table->string('shipping_cost')->default(0)->nullable();
+            $table->integer('discount')->default(0)->nullable();
             $table->double('paid');
             $table->timestamps();
 

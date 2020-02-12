@@ -48,9 +48,6 @@ class SaleController extends Controller
             'items.*.unit_price' => 'required|numeric'
         ]);
 
-
-        // dd($request->all());
-
         $count = Sale::whereDay('created_at', date('d'))->count();
 
         $sale = new Sale();
@@ -60,6 +57,7 @@ class SaleController extends Controller
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
         // $sale->payment_status = $request->payment_status;
         $sale->payment_method = $request->payment_method;
+        $sale->discount = $request->discount;
         $sale->description = $request->description;
         $sale->shipping_cost = $request->shipping_cost;
         $sale->paid = $request->paid;
@@ -80,14 +78,12 @@ class SaleController extends Controller
         if(isset($request->items)) {
             foreach($request->items as $item) {
                 $sale->products()->attach($item['id'], [
-                    'unit_price' => $item['price'],
+                    'unit_price' => $item['unit_price'],
                     'quantity' => $item['quantity'],
                     // 'discount' => $item['discount'],
                 ]);
             }
         }
-
-        dd($sale->products);
 
         return response()->json(['created' => true]);
     }
@@ -133,6 +129,7 @@ class SaleController extends Controller
         $sale->payment_method = $request->payment_method;
         // $sale->payment_status = $request->payment_status;
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $sale->discount = $request->discount;
         $sale->shipping_cost = $request->shipping_cost;
         $sale->description = $request->description;
         $sale->paid = $request->paid;
@@ -149,7 +146,7 @@ class SaleController extends Controller
             $sale->products()->attach($product['id'], [
                 'unit_price' => $product['unit_price'],
                 'quantity' => $product['quantity'],
-                'discount' => $product['discount'],
+                // 'discount' => $product['discount'],
             ]);
         }
 

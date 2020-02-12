@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 
 Route::get('purchase/export', 'V1\PurchaseController@export');
+Route::get('purchase/export-pdf', 'V1\PurchaseController@export_pdf');
