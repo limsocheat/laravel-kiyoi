@@ -55,3 +55,6 @@ Route::group(['middleware' => ['auth:api', 'role:accountant|administrator'], 'pr
 // Route::get('purchase/export', 'V1\PurchaseController@export');
 
 
+Route::post('purchase/upload', 'V1\PurchaseController@import');
+Route::get('purchase/export', 'V1\PurchaseController@export');
+Route::get('purchase/export-pdf', 'V1\PurchaseController@export_pdf');

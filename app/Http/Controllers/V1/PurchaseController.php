@@ -18,6 +18,8 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
+use App\Imports\PurchaseImport;
+
 class PurchaseController extends Controller
 {
     public function export()
@@ -30,6 +32,17 @@ class PurchaseController extends Controller
     {
         return Excel::download(new PurchaseExport, 'purchase.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
+
+    public function import() 
+    {
+        // dd($request->get('file'));
+
+        $file = Excel::import(new PurchaseImport, request()->file('file'));
+        
+
+        // return response()->json(['success', 'All good!']);
+    }
+
 
     public function index(Request $request)
     {
