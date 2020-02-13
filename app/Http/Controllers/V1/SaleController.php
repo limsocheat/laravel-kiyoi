@@ -52,8 +52,8 @@ class SaleController extends Controller
 
         $sale = new Sale();
         $sale->user_id = auth()->id();
-        $sale->member_id = auth()->id();
-        $sale->branch_id = auth()->id();
+        $sale->member_id = $request->member['id'];
+        $sale->branch_id = $request->location['id'];
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
         // $sale->payment_status = $request->payment_status;
         $sale->payment_method = $request->payment_method;
@@ -124,8 +124,8 @@ class SaleController extends Controller
 
         $sale = Sale::findOrFail($id);
         $sale->user_id = auth()->id();
-        $sale->member_id = auth()->id();
-        $sale->branch_id = auth()->id();
+        $sale->member_id = $request->member['id'];
+        $sale->branch_id = $request->branch['id'];
         $sale->payment_method = $request->payment_method;
         // $sale->payment_status = $request->payment_status;
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
