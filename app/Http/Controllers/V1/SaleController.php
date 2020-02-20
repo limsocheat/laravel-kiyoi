@@ -16,17 +16,29 @@ class SaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $query = Sale::with(['member'])
-                        ->orderBy('id', 'desc')
-                        ->where('reference_no', 'like', '%' . $request->search . '%')
-                        ->orWhereHas('member', function($q) use ($request) {
-                            $q->where('name', 'like', '%' . $request->search . '%');
-                        });
-                        
-        $sales = $query->paginate($itemsPerPage);
+    {   
 
+        if($request->get('user_id')) {
+        }
+        dd(auth()->user()->id);
+        
+
+        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
+
+        $query = Sale::where('user_id', auth()->user()->id)
+                    ->with(['member'])->orderBy('id', 'desc');
+    
+        if($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('reference_no', 'like', '%' . $request->search . '%')
+                ->orWhereHas('member', function($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search . '%');
+                });
+            });
+        }
+        
+        $sales = $query->paginate($itemsPerPage);
+        
         // return SaleResource::collection($sales);
         return response()->json(['sales' => $sales]);
     }
