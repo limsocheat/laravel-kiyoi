@@ -18,13 +18,31 @@ class TransferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
 
-        $transfer = Transfer::with(['branch', 'products'])
-                        ->orderBy('id', 'desc')
-                        ->paginate($itemsPerPage);
+        $query = Transfer::with(['branch', 'products'])
+                        ->orderBy('id', 'desc');
+        
+        if($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('from_location', 'like', '%' . $request->search . '%')
+                ->orWhere('to_location', 'like', '%' . $request->search . '%')
+                ->orWhere('status', 'like', '%' . $request->search . '%')
+                ->orWhere('shipping_charge', 'like', '%' . $request->search . '%')
+
+                // Search Thorough Branch Relationship
+                ->orWhereHas('branch', function($q) use ($request) {
+                    $q->where('name', 'like', '%' .  $request->search . '%')
+                    ->orWhere('address', 'like', '%' .  $request->search . '%')
+                    ->orWhere('city', 'like', '%' .  $request->search . '%')
+                    ->orWhere('country', 'like', '%' .  $request->search . '%');
+                });
+            });
+        }
+
+        $transfer = $query->paginate($itemsPerPage);
 
         return response()->json(['transfer' => $transfer]);
     }
