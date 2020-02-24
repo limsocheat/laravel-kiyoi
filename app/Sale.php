@@ -4,13 +4,33 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Contracts\Activity;
+
 class Sale extends Model
 {
+
+    use LogsActivity;
+
+    protected static $logAttributes = ['payment_status', 'user_name'];
+
     protected $fillable = [
 		'description', 'active', 'payment_status', 'total', 'paid', 'due', 'member_id', 'user_id', 'branch_id',
 	];
 
-    protected $appends = ['grand_total', 'due_amount', 'total_quantity', 'total_price', 'total_discount', 'sub_total', 'payment_status'];
+    protected $appends = ['grand_total', 'due_amount', 'total_quantity', 'total_price', 'total_discount', 'sub_total', 'payment_status', 'user_name'];
+
+    
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        $activity->description = "Sale was {$eventName}";
+    }
+    
+    public function getUserNameAttribute()
+    {
+        # code...
+        return auth()->user()->name;
+    }
 
     public function user()
     {

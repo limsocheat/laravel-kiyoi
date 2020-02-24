@@ -28,7 +28,7 @@ class SaleController extends Controller
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
 
         if($user->roles[0]->name == 'administrator' || $user->roles[0]->name == 'accountant') {
-            $query = Sale::with(['member'])->orderBy('id', 'desc');
+            $query = Sale::with(['member', 'user'])->orderBy('id', 'desc');
             
             if($request->search) {
                 $query->where(function($q) use ($request) {
@@ -45,7 +45,7 @@ class SaleController extends Controller
 
         else {
             $query = Sale::where('user_id', auth()->user()->id)
-                        ->with(['member'])->orderBy('id', 'desc');
+                        ->with(['member', 'user'])->orderBy('id', 'desc');
             
             if($request->search) {
                 $query->where(function($q) use ($request) {
