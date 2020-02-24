@@ -154,6 +154,9 @@ class RolePermissionTableSeeder extends Seeder
         ]);
 
 
+        $saleMan = User::where('name', 'saleman2')->first();
+        $saleMan->assignRole('saleman');
+
         // SuperVisor
         $superVisor = Role::where('name', 'supervisor')->first();
         $superVisor->syncPermissions([
@@ -172,6 +175,7 @@ class RolePermissionTableSeeder extends Seeder
 
         $sale_man = User::where('name', 'saleman')->first();
         $sale_man->assignRole('saleman');
+
 
         // WebController
         $webAdmin = Role::where('name', 'webAdmin')->first();

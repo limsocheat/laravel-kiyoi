@@ -4,12 +4,39 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Contracts\Activity;
+
 class Product extends Model
 {
 
 	protected $fillable = [
         'name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price', 'user_id', 'order_id', 'sale_id', 'brand_id', 'image'
     ];
+
+
+    use LogsActivity;
+
+    protected $appends = ['user_name', 'type'];
+
+    protected static $logAttributes = ['name', 'user_name', 'type'];
+
+    // public function tapActivity(Activity $activity, string $eventName)
+    // {
+    //     $activity->description = "Product {$eventName}";
+    // }
+
+    public function getTypeAttribute()
+    {
+        return 'Product ';
+    }
+
+    public function getUserNameAttribute()
+    {
+        if(auth()->check() === true) {
+            return auth()->user()->name;
+        }
+    }
 
     public function user()
     {
@@ -34,7 +61,7 @@ class Product extends Model
 
     public function sales()
     {
-        return $this->belongsToMany(\App\Sale::class)->withPivot('quantity', 'unit_price', 'discount');
+        return $this->belongsToMany(\App\Sale::class)->withPivot('quantity', 'unit_price');
     }
 
     public function brand()

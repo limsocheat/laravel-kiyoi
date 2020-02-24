@@ -24,7 +24,7 @@ class Sale extends Model
 
     public function products()
     {
-        return $this->belongsToMany(\App\Product::class)->withPivot('quantity', 'discount', 'unit_price');
+        return $this->belongsToMany(\App\Product::class)->withPivot('quantity', 'unit_price');
     }
 
     public function branch()
@@ -37,7 +37,7 @@ class Sale extends Model
     {
         $sum = array();
         foreach($this->products as $product) {
-            $sum[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
+            $sum[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $this->discount) / 100) * $product->pivot->quantity;
         }
 
         return array_sum($sum);
@@ -59,7 +59,7 @@ class Sale extends Model
     {
         $sum = array();
         foreach($this->products as $product) {
-            $sum[] =  $product->pivot->discount;
+            $sum[] =  $this->discount;
         }
 
         return array_sum($sum);
@@ -90,10 +90,12 @@ class Sale extends Model
         $s = array();
 
         foreach($this->products as $product) {
-            $s[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
+            $s[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $this->discount) / 100) * $product->pivot->quantity;
         }
 
-        return array_sum($s);
+        $sum = array_sum($s) + $this->shipping_cost;
+
+        return $sum;
     }
 
 
@@ -104,7 +106,7 @@ class Sale extends Model
         $s = array();
 
         foreach($this->products as $product) {
-            $s[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $product->pivot->discount) / 100) * $product->pivot->quantity;
+            $s[] = ($product->pivot->unit_price - ($product->pivot->unit_price * $this->discount) / 100) * $product->pivot->quantity;
         }
 
         $price = array_sum($s);

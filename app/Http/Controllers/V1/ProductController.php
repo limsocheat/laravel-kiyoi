@@ -21,7 +21,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {   
 
-        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
+        $itemsPerPage = empty(request('itemsPerPage')) ? 10 : (int)request('itemsPerPage');
         $products = Product::with(['brand', 'orders'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
@@ -158,8 +158,8 @@ class ProductController extends Controller
         ]);
 
 
-        // dd($request->all());
-        
+        // dd($request->get('image'));
+
         // Save Image
         if($request->get('image')) {
             $exploded = explode(',', $request->image);

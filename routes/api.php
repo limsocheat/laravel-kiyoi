@@ -37,7 +37,11 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'quotation'     => 'QuotationController',
         'return-sale'    => 'ReturnSaleController',
         'return-purchase'=> 'ReturnPurchaseController',
+
+        'calendar' => 'CalendarController'
     ]);
+
+    Route::get('activity', 'ActivityController@index');
 });
 
 
@@ -54,4 +58,8 @@ Route::group(['middleware' => ['auth:api', 'role:accountant|administrator'], 'pr
 
 // Route::get('purchase/export', 'V1\PurchaseController@export');
 
+
+Route::post('purchase/upload', 'V1\PurchaseController@import');
+Route::get('purchase/export', 'V1\PurchaseController@export');
+Route::get('purchase/export-pdf', 'V1\PurchaseController@export_pdf');
 

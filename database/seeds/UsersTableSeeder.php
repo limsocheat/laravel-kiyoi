@@ -42,6 +42,12 @@ class UsersTableSeeder extends Seeder
                 "password"  => 'secret',
             ],
 
+            [
+                'name'      => "saleman2",
+                "email"     => "saleman2@mail.com",
+                "password"  => 'secret',
+            ],
+
             // Web Admin
             [
                 'name'      => "webAdmin",

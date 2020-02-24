@@ -8,6 +8,9 @@ use App\Sale;
 use App\Branch;
 use App\Http\Resources\SaleResource;
 
+
+use App\User;
+
 class SaleController extends Controller
 {
     /**
@@ -16,17 +19,48 @@ class SaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $query = Sale::with(['member'])
-                        ->orderBy('id', 'desc')
-                        ->where('reference_no', 'like', '%' . $request->search . '%')
-                        ->orWhereHas('member', function($q) use ($request) {
-                            $q->where('name', 'like', '%' . $request->search . '%');
-                        });
-                        
-        $sales = $query->paginate($itemsPerPage);
+    {   
 
+        $user = auth()->user();
+
+        // dd($user->roles[0]->name);
+
+        $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
+
+        if($user->roles[0]->name == 'administrator' || $user->roles[0]->name == 'accountant') {
+            $query = Sale::with(['member'])->orderBy('id', 'desc');
+            
+            if($request->search) {
+                $query->where(function($q) use ($request) {
+                    $q->where('reference_no', 'like', '%' . $request->search . '%')
+                    ->orWhereHas('member', function($q) use ($request) {
+                        $q->where('name', 'like', '%' . $request->search . '%');
+                    });
+                });
+            }
+            
+            $sales = $query->paginate($itemsPerPage);
+        }
+
+
+        else {
+            $query = Sale::where('user_id', auth()->user()->id)
+                        ->with(['member'])->orderBy('id', 'desc');
+            
+            if($request->search) {
+                $query->where(function($q) use ($request) {
+                    $q->where('reference_no', 'like', '%' . $request->search . '%')
+                    ->orWhereHas('member', function($q) use ($request) {
+                        $q->where('name', 'like', '%' . $request->search . '%');
+                    });
+                });
+            }
+            
+            $sales = $query->paginate($itemsPerPage);
+        }
+    
+        
+        
         // return SaleResource::collection($sales);
         return response()->json(['sales' => $sales]);
     }
@@ -48,18 +82,16 @@ class SaleController extends Controller
             'items.*.unit_price' => 'required|numeric'
         ]);
 
-
-        // dd($request->all());
-
         $count = Sale::whereDay('created_at', date('d'))->count();
 
         $sale = new Sale();
         $sale->user_id = auth()->id();
-        $sale->member_id = auth()->id();
-        $sale->branch_id = auth()->id();
-        $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $sale->member_id = $request->member['id'];
+        $sale->branch_id = $request->location['id'];
+        $sale->reference_no = 'AS/'  . str_pad($count + 1, 5, '0', STR_PAD_LEFT);
         // $sale->payment_status = $request->payment_status;
         $sale->payment_method = $request->payment_method;
+        $sale->discount = $request->discount;
         $sale->description = $request->description;
         $sale->shipping_cost = $request->shipping_cost;
         $sale->paid = $request->paid;
@@ -80,14 +112,12 @@ class SaleController extends Controller
         if(isset($request->items)) {
             foreach($request->items as $item) {
                 $sale->products()->attach($item['id'], [
-                    'unit_price' => $item['price'],
+                    'unit_price' => $item['unit_price'],
                     'quantity' => $item['quantity'],
                     // 'discount' => $item['discount'],
                 ]);
             }
         }
-
-        dd($sale->products);
 
         return response()->json(['created' => true]);
     }
@@ -120,19 +150,19 @@ class SaleController extends Controller
             'reference_no' => 'nullable|max:100',
             'paid' => 'required|numeric',
         ]);
+        
+        // $count = Sale::whereDay('created_at', date('d'))->count();
 
-        
-        // dd($request->product['id']);
-        
-        $count = Sale::whereDay('created_at', date('d'))->count();
+        // dd(date('d'), str_pad($count + 1, 5, '0', STR_PAD_LEFT));
 
         $sale = Sale::findOrFail($id);
         $sale->user_id = auth()->id();
-        $sale->member_id = auth()->id();
-        $sale->branch_id = auth()->id();
+        $sale->member_id = $request->member['id'];
+        $sale->branch_id = $request->branch['id'];
         $sale->payment_method = $request->payment_method;
         // $sale->payment_status = $request->payment_status;
-        $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        // $sale->reference_no = 'AS/'  . str_pad($count + 1, 4, '0', STR_PAD_LEFT);
+        $sale->discount = $request->discount;
         $sale->shipping_cost = $request->shipping_cost;
         $sale->description = $request->description;
         $sale->paid = $request->paid;
@@ -149,7 +179,7 @@ class SaleController extends Controller
             $sale->products()->attach($product['id'], [
                 'unit_price' => $product['unit_price'],
                 'quantity' => $product['quantity'],
-                'discount' => $product['discount'],
+                // 'discount' => $product['discount'],
             ]);
         }
 
