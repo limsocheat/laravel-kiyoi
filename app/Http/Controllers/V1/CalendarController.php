@@ -39,7 +39,7 @@ class CalendarController extends Controller
             'color' => 'required',
         ]);
         
-        // dd($request->all());    
+        // dd($request->all());
 
         $calendar = new Calendar();
         $calendar->title = $request->title;
@@ -47,10 +47,10 @@ class CalendarController extends Controller
         $calendar->start = Carbon::create($request->start)->format('Y-m-d');
         $calendar->end = Carbon::create($request->end)->format('Y-m-d');
         $calendar->color = $request->color;
-
-        // dd($calendar);
-
         $calendar->save();
+
+        $user = auth()->user();
+        $user->notify((new \App\Notifications\Event($calendar))->delay(Carbon::now()->addMinutes(5)));
 
         return response()->json(['created' => true]);
     }
