@@ -15,7 +15,7 @@ class RolePermissionTableSeeder extends Seeder
     public function run()
     {
         $roles  = [
-            'superAdmin', 'administrator', 'accountant', 'saleManager', 'Supervisor', 'saleman', 'webAdmin',
+            'superAdmin', 'administrator', 'accountant', 'saleManager', 'Supervisor', 'saleman', 'technician',
             'member',
         ];
 
@@ -153,10 +153,6 @@ class RolePermissionTableSeeder extends Seeder
             'customer report', 'supplier report', 'due report', 'pos', 'return sales' 
         ]);
 
-
-        $saleMan = User::where('name', 'saleman2')->first();
-        $saleMan->assignRole('saleman');
-
         // SuperVisor
         $superVisor = Role::where('name', 'supervisor')->first();
         $superVisor->syncPermissions([
@@ -178,13 +174,13 @@ class RolePermissionTableSeeder extends Seeder
 
 
         // WebController
-        $webAdmin = Role::where('name', 'webAdmin')->first();
-        $webAdmin->syncPermissions([
+        $technician = Role::where('name', 'technician')->first();
+        $technician->syncPermissions([
             'view website', 'add website', 'edit website', 'delete website',
         ]);
-        $webAdmin->syncPermissions(['view website', 'add website', 'edit website']);
+        $technician->syncPermissions(['view website', 'add website', 'edit website']);
 
-        $web = User::where('name', 'webAdmin')->first();
-        $web->assignRole('webAdmin');
+        $web = User::where('name', 'technician')->first();
+        $web->assignRole('technician');
     }
 }

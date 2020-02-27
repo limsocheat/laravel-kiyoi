@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\{User};
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class UserController extends Controller
 {
     /**
@@ -50,14 +53,17 @@ class UserController extends Controller
 
         $user = new User();
         $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->address = $request->address;
         $user->role = $request->role;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
 
+        // Assign User Role
         $user->assignRole($request->role);
+
+        dd($user);
 
         return response()->json([
             'created' => true,
@@ -92,14 +98,9 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
-        $user->address = $request->address;
-        $user->role = $request->role;
-        $user->phone = $request->phone;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
-
-        $user->assignRole($request->role);
 
         return response()->json([
             'updated' => true,

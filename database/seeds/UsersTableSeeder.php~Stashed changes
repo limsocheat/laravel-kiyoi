@@ -48,8 +48,8 @@ class UsersTableSeeder extends Seeder
 
             // Web Admin
             [
-                'name'      => "technician",
-                "email"     => "technician@mail.com",
+                'name'      => "webAdmin",
+                "email"     => "webAdmin@mail.com",
                 "password"  => 'secret',
             ],
 
@@ -72,8 +72,8 @@ class UsersTableSeeder extends Seeder
                 'name'      => $user['name'],
                 'email'     =>  $user['email'],
                 'password'  => bcrypt($user['password']),
-                'address' => $faker->address,
                 'phone' => $faker->phoneNumber,
+                'address' => $faker->address,
             ]);
         endforeach;
     }
