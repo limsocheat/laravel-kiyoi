@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 
 
+// Register Route
+Route::post('register', 'V1\Auth\LoginController@register');
 
 Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1'], function () {
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
@@ -12,7 +14,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         Route::get('permissions', 'PermissionController')->name('permission');
         Route::get('roles', 'RoleController')->name('roles');
     });
-
+ 
+    
     Route::apiResources([
         'user'  => 'UserController',
         'product'  => 'ProductController',
