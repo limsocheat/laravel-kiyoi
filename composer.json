@@ -12,6 +12,7 @@
         "barryvdh/laravel-dompdf": "^0.8.5",
         "dompdf/dompdf": "^0.8.3",
         "fideloper/proxy": "^4.0",
+        "fruitcake/laravel-cors": "^1.0",
         "haruncpi/laravel-id-generator": "^1.0",
         "intervention/image": "^2.5",
         "laravel/framework": "^6.2",
