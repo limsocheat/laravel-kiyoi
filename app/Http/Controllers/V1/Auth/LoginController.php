@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 
-use Illuminate\Support\Facades\Cookie;
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -19,18 +19,22 @@ class LoginController extends Controller
             'password' => 'required|between:6, 25',
         ]);
 
-        $referrer_by = App\User::where('referral_code', $request->referrer_by)->get();
-
-        dd($referrer_by);
+        $referred_by = User::where('referral_code', '=', $request->referred_by)->get();
 
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        // $user->referrer_by = ;
+        $user->referral_code = strtoupper(substr(uniqid(), 0, 8));
+        $user->referred_by = $referred_by[0]->name;
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return response()->json(['registered' => true ]);
+        $user->assignRole('member');
+
+        return response()->json([
+            'user' => $user,
+            'token' => $user->createToken('SPA')->accessToken,
+        ]);
     }
     
     public function passport(Request $request)

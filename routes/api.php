@@ -48,12 +48,12 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
 });
 
 
-Route::group(['middleware' => ['auth:api', 'role:saleman|administrator'], 'prefix' => 'v1', 'namespace' => 'V1'], function () {
+Route::group(['middleware' => ['auth:api'], 'prefix' => 'v1', 'namespace' => 'V1'], function () {
 
     Route::apiResource('sale', 'SaleController');
 });
 
-Route::group(['middleware' => ['auth:api', 'role:accountant|administrator'], 'prefix' => 'v1', 'namespace' => 'V1'], function () {
+Route::group(['middleware' => ['auth:api'], 'prefix' => 'v1', 'namespace' => 'V1'], function () {
 
     Route::apiResource('transaction', 'SaleController');
     Route::apiResource('expense-category', 'ExpenseCategoryController');
@@ -68,3 +68,6 @@ Route::get('purchase/export-pdf', 'V1\PurchaseController@export_pdf');
 
 Route::get('data/roles', 'V1\Common\DataController@roles');
 
+Route::get('/cookie', function() {
+    return Cookie::get('referral');
+});

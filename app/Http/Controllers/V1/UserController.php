@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\{User};
 
+use Spatie\Permission\Models\Role;
+
 class UserController extends Controller
 {
     /**
@@ -50,11 +52,12 @@ class UserController extends Controller
 
         $user = new User();
         $user->name = $request->name;
-        $user->address = $request->address;
-        $user->phone = $request->phone;
         $user->email = $request->email;
+        $user->referral_code = strtoupper(substr(uniqid(), 0, 8));
         $user->password = bcrypt($request->password);
         $user->save();
+
+        $user->syncRoles($request->role_ids);
 
         return response()->json([
             'created' => true,
@@ -87,17 +90,18 @@ class UserController extends Controller
             'password' => 'required|between:6,25'
         ]);
 
+        // dd($request->role_ids);
+
         $user = User::findOrFail($id);
         $user->name = $request->name;
-        $user->address = $request->address;
-        $user->role = $request->role;
-        $user->phone = $request->phone;
+        // $user->address = $request->address;
+        // $user->phone = $request->phone;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
 
-        $user->assignRole($request->role);
-
+        $user->syncRoles($request->role_ids);
+        
         return response()->json([
             'updated' => true,
         ]);
