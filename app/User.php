@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'address', 'referrer_by', 'referral_code'
     ];
 
     /**
@@ -41,6 +41,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ["role_ids"];
 
     public function branches()
     {
@@ -75,5 +76,9 @@ class User extends Authenticatable
     public function department()
     {
         return $this->hasOne(\App\Department::class);
+    }
+
+    public function getRoleIdsAttribute(){
+        return $this->roles()->pluck('id');
     }
 }

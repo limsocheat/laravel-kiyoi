@@ -15,10 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('referrer_id')->nullable();
+            $table->foreign('referrer_id')->references('id')->on('users');
+            $table->string('referral_code')->unique()->nullable();
+            $table->string('referrer_by')->nullable();
             $table->string('name');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('role')->default('saleman');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

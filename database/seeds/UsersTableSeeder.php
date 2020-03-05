@@ -72,8 +72,7 @@ class UsersTableSeeder extends Seeder
                 'name'      => $user['name'],
                 'email'     =>  $user['email'],
                 'password'  => bcrypt($user['password']),
-                'address' => $faker->address,
-                'phone' => $faker->phoneNumber,
+                // 'referral_code' => $faker->randomElement(substr(uniqid(), 0, 8))
             ]);
         endforeach;
     }

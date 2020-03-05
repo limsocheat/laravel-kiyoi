@@ -66,3 +66,5 @@ Route::post('purchase/upload', 'V1\PurchaseController@import');
 Route::get('purchase/export', 'V1\PurchaseController@export');
 Route::get('purchase/export-pdf', 'V1\PurchaseController@export_pdf');
 
+Route::get('data/roles', 'V1\Common\DataController@roles');
+
