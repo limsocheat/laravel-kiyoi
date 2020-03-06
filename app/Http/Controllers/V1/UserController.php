@@ -18,7 +18,6 @@ class UserController extends Controller
     public function index(Request $request)
     {   
         $items      = User::OrderBy('id', 'desc');
-        
         if($request->name) {
             $items->where(function($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->name . '%');
