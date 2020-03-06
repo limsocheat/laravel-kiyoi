@@ -29,9 +29,7 @@ class Sale extends Model
     public function getUserNameAttribute()
     {
         # code...
-        if(auth()->check() === true) {
-            return auth()->user()->name;
-        }
+
     }
 
     public function user()
