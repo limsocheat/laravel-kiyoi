@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'referred_by', 'referral_code'
+        'name', 'email', 'password', 'address', 'referred_by', 'referral_code', 'image'
     ];
 
     /**
@@ -48,6 +48,11 @@ class User extends Authenticatable
         $user = User::where('referred_by', $this->name)->count();
 
         return $user;
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(\App\Profile::class);
     }
     
     public function branches()
