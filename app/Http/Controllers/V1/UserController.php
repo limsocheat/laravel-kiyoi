@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {   
-        $items      = User::with(['profile'])->OrderBy('id', 'desc');
+        $items      = User::OrderBy('id', 'desc');
         if($request->name) {
             $items->where(function($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->name . '%');
@@ -58,7 +58,9 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        $user->syncRoles($request->role_ids);
+        if($request->roles_ids) {
+            $this->roles()->sync($request->roles_ids);
+        }
 
         return response()->json([
             'created' => true,
@@ -90,13 +92,13 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'required|between:6,25'
+            'password' => 'required|between:6,25',
         ]);
-        
+
         if($request->get('image')) {
             $image = $request->get('image');
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            $img = \Image::make($image)->resize(null, 90, function($constraint) {
+            $img = \Image::make($image)->resize(80, 90, function($constraint) {
                 $constraint->aspectRatio();
             });
 
@@ -108,18 +110,16 @@ class UserController extends Controller
         $user->image = $request->image ? $name : null; // $name is name of image
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
+        $user->phone = $request->phone;   
+        $user->address = $request->address;   
+        $user->city = $request->city;   
+        $user->country = $request->country;   
         $user->save();
          
-         // Save Profile Relationship
-        $profile = new Profile();
-        $profile->phone = $request->phone;   
-        $profile->address = $request->address;   
-        $profile->city = $request->city;   
-        $profile->country = $request->country;   
-        $user->profile()->save($profile);
-
         // Assign Role
-        $user->syncRoles($request->role_ids);
+        $user->roles()->sync(
+            $request->role_ids
+        );
 
         return response()->json([
             'updated' => true,

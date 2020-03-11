@@ -41,18 +41,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ["role_ids", 'count_referrer'];
+    protected $appends = ["role_ids", 'count_referrer', 'role_name'];
+
+    public function getRoleNameAttribute()
+    {
+        return  $this->roles()->pluck('name');
+    }
 
     public function getCountReferrerAttribute()
     {
         $user = User::where('referred_by', $this->name)->count();
 
         return $user;
-    }
-
-    public function profile()
-    {
-        return $this->hasOne(\App\Profile::class);
     }
     
     public function branches()
