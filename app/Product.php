@@ -26,6 +26,11 @@ class Product extends Model
     //     $activity->description = "Product {$eventName}";
     // }
 
+    public function category()
+    {
+        return $this->belongsTo(\App\Category::class);
+    }
+
     public function getTypeAttribute()
     {
         return 'Product ';

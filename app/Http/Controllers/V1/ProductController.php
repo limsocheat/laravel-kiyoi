@@ -82,7 +82,8 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->save();
 
-            $product->brand()->associate($request->brand['id'])->save();
+            // $product->brand()->associate($request->brand['id'])->save();
+            $product->category()->associate($request->category['id'])->save();
 
             $order = new Order();
             $order->discount = $request->discount; 
@@ -107,7 +108,8 @@ class ProductController extends Controller
             $product->price = $request->price;
             $product->save();
 
-            $product->brand()->associate($request->brand['id'])->save();
+            // $product->brand()->associate($request->brand['id'])->save();
+            $product->category()->associate($request->category['id'])->save();
 
             $order = new Order();
             $order->discount = $request->discount; 
