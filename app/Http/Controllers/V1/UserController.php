@@ -22,7 +22,8 @@ class UserController extends Controller
         $items      = User::OrderBy('id', 'desc');
         if($request->name) {
             $items->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
+                $q->where('first_name', 'like', '%' . $request->name . '%')
+                ->orWhere('last_name', 'like', '%' . $request->name . '%');
             });
         }
 
@@ -46,13 +47,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'first_name' => 'required',
             'email' => 'required|email',
             'password' => 'required|between:6,25'
         ]);
 
         $user = new User();
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->referral_code = strtoupper(substr(uniqid(), 0, 8));
         $user->password = bcrypt($request->password);
@@ -90,7 +92,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email',
             'password' => 'required|between:6,25',
         ]);
@@ -106,7 +109,8 @@ class UserController extends Controller
         }
 
         $user = User::findOrFail($id);
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->image = $request->image ? $name : null; // $name is name of image
         $user->email = $request->email;
         $user->password = bcrypt($request->password);

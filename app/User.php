@@ -50,7 +50,8 @@ class User extends Authenticatable
 
     public function getCountReferrerAttribute()
     {
-        $user = User::where('referred_by', $this->name)->count();
+        $user = User::where('referred_by', $this->first_name)
+                    ->orWhere('referred_by', $this->last_name)->count();
 
         return $user;
     }

@@ -14,7 +14,8 @@ class LoginController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email',
             'password' => 'required|between:6, 25',
         ]);
@@ -22,10 +23,11 @@ class LoginController extends Controller
         $referred_by = User::where('referral_code', '=', $request->referred_by)->get();
 
         $user = new User();
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->referral_code = strtoupper(substr(uniqid(), 0, 8));
-        $user->referred_by = $referred_by[0]->name;
+        $user->referred_by = $referred_by[0]->first_name;
         $user->password = bcrypt($request->password);
         $user->save();
 
