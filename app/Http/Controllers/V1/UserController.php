@@ -22,7 +22,8 @@ class UserController extends Controller
         $items      = User::OrderBy('id', 'desc');
         if($request->name) {
             $items->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
+                $q->where('first_name', 'like', '%' . $request->name . '%')
+                ->orWhere('last_name', 'like', '%' . $request->name . '%');
             });
         }
 

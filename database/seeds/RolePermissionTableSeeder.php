@@ -92,7 +92,7 @@ class RolePermissionTableSeeder extends Seeder
             'calendar'
         ]);
 
-        $SuperAdmin              = User::where('name', 'superAdmin')->first();
+        $SuperAdmin              = User::where('first_name', 'superAdmin')->first();
         $SuperAdmin->assignRole('superAdmin');
 
         $administrator      = Role::where('name', 'administrator')->first();
@@ -126,10 +126,10 @@ class RolePermissionTableSeeder extends Seeder
             'view expense', 'add expense', 'edit expense', 'delete expense', 'import expense', 'calendar'
         ]);
 
-        $admin              = User::where('name', 'administrator')->first();
+        $admin              = User::where('first_name', 'administrator')->first();
         $admin->assignRole('administrator');
 
-        $account            = User::where('name', 'accountant')->first();
+        $account            = User::where('first_name', 'accountant')->first();
         $account->assignRole('accountant');
 
         
@@ -164,13 +164,13 @@ class RolePermissionTableSeeder extends Seeder
             'customer report', 'supplier report', 'due report', 'pos', 'return sales', 'calendar'
         ]);
         
-        $superVisor = User::where('name', 'superVisor')->first();
+        $superVisor = User::where('first_name', 'superVisor')->first();
         $superVisor->assignRole('superVisor');
 
-        $sale_Manager = User::where('name', 'saleManager')->first();
+        $sale_Manager = User::where('first_name', 'saleManager')->first();
         $sale_Manager->assignRole('saleManager');
 
-        $sale_man = User::where('name', 'saleman')->first();
+        $sale_man = User::where('first_name', 'saleman')->first();
         $sale_man->assignRole('saleman');
 
 
@@ -181,7 +181,7 @@ class RolePermissionTableSeeder extends Seeder
         ]);
         $technician->syncPermissions(['view website', 'add website', 'edit website']);
 
-        $web = User::where('name', 'technician')->first();
+        $web = User::where('first_name', 'technician')->first();
         $web->assignRole('technician');
     }
 }

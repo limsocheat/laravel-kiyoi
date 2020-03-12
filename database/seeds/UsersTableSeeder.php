@@ -20,48 +20,56 @@ class UsersTableSeeder extends Seeder
         $users      = [
             // SuperAdmin
             [
-                'name'      => "superAdmin",
+                'first_name'      => "superAdmin",
+                'last_name'      => "superAdmin",
                 "email"     => "superadmin@mail.com",
                 "password"  => 'secret',
             ],
             // Admin
             [
-                'name'      => "administrator",
+                'first_name'      => "administrator",
+                'last_name'      => "administrator",
                 "email"     => "administrator@mail.com",
                 "password"  => 'secret',
             ],
             [
-                'name'      => "accountant",
+                'first_name'      => "accountant",
+                'last_name'      => "accountant",
                 "email"     => "accountant@mail.com",
                 "password"  => 'secret',
             ],
             [
-                'name'      => "saleManager",
+                'first_name'      => "saleManager",
+                'last_name'      => "saleManager",
                 "email"     => "saleManager@mail.com",
                 "password"  => 'secret',
             ],
             [
-                'name'      => "saleman",
+                'first_name'      => "saleman",
+                'last_name'      => "saleman",
                 "email"     => "saleman@mail.com",
                 "password"  => 'secret',
             ],
 
             // Web Admin
             [
-                'name'      => "technician",
+                'first_name'      => "technician",
+                'last_name'      => "technician",
                 "email"     => "technician@mail.com",
                 "password"  => 'secret',
             ],
 
             // SuperVisor
             [
-                'name'      => "supervisor",
+                'first_name'      => "supervisor",
+                'last_name'      => "supervisor",
                 "email"     => "supervisor@mail.com",
                 "password"  => 'secret',
             ],
             // Member
             [
-                'name'      => "member",
+                'first_name'      => "member",
+                'last_name'      => "member",
                 "email"     => "member@mail.com",
                 "password"  => 'secret',
             ],
@@ -69,7 +77,8 @@ class UsersTableSeeder extends Seeder
 
         foreach ($users as $user) :
             User::create([
-                'name'      => $user['name'],
+                'first_name'      => $user['first_name'],
+                'last_name'      => $user['last_name'],
                 'email'     =>  $user['email'],
                 'password'  => bcrypt($user['password']),
                 'referral_code' => strtoupper(substr(uniqid(mt_rand(), true), 0, 8))

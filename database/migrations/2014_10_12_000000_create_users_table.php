@@ -17,7 +17,8 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('referral_code')->unique()->nullable();
             $table->string('referred_by')->nullable();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('image')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
