@@ -22,7 +22,7 @@ class ProductController extends Controller
     {   
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 10 : (int)request('itemsPerPage');
-        $products = Product::with(['brand', 'orders'])
+        $products = Product::with(['brand', 'orders', 'category'])
                         ->orderBy('id', 'desc')
                         ->paginate($itemsPerPage);
 
