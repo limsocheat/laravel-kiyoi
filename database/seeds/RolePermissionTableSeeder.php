@@ -51,7 +51,7 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
-            'return sales', 'return purchases', 'pos'
+            'return sales', 'return purchases', 'pos', 'calendar'
         ];
 
         foreach ($permissions as $permission) :
@@ -88,7 +88,8 @@ class RolePermissionTableSeeder extends Seeder
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
             'charge commission',
-            'return sales', 'return purchases', 'pos'
+            'return sales', 'return purchases', 'pos',
+            'calendar'
         ]);
 
         $SuperAdmin              = User::where('name', 'superAdmin')->first();
@@ -116,13 +117,13 @@ class RolePermissionTableSeeder extends Seeder
             'support', 'payment log',
             'add withdraw method', 'view withdraw method', 'edit withdraw method', 
             'delete withdraw method', 
-            'charge commission', 'pos', 'return sales', 'return purchases',
+            'charge commission', 'pos', 'return sales', 'return purchases', 'calendar'
         ]);
 
         $accountant         = Role::where('name', 'Accountant')->first();
         $accountant->syncPermissions([
             'view account', 'add account', 'edit account', 'delete account', 'import account',
-            'view expense', 'add expense', 'edit expense', 'delete expense', 'import expense',
+            'view expense', 'add expense', 'edit expense', 'delete expense', 'import expense', 'calendar'
         ]);
 
         $admin              = User::where('name', 'administrator')->first();
@@ -141,7 +142,7 @@ class RolePermissionTableSeeder extends Seeder
             'summary report', 'product report', 'daily sale report', 'monthly sale report',
             'daily purchase report', 'monthly purchase report', 'sale report', 'payment report',
             'purchase report', 'warehouse report', 'product qty alert', 'user report', 
-            'customer report', 'supplier report', 'due report',
+            'customer report', 'supplier report', 'due report', 'calendar'
         ]);
 
         $saleman = Role::where('name', 'saleman')->first();
@@ -150,7 +151,7 @@ class RolePermissionTableSeeder extends Seeder
             'summary report', 'product report', 'daily sale report', 'monthly sale report',
             'daily purchase report', 'sale report',
             'purchase report', 'warehouse report', 'product qty alert',
-            'customer report', 'supplier report', 'due report', 'pos', 'return sales' 
+            'customer report', 'supplier report', 'due report', 'pos', 'return sales', 'calendar'
         ]);
 
         // SuperVisor
@@ -160,7 +161,7 @@ class RolePermissionTableSeeder extends Seeder
             'summary report', 'product report', 'daily sale report', 'monthly sale report',
             'daily purchase report', 'sale report',
             'purchase report', 'warehouse report', 'product qty alert',
-            'customer report', 'supplier report', 'due report', 'pos', 'return sales' 
+            'customer report', 'supplier report', 'due report', 'pos', 'return sales', 'calendar'
         ]);
         
         $superVisor = User::where('name', 'superVisor')->first();
@@ -176,7 +177,7 @@ class RolePermissionTableSeeder extends Seeder
         // WebController
         $technician = Role::where('name', 'technician')->first();
         $technician->syncPermissions([
-            'view website', 'add website', 'edit website', 'delete website',
+            'view website', 'add website', 'edit website', 'delete website', 'calendar'
         ]);
         $technician->syncPermissions(['view website', 'add website', 'edit website']);
 

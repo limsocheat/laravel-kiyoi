@@ -18,7 +18,9 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        $calendars = Calendar::all();
+        $calendars = Calendar::with(['user'])
+                        ->where('user_id', auth()->user()->id)
+                        ->get();
         
         return response()->json(['calendars' => $calendars]);
     }
@@ -42,6 +44,7 @@ class CalendarController extends Controller
         // dd($request->all());
 
         $calendar = new Calendar();
+        $calendar->user_id = auth()->user()->id;
         $calendar->title = $request->title;
         $calendar->description = $request->details;
         $calendar->start = Carbon::create($request->start)->format('Y-m-d');
@@ -86,6 +89,7 @@ class CalendarController extends Controller
         // dd($request->all());    
 
         $calendar = Calendar::findOrFail($id);
+        $calendar->user_id = auth()->user()->id;
         $calendar->title = $request->title;
         $calendar->description = $request->details;
         $calendar->start = Carbon::create($request->start)->format('Y-m-d');

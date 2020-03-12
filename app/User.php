@@ -93,4 +93,9 @@ class User extends Authenticatable
     public function getRoleIdsAttribute(){
         return $this->roles()->pluck('id');
     }
+
+    public function calendars()
+    {
+        return $this->hasMany(\App\Calendar::class);
+    }
 }
