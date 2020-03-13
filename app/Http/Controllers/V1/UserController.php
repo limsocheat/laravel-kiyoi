@@ -19,21 +19,46 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {   
-        $items      = User::OrderBy('id', 'desc');
-        if($request->name) {
-            $items->where(function($q) use ($request) {
-                $q->where('first_name', 'like', '%' . $request->name . '%')
-                ->orWhere('last_name', 'like', '%' . $request->name . '%');
-            });
+        $user = auth()->user();
+
+        if($user->roles[0]->name == 'administrator') {
+            
+            $items      = User::OrderBy('id', 'desc');
+
+            if($request->name) {
+                $items->where(function($q) use ($request) {
+                    $q->where('first_name', 'like', '%' . $request->name . '%')
+                    ->orWhere('last_name', 'like', '%' . $request->name . '%');
+                });
+            }
+
+            if($request->email) {
+                $items->where(function($q) use ($request) {
+                    $q->where('email', 'like', '%' . $request->email . '%');
+                });
+            }
+
+            $users = $items->paginate(20);
         }
 
-        if($request->email) {
-            $items->where(function($q) use ($request) {
-                $q->where('email', 'like', '%' . $request->email . '%');
-            });
-        }
+        else {
+            $items      = User::where('id', auth()->user()->id)->OrderBy('id', 'desc');
 
-        $users = $items->paginate(20);
+            if($request->name) {
+                $items->where(function($q) use ($request) {
+                    $q->where('first_name', 'like', '%' . $request->name . '%')
+                    ->orWhere('last_name', 'like', '%' . $request->name . '%');
+                });
+            }
+
+            if($request->email) {
+                $items->where(function($q) use ($request) {
+                    $q->where('email', 'like', '%' . $request->email . '%');
+                });
+            }
+
+            $users = $items->paginate(20);
+        }
 
         return response()->json(['users' => $users]);
     }
