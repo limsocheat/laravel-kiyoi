@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TransferSeeder::class,
             BrandSeeder::class,
             SupplierSeeder::class,
+            CategoriesTableSeeder::class,
             ProductSeeder::class,
             ExpenseCategorySeeder::class,
             ExpenseSeeder::class,

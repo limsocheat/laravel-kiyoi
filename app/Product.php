@@ -10,14 +10,14 @@ use Spatie\Activitylog\Contracts\Activity;
 class Product extends Model
 {
 
-	protected $fillable = [
+    protected $fillable = [
         'name', 'description', 'active', 'code', 'type', 'barcode', 'unit', 'price', 'user_id', 'order_id', 'sale_id', 'brand_id', 'image'
     ];
 
 
     use LogsActivity;
 
-    protected $appends = ['user_name', 'type'];
+    protected $appends = ['user_name', 'type', 'image_url', 'category_name'];
 
     protected static $logAttributes = ['name', 'user_name', 'type'];
 
@@ -38,25 +38,25 @@ class Product extends Model
 
     public function getUserNameAttribute()
     {
-        if(auth()->check() === true) {
+        if (auth()->check() === true) {
             return auth()->user()->name;
         }
     }
 
     public function user()
     {
-    	return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(\App\User::class);
     }
 
 
     public function purchases()
     {
-    	return $this->belongsToMany(\App\Purchase::class)->withPivot('quantity', 'unit_price');
+        return $this->belongsToMany(\App\Purchase::class)->withPivot('quantity', 'unit_price');
     }
 
     public function orders()
     {
-    	return $this->belongsToMany(\App\Order::class)->withPivot('quantity', 'unit_price');
+        return $this->belongsToMany(\App\Order::class)->withPivot('quantity', 'unit_price');
     }
 
     public function transfers()
@@ -84,6 +84,16 @@ class Product extends Model
     }
     public function quotations()
     {
-        return $this->belongsToMany(\App\Quotation::class)->withPivot('quantity', 'unit_price','discount');
+        return $this->belongsToMany(\App\Quotation::class)->withPivot('quantity', 'unit_price', 'discount');
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return url($this->image);
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        return $this->category ? $this->category->name : null;
     }
 }
