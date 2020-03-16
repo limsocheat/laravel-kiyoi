@@ -6,18 +6,25 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Product;
-
 use App\Order;
 
 use App\Http\Resources\ProductResource;
 
+use App\Exports\ProductsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function export_pdf() 
+    {
+        return Excel::download(new ProductsExport, 'products.pdf');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new ProductsExport, 'products.xlsx');
+    }
+
     public function index(Request $request)
     {   
 
@@ -59,7 +66,7 @@ class ProductController extends Controller
             }
 
             $fileName = str_random() . '.' . $extension;
-            $path = public_path() . '/image/' . $fileName;
+            $path = public_path() . '/products/' . $fileName;
             
             file_put_contents($path, $decode);
 
@@ -67,7 +74,7 @@ class ProductController extends Controller
                 $constraint->aspectRatio();
             });
 
-            $img->save(public_path('/image/' . $fileName));
+            $img->save(public_path('/products/' . $fileName));
 
 
             $product = new Product();
@@ -175,7 +182,7 @@ class ProductController extends Controller
             }
 
             $fileName = str_random() . '.' . $extension;
-            $path = public_path() . '/image/' . $fileName;
+            $path = public_path() . '/products/' . $fileName;
             
             file_put_contents($path, $decode);
 
@@ -183,7 +190,7 @@ class ProductController extends Controller
                 $constraint->aspectRatio();
             });
 
-            $img->save(public_path('/image/' . $fileName));
+            $img->save(public_path('/products/' . $fileName));
 
 
             $product = Product::findOrFail($id);

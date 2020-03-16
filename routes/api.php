@@ -59,11 +59,14 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'v1', 'namespace' => 'V1
     Route::apiResource('expense-category', 'ExpenseCategoryController');
 });
 
-// Route::get('purchase/export', 'V1\PurchaseController@export');
 
-
+// Purchase Report
 Route::post('purchase/upload', 'V1\PurchaseController@import');
 Route::get('purchase/export', 'V1\PurchaseController@export');
 Route::get('purchase/export-pdf', 'V1\PurchaseController@export_pdf');
+
+// Product Report
+Route::get('product/export_pdf', 'V1\ProductController@export_pdf');
+Route::get('product/export', 'V1\ProductController@export');
 
 Route::get('data/roles', 'V1\Common\DataController@roles');
