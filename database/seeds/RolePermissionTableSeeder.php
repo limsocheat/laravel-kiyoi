@@ -29,7 +29,8 @@ class RolePermissionTableSeeder extends Seeder
         endforeach;
 
         $permissions        = [
-            'view admin', 'add admin', 'edit admin', 'delete admin', 
+            'view admin', 'add admin', 'edit admin', 'delete admin',
+            'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
             'view users', 'add users', 'edit users', 'delete users', 
             'view sales', 'add sales', 'import sales', 'edit sales', 'delete sales',
             'view website', 'add website', 'edit website', 'delete website',
@@ -67,6 +68,7 @@ class RolePermissionTableSeeder extends Seeder
         $superAdmin = Role::where('name', 'superAdmin')->first();
         $superAdmin->syncPermissions([
             'view admin', 'add admin', 'edit admin', 'delete admin', 
+            'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
             'view users', 'add users', 'edit users', 'delete users', 
             'view sales', 'add sales', 'import sales', 'edit sales', 'delete sales',
             'view website', 'add website', 'edit website', 'delete website',
@@ -98,6 +100,7 @@ class RolePermissionTableSeeder extends Seeder
         $administrator      = Role::where('name', 'administrator')->first();
         $administrator->syncPermissions([
             'view users', 'add users', 'edit users', 'delete users', 
+            'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
             'view sales', 'add sales', 'import sales', 'edit sales', 'delete sales',
             'view website', 'add website', 'edit website', 'delete website',
             'view product', 'add product', 'edit product', 'delete product', 'import product',
@@ -122,8 +125,9 @@ class RolePermissionTableSeeder extends Seeder
 
         $accountant         = Role::where('name', 'Accountant')->first();
         $accountant->syncPermissions([
-            'view account', 'add account', 'edit account', 'delete account', 'import account',
-            'view expense', 'add expense', 'edit expense', 'delete expense', 'import expense', 'calendar'
+            'view purchase', 'view sales', 'view product', 'view account', 'add account', 'edit account', 'delete account', 'import account',
+            'view payroll', 'add payroll', 'edit payroll', 'delete payroll',
+            'return sales', 'view employee', 'view biller', 'return purchases', 'view transfer', 'view expense', 'add expense', 'edit expense', 'delete expense', 'import expense', 'calendar'
         ]);
 
         $admin              = User::where('first_name', 'administrator')->first();
