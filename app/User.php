@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-
+        'name', 'email', 'password', 'address', 'referred_by', 'referral_code', 'image'
     ];
 
     /**
@@ -98,5 +98,10 @@ class User extends Authenticatable
     public function calendars()
     {
         return $this->hasMany(\App\Calendar::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(\App\Purchase::class);
     }
 }

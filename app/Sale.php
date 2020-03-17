@@ -132,7 +132,7 @@ class Sale extends Model
 
         $price = array_sum($s);
 
-        if($price  === $this->paid) {
+        if($price  > $this->paid) {
             return 'Due';
         }
 

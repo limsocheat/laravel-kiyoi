@@ -78,8 +78,15 @@ class UserController extends Controller
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
+        $user->referral_code = strtoupper(substr(uniqid(), 0, 8));
+        $user->password = bcrypt($request->password);
 
         $user->save();
+
+
+        if($request->roles_ids) {
+            $this->roles()->sync($request->roles_ids);
+        }
 
 
         return response()->json([
@@ -131,6 +138,11 @@ class UserController extends Controller
         $user->last_name = $request->last_name;
         $user->image = $request->image ? $name : null; // $name is name of image
         $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->phone = $request->phone;   
+        $user->address = $request->address;   
+        $user->city = $request->city;   
+        $user->country = $request->country;   
 
         $user->save();
          
