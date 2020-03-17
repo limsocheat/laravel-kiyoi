@@ -10,8 +10,24 @@ use App\Branch;
 use App\Member;
 use App\Supplier;
 
+
+use App\Exports\QuotationsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 class QuotationController extends Controller
 {
+
+    public function export_pdf()
+    {
+        return Excel::download(new QuotationsExport, 'quotation.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export() 
+    {
+        return Excel::download(new QuotationsExport, 'quotation.csv');
+    }
+
     /**
      * Display a listing of the resource.
      *
