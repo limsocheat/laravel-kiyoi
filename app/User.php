@@ -104,4 +104,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Purchase::class);
     }
+
+    public function referrer()
+    {
+        return $this->belongsTo('App\User', 'referred_by');
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany('App\User', 'referred_by');
+    }
+
 }
+
+
