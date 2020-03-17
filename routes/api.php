@@ -77,3 +77,9 @@ Route::get('sale/export', 'V1\SaleController@export');
 
 // Get User Role
 Route::get('data/roles', 'V1\Common\DataController@roles');
+
+
+
+// ExpenseCategory Export
+Route::get('expense-category/export', 'V1\ExpenseCategoryController@export');
+Route::get('expense-category/export_pdf', 'V1\ExpenseCategoryController@export_pdf');

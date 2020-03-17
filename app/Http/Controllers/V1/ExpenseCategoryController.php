@@ -7,8 +7,23 @@ use Illuminate\Http\Request;
 
 use App\ExpenseCategory;
 
+use App\Exports\ExpensesCategoryExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 class ExpenseCategoryController extends Controller
 {
+
+    public function export() 
+    {
+        return Excel::download(new ExpensesCategoryExport, 'expense-category.csv');
+    }
+    
+    public function export_pdf() 
+    {
+        return Excel::download(new ExpensesCategoryExport, 'expense-category.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
     /**
      * Display a listing of the resource.
      *
