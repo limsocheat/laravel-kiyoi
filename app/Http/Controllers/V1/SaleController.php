@@ -8,11 +8,23 @@ use App\Sale;
 use App\Branch;
 use App\Http\Resources\SaleResource;
 
+use App\Exports\SalesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\User;
 
 class SaleController extends Controller
-{
+{   
+    public function export_pdf()
+    {
+        return Excel::download(new SalesExport, 'invoices.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export() 
+    {
+        return Excel::download(new SalesExport, 'sale.csv');
+    }
+
     /**
      * Display a listing of the resource.
      *

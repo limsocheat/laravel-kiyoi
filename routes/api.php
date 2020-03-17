@@ -45,6 +45,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
     ]);
 
     Route::get('activity', 'ActivityController@index');
+
+    Route::get('dashboard', 'Dashboard\DashboardController@index');
 });
 
 
@@ -69,4 +71,9 @@ Route::get('purchase/export-pdf', 'V1\PurchaseController@export_pdf');
 Route::get('product/export_pdf', 'V1\ProductController@export_pdf');
 Route::get('product/export', 'V1\ProductController@export');
 
+// Sale Report
+Route::get('sale/export_pdf', 'V1\SaleController@export_pdf');
+Route::get('sale/export', 'V1\SaleController@export');
+
+// Get User Role
 Route::get('data/roles', 'V1\Common\DataController@roles');

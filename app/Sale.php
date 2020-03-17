@@ -122,7 +122,6 @@ class Sale extends Model
 
 
     // For Payment Method
-
     public function getPaymentStatusAttribute()
     {
         $s = array();
@@ -133,7 +132,7 @@ class Sale extends Model
 
         $price = array_sum($s);
 
-        if($price > $this->paid) {
+        if($price  === $this->paid) {
             return 'Due';
         }
 
