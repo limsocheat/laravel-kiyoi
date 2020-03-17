@@ -83,3 +83,7 @@ Route::get('data/roles', 'V1\Common\DataController@roles');
 // ExpenseCategory Export
 Route::get('expense-category/export', 'V1\ExpenseCategoryController@export');
 Route::get('expense-category/export_pdf', 'V1\ExpenseCategoryController@export_pdf');
+
+// Expense Report
+Route::get('expense/export_pdf', 'V1\ExpenseController@export_pdf');
+Route::get('expense/export', 'V1\ExpenseController@export');

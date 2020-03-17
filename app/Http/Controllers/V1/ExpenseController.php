@@ -7,8 +7,24 @@ use Illuminate\Http\Request;
 use App\Expense;
 use App\Http\Resources\ExpenseResource;
 
+use App\Exports\ExpensesExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 class ExpenseController extends Controller
 {
+
+    public function export_pdf()
+    {
+        return Excel::download(new ExpensesExport, 'expense.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export() 
+    {
+        return Excel::download(new ExpensesExport, 'expense.csv');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -18,17 +34,23 @@ class ExpenseController extends Controller
     {
 
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
-        $query = Expense::with(['user'])
-                        ->orderBy('id', 'desc')
-                        ->where('amount', 'like', '%' . $request->search . '%')
-                        ->orWhere('reference_no', 'like', '%' . $request->search . '%')
-                        ->orWhereHas('expense_category', function($q) use ($request) {
-                            $q->where('name', 'like', '%'. $request->search . '%');
-                        })
-                        ->orWhereHas('user', function($q) use ($request) {
-                            $q->where('name', 'like', '%'. $request->search . '%');
-                        })
-                        ->orWhere('reference_no', 'like', '%' . $request->search . '%');
+        $query = Expense::with(['user'])->orderBy('id', 'desc');
+
+        if($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('reference_no', 'like', '%' . $request->search . '%')
+                ->orWhere('amount', 'like', '%' . $request->search . '%')
+                ->orWhereHas('expense_category', function($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search . '%');
+                })
+                ->orWhereHas('user', function($q) use ($request) {
+                    $q->where('first_name', 'like', '%' . $request->search . '%')
+                    ->orWhere('first_name', 'like', '%' . $request->search . '%');
+                });
+            });
+        }                
+                    
+                        
 
         $expense = $query->paginate($itemsPerPage);
 
