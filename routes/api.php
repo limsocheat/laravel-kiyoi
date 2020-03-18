@@ -87,3 +87,8 @@ Route::get('expense-category/export_pdf', 'V1\ExpenseCategoryController@export_p
 // Expense Report
 Route::get('expense/export_pdf', 'V1\ExpenseController@export_pdf');
 Route::get('expense/export', 'V1\ExpenseController@export');
+
+
+// Quotation
+Route::get('quotation/export', 'V1\QuotationController@export');
+Route::get('quotation/export_pdf', 'V1\QuotationController@export_pdf');
