@@ -173,8 +173,6 @@ class PurchaseController extends Controller
             // dd($product);
         }
         
-        dd($purchase->products);
-
         return response()->json([
             'updated' => true,
         ]);
