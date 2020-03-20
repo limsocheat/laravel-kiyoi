@@ -4,9 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Carbon\Carbon;
+
+
 class Expense extends Model
 {
 	protected $fillable = ['description', 'amount', 'category_id', 'user_id'];
+
+    protected $appends = ['created'];
 
     public function user()
     {
@@ -16,5 +21,11 @@ class Expense extends Model
     public function expense_category()
     {
     	return $this->belongsTo(\App\ExpenseCategory::class);
+    }
+
+
+    public function getCreatedAttribute()
+    {
+        return Carbon::parse($this->created_at)->toDateString();
     }
 }
