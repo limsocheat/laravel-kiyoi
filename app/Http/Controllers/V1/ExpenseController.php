@@ -69,8 +69,6 @@ class ExpenseController extends Controller
             'amount' => 'required|numeric',
         ]);
 
-       // dd($request->all());
-
         $count = Expense::whereDay('created_at', date('d'))->count();
 
         $expense = new Expense();
@@ -78,11 +76,11 @@ class ExpenseController extends Controller
         $expense->expense_category_id = $request->expense_category['id'];
         $expense->reference_no = 'EP' . now()->year . '/' . str_pad($count + 1 , 4, '0', STR_PAD_LEFT);
         $expense->description = $request->description;
+        $expense->expense_for = $request->expense_for;
         $expense->amount = $request->amount;
         $expense->save();
 
         $expense->expense_category()->associate($request->expense_category['id'])->save();
-        $expense->user()->associate($request->user['id'])->save();
 
         return response()->json([
             'created' => true,
@@ -115,19 +113,18 @@ class ExpenseController extends Controller
 
         // dd($request->all());
 
-        $count = Expense::whereDay('created_at', date('d'))->count();
+        // $count = Expense::whereDay('created_at', date('d'))->count();
 
         $expense = Expense::findOrFail($id);
         $expense->user_id = auth()->user()->id;
         $expense->expense_category_id = $request->expense_category['id'];
-        $expense->reference_no = 'EP' . now()->year . '/' . str_pad($count + 1 , 4, '0', STR_PAD_LEFT);
+        // $expense->reference_no = 'EP' . now()->year . '/' . str_pad($count + 1 , 4, '0', STR_PAD_LEFT);
         $expense->description = $request->description;
+        $expense->expense_for = $request->expense_for;
         $expense->amount = $request->amount;
         $expense->save();
 
         $expense->expense_category()->associate($request->expense_category['id'])->save();
-        $expense->user()->associate($request->user['id'])->save();
-
 
         return response()->json([
             'updated' => true,

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Sale;
+use App\Expense;
+use App\Purchase;
 
 
 class AdminDashboardController extends Controller
@@ -20,6 +22,27 @@ class AdminDashboardController extends Controller
 
     public function totalSales()
     {
-    	return 'Hello';
+        $totalSale = Sale::get()->sum('grand_total');
+        
+        return response()->json(['totalSale' => $totalSale]);
+    }
+
+    public function totalExpense()
+    {
+        $totalExpense = Expense::get()->sum('amount');
+        
+        return response()->json(['totalExpense' => $totalExpense]);
+    }
+
+
+    public function totalPurchase()
+    {
+        $totalPurchases = Purchase::whereHas('products')->get();
+        
+        foreach($totalPurchases as $purchase) {
+            $totalPurchase = $purchase->products()->sum('price');
+        }
+        
+        return response()->json(['totalPurchase' => $totalPurchase]);
     }
 }

@@ -45,8 +45,13 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
     ]);
 
     Route::get('activity', 'ActivityController@index');
+        
 
+    // Dashboard Report
     Route::get('dashboard', 'Dashboard\DashboardController@index');
+
+    // SaleReport
+    Route::get('sale-report', 'Dashboard\DashboardController@saleReport');
 });
 
 

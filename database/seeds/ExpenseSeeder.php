@@ -24,7 +24,7 @@ class ExpenseSeeder extends Seeder
     			'user_id' => \App\User::all()->random()->id,
 		    	'expense_category_id' => \App\ExpenseCategory::all()->random()->id,
 		        'reference_no' => 'ER' . date('Y') . '/000' . $i,
-		        // 'description' => $faker->text,
+		        'expense_for' => $faker->randomElement(['Washing', 'Cleaning']),
 		        'active' => $faker->randomElement(['1', '0']),
 		        'amount' => $faker->numberBetween($min=100, $max=10000),
     		]);

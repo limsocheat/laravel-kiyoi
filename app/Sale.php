@@ -28,6 +28,8 @@ class Sale extends Model
         $activity->description = "Sale was {$eventName}";
     }
 
+
+    // Convert Date
     public function getCreatedSaleAttribute()
     {
         return Carbon::parse($this->created_at)->toDateString();
