@@ -52,82 +52,28 @@ class ProductController extends Controller
             'unit' => 'required|numeric',
             'price' => 'required|numeric',
         ]);
-
-        // Save Image
-        if($request->get('image')) {
-            $exploded = explode(',', $request->image);
-            $decode = base64_decode($exploded[1]);
-
-            if(str_contains($exploded[0], 'jpeg')) {
-                $extension = 'jpeg';
-            }
-            else {
-                $extension = 'png';
-            }
-
-            $fileName = str_random() . '.' . $extension;
-            $path = public_path() . '/products/' . $fileName;
-            
-            file_put_contents($path, $decode);
-
-            $img = \Image::make($path)->resize(null, 90, function($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            $img->save(public_path('/products/' . $fileName));
-
-
-            $product = new Product();
-            $product->image = $fileName;
-            $product->user_id = auth()->user()->id;
-            $product->brand_id = auth()->user()->id;
-            $product->name = $request->name;
-            $product->code = $request->code;
-            $product->barcode = $request->barcode;
-            $product->description = $request->description;
-            $product->unit = $request->unit;
-            $product->price = $request->price;
-            $product->save();
-
-            // $product->brand()->associate($request->brand['id'])->save();
-            $product->category()->associate($request->category['id'])->save();
-
-            $order = new Order();
-            $order->discount = $request->discount; 
-            $order->save();
-
-            $product->orders()->attach($order, [
-                'unit_price' => $request->get('unit_price', 0),
-                'quantity' => $request->get('quantity', 1),
-            ]); 
-
-        }
-        else {
-
-            $product = new Product();
-            $product->user_id = auth()->user()->id;
-            $product->brand_id = $request->brand['id'];
-            $product->name = $request->name;
-            $product->code = $request->code;
-            $product->barcode = $request->barcode;
-            $product->description = $request->description;
-            $product->unit = $request->unit;
-            $product->price = $request->price;
-            $product->save();
-
-            // $product->brand()->associate($request->brand['id'])->save();
-            $product->category()->associate($request->category['id'])->save();
-
-            $order = new Order();
-            $order->discount = $request->discount; 
-            $order->save();
-
-            $product->orders()->attach($order, [
-                'unit_price' => $request->get('unit_price', 0),
-                'quantity' => $request->get('quantity', 1),
-            ]); 
+        
+        if($request->hasFile('image')) {
+            $image = $request->image;
+            $imageName = '/products/' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->move(public_path('/products'), $imageName);
         }
         
+        $product = new Product();
+        $product->user_id = auth()->user()->id;
+        $product->image = $request->image ? $imageName : null;
+        $product->name = $request->name;
+        $product->code = $request->code;
+        $product->barcode = $request->barcode;
+        $product->description = $request->description;
+        $product->unit = $request->unit;
+        $product->price = $request->price;
+        $product->save();
+
+
+        // Associate Category
+        $category = json_decode($request->category, true);
+        $product->category()->associate($category['id'])->save();
 
         return response()->json([
             'created' => true,
@@ -165,82 +111,28 @@ class ProductController extends Controller
             'unit' => 'required|integer',
             'price' => 'required|numeric',
         ]);
-
-
-        // dd($request->get('image'));
-
-        // Save Image
-        if($request->get('image')) {
-            $exploded = explode(',', $request->image);
-            $decode = base64_decode($exploded[1]);
-
-            if(str_contains($exploded[0], 'jpeg')) {
-                $extension = 'jpeg';
-            }
-            else {
-                $extension = 'png';
-            }
-
-            $fileName = str_random() . '.' . $extension;
-            $path = public_path() . '/products/' . $fileName;
             
-            file_put_contents($path, $decode);
 
-            $img = \Image::make($path)->resize(null, 90, function($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            $img->save(public_path('/products/' . $fileName));
-
-
-            $product = Product::findOrFail($id);
-            $product->image = $fileName;
-            $product->user_id = auth()->user()->id;
-            $product->brand_id = auth()->user()->id;
-            $product->name = $request->name;
-            $product->code = $request->code;
-            $product->barcode = $request->barcode;
-            $product->description = $request->description;
-            $product->unit = $request->unit;
-            $product->price = $request->price;
-            $product->save();
-
-            $product->brand()->associate($request->brand['id'])->save();
-
-            $order = new Order();
-            $order->discount = $request->discount; 
-            $order->save();
-
-            $product->orders()->attach($order, [
-                'unit_price' => $request->get('unit_price', 0),
-                'quantity' => $request->get('quantity', 1),
-            ]); 
-
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = '/products/' . time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->move(public_path('/products/'), $imageName);
         }
-        else {
 
-            $product = Product::findOrFail($id);
-            $product->user_id = auth()->user()->id;
-            $product->brand_id = $request->brand['id'];
-            $product->name = $request->name;
-            $product->code = $request->code;
-            $product->barcode = $request->barcode;
-            $product->description = $request->description;
-            $product->unit = $request->unit;
-            $product->price = $request->price;
-            $product->save();
-
-            $product->brand()->associate($request->brand['id'])->save();
-
-            $order = new Order();
-            $order->discount = $request->discount; 
-            $order->save();
-
-            $product->orders()->attach($order, [
-                'unit_price' => $request->get('unit_price', 0),
-                'quantity' => $request->get('quantity', 1),
-            ]); 
-        }
+        $product = Product::findOrFail($id);
+        $product->user_id = auth()->user()->id;
+        $product->image = $request->image ? $imageName : null;
+        $product->name = $request->name;
+        $product->code = $request->code;
+        $product->barcode = $request->barcode;
+        $product->description = $request->description;
+        $product->unit = $request->unit;
+        $product->price = $request->price;
+        $product->save();
+        
+        // Associate Category
+        $category = json_decode($request->category, true);
+        $product->category()->associate($category['id'])->save();
 
         return response()->json([
             'updated' => true,

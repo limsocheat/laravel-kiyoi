@@ -35,7 +35,6 @@ class ProductSeeder extends Seeder
 
         Product::create([
             'user_id' => \App\User::all()->random()->id,
-            'brand_id' => \App\Brand::all()->random()->id,
             'category_id' => 1,
             'name' => "PREMIUM ACTIVE HYDROGEN ALKALINE WATER FILTER KY-807/811",
             'image' => '/products/indoor_1.jpg',
@@ -63,7 +62,6 @@ class ProductSeeder extends Seeder
         Product::create([
             'user_id' => \App\User::all()->random()->id,
             'category_id' => 1,
-            'brand_id' => \App\Brand::all()->random()->id,
             'name' => "ACTIVE HYDROGEN ALKALINE WATER FILTER KY-605/607 M",
             'image' => '/products/indoor_2.jpg',
             'active' => $faker->randomElement(['1', '0']),
@@ -90,7 +88,6 @@ class ProductSeeder extends Seeder
         Product::create([
             'user_id' => \App\User::all()->random()->id,
             'category_id' => 1,
-            'brand_id' => \App\Brand::all()->random()->id,
             'name' => "6-STAGE FILTER",
             'image' => '/products/indoor_3.jpg',
             'active' => $faker->randomElement(['1', '0']),
@@ -116,7 +113,6 @@ class ProductSeeder extends Seeder
         Product::create([
             'user_id' => \App\User::all()->random()->id,
             'category_id' => 2,
-            'brand_id' => \App\Brand::all()->random()->id,
             'name' => "MASTER FILTER",
             'image' => '/products/outdoor_1.jpg',
             'active' => $faker->randomElement(['1', '0']),
