@@ -10,6 +10,7 @@ use App\Http\Resources\ExpenseResource;
 use App\Exports\ExpensesExport;
 use Maatwebsite\Excel\Facades\Excel;
 
+use Carbon\Carbon;
 
 class ExpenseController extends Controller
 {
@@ -75,6 +76,7 @@ class ExpenseController extends Controller
         $expense->user_id = auth()->user()->id;
         $expense->expense_category_id = $request->expense_category['id'];
         $expense->reference_no = 'EP' . now()->year . '/' . str_pad($count + 1 , 4, '0', STR_PAD_LEFT);
+        $expense->date = Carbon::parse($expense->created_at)->format('Y-m-d');
         $expense->description = $request->description;
         $expense->expense_for = $request->expense_for;
         $expense->amount = $request->amount;
@@ -110,8 +112,6 @@ class ExpenseController extends Controller
         $request->validate([
             'amount' => 'required',
         ]);
-
-        // dd($request->all());
 
         // $count = Expense::whereDay('created_at', date('d'))->count();
 

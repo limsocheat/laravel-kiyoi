@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class Expense extends Model
 {
-	protected $fillable = ['description', 'amount', 'category_id', 'user_id', 'expense_for'];
+	protected $fillable = ['date', 'description', 'amount', 'category_id', 'user_id', 'expense_for'];
 
     protected $appends = ['created'];
 
