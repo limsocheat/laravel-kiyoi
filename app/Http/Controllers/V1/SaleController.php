@@ -13,6 +13,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use App\User;
 
+use Carbon\Carbon;
+
 class SaleController extends Controller
 {   
     public function export_pdf()
@@ -93,6 +95,7 @@ class SaleController extends Controller
             'paid' => 'required|numeric',
             'items.*.unit_price' => 'required|numeric'
         ]);
+        
 
         $count = Sale::whereDay('created_at', date('d'))->count();
 
@@ -102,6 +105,7 @@ class SaleController extends Controller
         $sale->branch_id = $request->location['id'];
         $sale->reference_no = 'AS/'  . str_pad($count + 1, 5, '0', STR_PAD_LEFT);
         // $sale->payment_status = $request->payment_status;
+        $sale->date = Carbon::parse($sale->created_at)->format('Y-m-d');
         $sale->payment_method = $request->payment_method;
         $sale->discount = $request->discount;
         $sale->description = $request->description;

@@ -17,7 +17,7 @@ class Sale extends Model
     protected static $logAttributes = ['payment_status', 'user_name'];
 
     protected $fillable = [
-		'description', 'active', 'payment_status', 'total', 'paid', 'due', 'member_id', 'user_id', 'branch_id',
+		'date', 'description', 'active', 'payment_status', 'total', 'paid', 'due', 'member_id', 'user_id', 'branch_id',
 	];
 
     protected $appends = ['created_sale', 'grand_total', 'due_amount', 'total_quantity', 'total_price', 'total_discount', 'sub_total', 'payment_status', 'user_name'];

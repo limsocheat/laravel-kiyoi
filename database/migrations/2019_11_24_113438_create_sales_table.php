@@ -26,6 +26,7 @@ class CreateSalesTable extends Migration
             $table->string('shipping_cost')->default(0)->nullable();
             $table->integer('discount')->default(0)->nullable();
             $table->double('paid');
+            $table->string('date');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
