@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 use App\User;
-
 use App\Sale;
+use App\Expense;
 
 use Carbon\Carbon;
 
@@ -36,5 +36,25 @@ class DashboardController extends Controller
 		$getSale = Sale::where('created_at', '>=', $date)->orderBy('id', 'desc')->get();
 
 		return $getSale;
+	}
+
+	public function expenseReport(Request $request)
+	{	
+
+		if($request->startDate & $request->endDate || $request->category) {
+			// Get Date Range
+			$expense = Expense::whereBetween('date', array($request->startDate, $request->endDate))
+					// Check if get request category
+					->when($request->category, function($q) use ($request) {
+						// then query Relationship
+						$q->Where(function($q) use ($request) {
+							$q->whereHas('expense_category', function($q) use ($request)  {
+								$q->where('name', '=', $request->input('category'));
+							});
+						});
+					})->get();
+		}
+
+		return response()->json(['expense' => $expense]);
 	}
 }

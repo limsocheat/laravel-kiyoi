@@ -31,7 +31,7 @@ class ExpenseCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $expense = ExpenseCategory::orderBy('id', 'desc')
+        $expense = ExpenseCategory::with(['expenses'])->orderBy('id', 'desc')
                     ->where('name', 'like', '%' . $request->search . '%')
                     ->orWhere('code', 'like', '%' . $request->search . '%')
                     ->orWhere('description', 'like', '%' . $request->search . '%')
