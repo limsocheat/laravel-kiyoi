@@ -6,9 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Attendance;
 
+use App\Exports\AttendancesExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class AttendanceController extends Controller
 {
+    public function export_pdf()
+    {
+        return Excel::download(new AttendancesExport, 'attendance.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export() 
+    {
+        return Excel::download(new AttendancesExport, 'attendance.csv');
+    }
     /**
      * Display a listing of the resource.
      *
