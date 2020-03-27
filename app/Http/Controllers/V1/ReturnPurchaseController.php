@@ -10,20 +10,19 @@ use App\Account;
 use App\Product;
 use App\Supplier;
 
-use App\Exports\ReturnPurchaseExport;
+use App\Exports\ReturnPurchasesExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnPurchaseController extends Controller
 {
-    /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+    public function export_pdf()
+    {
+        return Excel::download(new ReturnPurchasesExport, 'return-purchase.pdf',  \Maatwebsite\Excel\Excel::DOMPDF);
+    }
 
     public function export()
     {
-        return Excel::download(new ReturnPurchaseExport, 'purchase.xlsx');
+        return Excel::download(new ReturnPurchasesExport, 'return-purchase.csv');
     }
 
     public function index(Request $request)
