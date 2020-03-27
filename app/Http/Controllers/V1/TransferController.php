@@ -11,8 +11,23 @@ use App\Product;
 
 use Carbon\Carbon;
 
+use App\Exports\TransfersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 class TransferController extends Controller
-{
+{   
+    public function export() 
+    {
+        return Excel::download(new TransfersExport, 'transfer.csv');
+    }
+
+
+    public function export_pdf() 
+    {
+        return Excel::download(new TransfersExport, 'transfer.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -74,6 +89,7 @@ class TransferController extends Controller
         $transfer->to_location = $request->input('to_location');
         $transfer->status = $request->input('status');
         $transfer->shipping_charge = $request->input('shipping_charge');
+        $transfer->description = $request->input('description');
         $transfer->save();
 
         if($request->products) {
@@ -98,7 +114,9 @@ class TransferController extends Controller
      */
     public function show($id)
     {
-        //
+        $transfer = Transfer::with(['branch', 'products'])->findOrFail($id);
+
+        return response()->json(['transfer' => $transfer]);
     }
 
     /**
@@ -110,7 +128,7 @@ class TransferController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
