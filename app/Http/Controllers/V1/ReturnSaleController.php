@@ -10,19 +10,18 @@ use App\Account;
 use App\Product;
 use Illuminate\Http\Request;
 
-use App\Exports\ReturnSaleExport;
+use App\Exports\ReturnSalesExport;
 use Maatwebsite\Excel\Facades\Excel;
 class ReturnSaleController extends Controller
 {
-    /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+    public function export_pdf()
+    {
+        return Excel::download(new ReturnSalesExport, 'return-sale.pdf',  \Maatwebsite\Excel\Excel::DOMPDF);
+    }
 
     public function export()
     {
-        return Excel::download(new ReturnSaleExport, 'purchase.xlsx');
+        return Excel::download(new ReturnSalesExport, 'return-sale.csv');
     }
 
     public function index(Request $request)

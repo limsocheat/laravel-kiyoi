@@ -46,12 +46,17 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
 
     Route::get('activity', 'ActivityController@index');
         
+    //User Profile
+    Route::get('/profile/', 'ProfileController@index');
+    Route::post('/profile/', 'ProfileController@store');
+    Route::patch('/profile/{id}', 'ProfileController@update');
 
     // Dashboard Report
     Route::get('dashboard', 'Dashboard\DashboardController@index');
 
     // SaleReport
     Route::get('sale-report', 'Dashboard\DashboardController@saleReport');
+    Route::get('expense-report', 'Dashboard\DashboardController@expenseReport');
 });
 
 
@@ -97,3 +102,11 @@ Route::get('expense/export', 'V1\ExpenseController@export');
 // Quotation
 Route::get('quotation/export', 'V1\QuotationController@export');
 Route::get('quotation/export_pdf', 'V1\QuotationController@export_pdf');
+
+// Transfer Export
+Route::get('transfer/export_pdf', 'V1\TransferController@export_pdf');
+Route::get('transfer/export', 'V1\TransferController@export');
+
+// ReturnSale Export
+Route::get('return-sale/export_pdf', 'V1\ReturnSaleController@export_pdf');
+Route::get('return-sale/export', 'V1\ReturnSaleController@export');
