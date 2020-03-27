@@ -8,8 +8,23 @@ use Illuminate\Http\Request;
 use App\Employee;
 use App\Http\Resources\EmployeeResource;
 
+use App\Exports\EmployeesExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class EmployeeController extends Controller
 {
+    public function export_pdf()
+    {
+        return Excel::download(new EmployeesExport, 'employee.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export() 
+    {
+        return Excel::download(new EmployeesExport, 'employee.csv');
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
