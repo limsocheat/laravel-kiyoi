@@ -7,8 +7,21 @@ use Illuminate\Http\Request;
 
 use App\Department;
 
+use App\Exports\DepartmentsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class DepartmentController extends Controller
 {
+    public function export_pdf()
+    {
+        return Excel::download(new DepartmentsExport, 'department.pdf',  \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export()
+    {
+        return Excel::download(new DepartmentsExport, 'department.csv');
+    }
+
     /**
      * Display a listing of the resource.
      *
