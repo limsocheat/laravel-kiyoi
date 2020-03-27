@@ -110,3 +110,27 @@ Route::get('transfer/export', 'V1\TransferController@export');
 // ReturnSale Export
 Route::get('return-sale/export_pdf', 'V1\ReturnSaleController@export_pdf');
 Route::get('return-sale/export', 'V1\ReturnSaleController@export');
+
+// ReturnPurchase Export
+Route::get('return-purchase/export_pdf', 'V1\ReturnPurchaseController@export_pdf');
+Route::get('return-purchase/export', 'V1\ReturnPurchaseController@export');
+
+// Department Export
+Route::get('department/export_pdf', 'V1\DepartmentController@export_pdf');
+Route::get('department/export', 'V1\DepartmentController@export');
+
+// Employee Export
+Route::get('employee/export_pdf', 'V1\EmployeeController@export_pdf');
+Route::get('employee/export', 'V1\EmployeeController@export');
+
+// Attendance Export
+Route::get('attendance/export_pdf', 'V1\AttendanceController@export_pdf');
+Route::get('attendance/export', 'V1\AttendanceController@export');
+
+// Payroll Export
+Route::get('payroll/export_pdf', 'V1\PayrollController@export_pdf');
+Route::get('payroll/export', 'V1\PayrollController@export');
+
+// Payroll Export
+Route::get('holiday/export_pdf', 'V1\HolidayController@export_pdf');
+Route::get('holiday/export', 'V1\HolidayController@export');

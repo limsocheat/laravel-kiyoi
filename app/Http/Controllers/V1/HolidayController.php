@@ -6,8 +6,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Holiday;
 
+
+use App\Exports\HolidaysExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class HolidayController extends Controller
 {
+    public function export_pdf()
+    {
+        return Excel::download(new HolidaysExport, 'holiday.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export() 
+    {
+        return Excel::download(new HolidaysExport, 'holiday.csv');
+    }
+
     /**
      * Display a listing of the resource.
      *
