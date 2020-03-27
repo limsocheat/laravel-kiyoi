@@ -7,8 +7,22 @@ use Illuminate\Http\Request;
 
 use App\Payroll;
 
+use App\Exports\PayrollsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 class PayrollController extends Controller
 {
+    public function export_pdf()
+    {
+        return Excel::download(new PayrollsExport, 'payroll.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+    }
+
+    public function export() 
+    {
+        return Excel::download(new PayrollsExport, 'payroll.csv');
+    }
+
     /**
      * Display a listing of the resource.
      *
