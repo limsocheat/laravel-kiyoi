@@ -15,24 +15,18 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->string('company_name');
-            $table->text('description')->nullable();
-            $table->double('balance')->nullable();
-            $table->boolean('active')->default(1);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email');
-            $table->string('tax')->nullable();
-            $table->string('post_code')->nullable();
-            $table->string('phone');
-            $table->string('address')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
+            $table->string('password');
+            $table->text('description')->nullable();
+            $table->boolean('active')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')
-                                        ->onDelete('cascade')
-                                        ->onUpdate('cascade');
+                                        ->onDelete('set null')
+                                        ->onUpdate('set null');
         });
     }
 

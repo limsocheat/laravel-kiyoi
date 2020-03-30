@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = [
-		'user_id', 'name', 'company_name', 'email', 'tax', 'post_code', 'phone', 'address', 'city', 'country'
+		'user_id', 'first_name', 'last_name', 'email', 'password'
 	];
 
 	protected $appends = ['deposit_amount'];
+
+	protected $hidden = ['password'];
 
 	public function user()
 	{
@@ -25,6 +27,11 @@ class Member extends Model
 	public function deposits()
 	{
 		return $this->hasMany(\App\DepositAccount::class);
+	}
+
+	public function profile()
+	{
+		return $this->hasOne(\App\Profile::class);
 	}
 
 	public function getDepositAmountAttribute()

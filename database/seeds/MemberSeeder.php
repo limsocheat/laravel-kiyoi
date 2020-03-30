@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 
 use App\Sale;
+use App\Member;
 
 use Faker\Factory;
 
@@ -15,7 +16,12 @@ class MemberSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Member::class, 5)->create();
+        Member::create([
+            'first_name' => 'may',
+            'last_name' => 'may',
+            'email' => 'may@may.com',
+            'password' => bcrypt('hengheng'),
+        ]);
 
         $faker = Factory::create();
 

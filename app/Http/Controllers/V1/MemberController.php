@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Member;
+use App\Profile;
 
 class MemberController extends Controller
 {
@@ -18,7 +19,7 @@ class MemberController extends Controller
     {
         $itemsPerPage = empty(request('itemsPerPage')) ? 5 : (int)request('itemsPerPage');
 
-        $query = Member::with(['deposits', 'user'])
+        $query = Member::with(['profile', 'user'])
                     ->orderBy('id', 'desc');
         if($request->search) {
             $query->where(function($query) use ($request) {
@@ -39,27 +40,40 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'name' => 'required|min:3',
+            'first_name' => 'required|min:3',
+            'last_name' => 'required|min:3',
             'email' => 'required|email',
             'phone' => 'required',
             'address' => 'required',
-            'balance' => 'nullable',
+            'password' => 'required|between:6,25'
         ]);
 
-        $members = new Member();
-        $members->user_id = auth()->user()->id;
-        $members->name = $request->name;
-        $members->company_name = $request->company_name;
-        $members->description = $request->description;
-        $members->email = $request->email;
-        $members->phone = $request->phone;
-        $members->post_code = $request->post_code;
-        $members->tax = $request->tax;
-        $members->address = $request->address;
-        $members->balance = $request->balance;
-        $members->city = $request->city;
-        $members->country = $request->country;
-        $members->save();
+
+        $member = new Member();
+        $member->user_id = auth()->user()->id;
+        $member->first_name = $request->first_name;
+        $member->last_name = $request->last_name;
+        $member->description = $request->description;
+        $member->email = $request->email;
+        $member->password = bcrypt($request->password);
+        $member->save();
+
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = '/members/' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/members/'), $imageName);
+        }
+
+        $profile = new Profile();
+        $profile->image = $request->file('image') ? $imageName : null;
+        $profile->phone = $request->phone;
+        $profile->address = $request->address;
+        $profile->city = $request->city;
+        $profile->address = $request->address;
+        $profile->country = $request->country;
+        $profile->save(); 
+
+        $member->profile()->save($profile);
 
         return response()->json(['created' => true]);
     }
@@ -72,7 +86,7 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        $members = Member::with(['deposits'])->findOrFail($id);
+        $members = Member::with(['profile'])->findOrFail($id);
 
         return response()->json(['members' => $members]);
     }
@@ -87,26 +101,38 @@ class MemberController extends Controller
     public function update(Request $request, $id)
     {
         $validateData = $request->validate([
-            'name' => 'required|min:3',
+            'first_name' => 'required|min:3',
+            'last_name' => 'required|min:3',
             'email' => 'required|email',
             'phone' => 'required',
             'address' => 'nullable',
         ]);
+ 
+        $member = Member::find($id);
+        $member->user_id = auth()->user()->id;
+        $member->first_name = $request->first_name;
+        $member->last_name = $request->last_name;
+        $member->description = $request->description;
+        $member->email = $request->email;
+        $member->password = bcrypt($request->password);
+        $member->save();
 
-        $members = Member::findOrFail($id);
-        $members->user_id = auth()->user()->id;
-        $members->name = $request->name;
-        $members->company_name = $request->company_name;
-        $members->description = $request->description;
-        $members->email = $request->email;
-        $members->phone = $request->phone;
-        $members->balance = $request->balance;
-        $members->address = $request->address;
-        $members->post_code = $request->post_code;
-        $members->tax = $request->tax;
-        $members->city = $request->city;
-        $members->country = $request->country;
-        $members->save();
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = '/members/' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/members/'), $imageName);
+        }
+
+        $profile = Profile::where('member_id', $member->id)->first();
+        $profile->image = $request->file('image') ? $imageName : null;
+        $profile->phone = $request->phone;
+        $profile->address = $request->address;
+        $profile->city = $request->city;
+        $profile->address = $request->address;
+        $profile->country = $request->country;
+        $profile->save(); 
+
+        $member->profile()->save($profile);
 
         return response()->json(['updated' => true]);
     }
