@@ -123,27 +123,11 @@ class UserController extends Controller
             'password' => 'required|between:6,25',
         ]);
 
-        if($request->get('image')) {
-            $image = $request->get('image');
-            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            $img = \Image::make($image)->resize(80, 90, function($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            $img->save(public_path('/image/' . $name));
-        }
-
         $user = User::findOrFail($id);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
-        $user->image = $request->image ? $name : null; // $name is name of image
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->phone = $request->phone;   
-        $user->address = $request->address;   
-        $user->city = $request->city;   
-        $user->country = $request->country;   
-
         $user->save();
          
         // Assign Role

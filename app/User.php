@@ -55,7 +55,13 @@ class User extends Authenticatable
 
         return $user;
     }
-    
+
+
+    public function profile()
+    {
+        return $this->hasOne(\App\Profile::class);
+    }
+
     public function branches()
     {
         return $this->hasMany(\App\Branch::class); 
