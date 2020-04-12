@@ -20,14 +20,10 @@ class LoginController extends Controller
             'password' => 'required|between:6, 25',
         ]);
 
-        $referred_by = User::where('referral_code', '=', $request->referred_by)->get();
-
         $user = new User();
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
-        $user->referral_code = strtoupper(substr(uniqid(), 0, 8));
-        $user->referred_by = $referred_by[0]->first_name;
         $user->password = bcrypt($request->password);
         $user->save();
 

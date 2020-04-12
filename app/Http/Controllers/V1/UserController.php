@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\{User};
 
+use App\Profile;
+
 
 class UserController extends Controller
 {
@@ -20,7 +22,7 @@ class UserController extends Controller
 
         if($user->roles[0]->name == 'administrator') {
             
-            $items      = User::OrderBy('id', 'desc');
+            $items      = User::with(['profile'])->OrderBy('id', 'desc');
 
             if($request->name) {
                 $items->where(function($q) use ($request) {
@@ -78,9 +80,7 @@ class UserController extends Controller
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
-        $user->referral_code = strtoupper(substr(uniqid(), 0, 8));
         $user->password = bcrypt($request->password);
-
         $user->save();
 
 
@@ -102,7 +102,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with(['profile'])->findOrFail($id);
 
         return response()->json(['user' => $user]);
     }
@@ -123,6 +123,8 @@ class UserController extends Controller
             'password' => 'required|between:6,25',
         ]);
 
+        // dd($request->all());
+
         $user = User::findOrFail($id);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -130,6 +132,24 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
          
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = '/profiles/' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/profiles'), $imageName);
+        }
+
+        $profile = Profile::updateOrCreate([
+                'user_id' => $user->id,
+        ],[
+            'image' => $request->file('image') ? $imageName : null,
+            'phone' => $request->phone ?? '',
+            'address' => $request->address ?? '',
+            'city' => $request->city ?? '',
+            'country' => $request->country ?? '',
+        ]);
+
+        $user->profile()->save($profile);
+
         // Assign Role
         $user->roles()->sync(
             $request->role_ids

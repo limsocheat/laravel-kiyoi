@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'referred_by', 'referral_code', 'image'
+        'name', 'email', 'password'
     ];
 
     /**
@@ -41,20 +41,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ["role_ids", 'count_referrer', 'role_name'];
+    protected $appends = ["role_ids", 'role_name'];
 
     public function getRoleNameAttribute()
     {
         return  $this->roles()->pluck('name');
     }
 
-    public function getCountReferrerAttribute()
-    {
-        $user = User::where('referred_by', $this->first_name)
-                    ->orWhere('referred_by', $this->last_name)->count();
+    // public function getCountReferrerAttribute()
+    // {
+    //     $user = User::where('referred_by', $this->first_name)
+    //                 ->orWhere('referred_by', $this->last_name)->count();
 
-        return $user;
-    }
+    //     return $user;
+    // }
 
 
     public function profile()
@@ -111,16 +111,22 @@ class User extends Authenticatable
         return $this->hasMany(\App\Purchase::class);
     }
 
-    public function referrer()
-    {
-        return $this->belongsTo('App\User', 'referred_by');
-    }
+    // public function referrer()
+    // {
+    //     return $this->belongsTo('App\User', 'referred_by');
+    // }
 
-    public function referrals()
-    {
-        return $this->hasMany('App\User', 'referred_by');
-    }
+    // public function referrals()
+    // {
+    //     return $this->hasMany('App\User', 'referred_by');
+    // }
 
+
+    // Sale Group
+    public function sale_group()
+    {
+        return $this->belongsTo(\App\SaleGroup::class);
+    }
 }
 
 
