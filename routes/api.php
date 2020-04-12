@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'v1', 'namespace' => 'V1']
         'return-purchase'=> 'ReturnPurchaseController',
         'category' => 'ProductCategoryController',
         'calendar' => 'CalendarController',
+        'sale-group' => 'SaleGroupController',
     ]);
 
     Route::get('activity', 'ActivityController@index');
